@@ -7,6 +7,8 @@
 
 namespace CAFF {
 
+enum BlockType { HEADER = 1, CREDITS = 2, ANIMATION = 3};
+
 struct Header {
     char magic[4];
     uint64_t header_size;
