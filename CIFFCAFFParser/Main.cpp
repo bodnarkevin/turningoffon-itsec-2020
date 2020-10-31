@@ -5,7 +5,7 @@
 #include <fstream>
 #include <math.h>
 
-int convertLength(std::vector<unsigned char> buffer, int index) {
+int convert8ByteToInteger(std::vector<unsigned char> buffer, int index) {
     if (buffer.size() < index + 8) {
         std::cout << "Size is wrong " << buffer.size() << std::endl;
         return 0;
@@ -25,35 +25,56 @@ int convertLength(std::vector<unsigned char> buffer, int index) {
     return result;
 }
 
-int handleHeader(std::vector<unsigned char> buffer, int index) {
+int handleHeader(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
     std::cout << "Handling header" << std::endl;
-    return convertLength(buffer, index) + 8;
+    block.length = convert8ByteToInteger(buffer, index);
+    return convert8ByteToInteger(buffer, index) + 8;
 }
 
-int handleCredits(std::vector<unsigned char> buffer, int index) {
+int handleCredits(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
     std::cout << "Handling credits " << std::endl;
-    return convertLength(buffer, index) + 8;
+    block.length = convert8ByteToInteger(buffer, index);
+    return convert8ByteToInteger(buffer, index) + 8;
 }
 
-int handleAnimation(std::vector<unsigned char> buffer, int index) {
+int handleAnimation(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
     std::cout << "Handling animation" << std::endl;
-    return convertLength(buffer, index) + 8;
+    int animationLength = convert8ByteToInteger(buffer, index);
+    index += 8;
+    int duration = convert8ByteToInteger(buffer, index);
+    index += 8;
+    std::cout << "duration of ciff " << duration << std::endl;
+    return animationLength += 8;
 }
 
-void processCAFF(std::vector<unsigned char> buffer) {
+void parseCIFF(std::vector<unsigned char> buffer, int index, CAFF::CAFFFile& caffFile) {
+
+}
+
+void processCAFF(std::vector<unsigned char> buffer, CAFF::CAFFFile& caffFile) {
     int index = 0;
     while (index < buffer.size()) {
         int identifier = static_cast<int>(buffer[index]);
         int jump = 1;
+
+        CAFF::Block block;
+        CAFF::Header header;
+        CAFF::Credits credits;
+        CAFF::Animation animation;
+        block.id = identifier;
+
         switch (identifier) {
             case CAFF::BlockType::HEADER:
-                jump = handleHeader(buffer, index + 1);
+                block.header_data = &header;
+                jump = handleHeader(buffer, index + 1, block);
                 break;
             case CAFF::BlockType::CREDITS:
-                jump = handleCredits(buffer, index + 1);
+                block.credits_data = &credits;
+                jump = handleCredits(buffer, index + 1, block);
                 break;
             case CAFF::BlockType::ANIMATION:
-                jump = handleAnimation(buffer, index + 1);
+                block.animation_data = &animation;
+                jump = handleAnimation(buffer, index + 1, block);
                 break;
             default:
                 std::cout << "Unknown identifier. Stopping..." << std::endl;
@@ -65,45 +86,18 @@ void processCAFF(std::vector<unsigned char> buffer) {
 }
 
 int main() {
-   std::ifstream source("1.caff", std::ios_base::binary);
-   std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(source), {});
-   int count = 0;
-   for (auto element : buffer) {
-      std::cout << "count: " << count << " " << static_cast<int>(element) << std::endl;
-      if (count > 180) {
-         break;
-      }
-      count++;
-   }
+    std::ifstream source("1.caff", std::ios_base::binary);
+    std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(source), {});
+    int count = 0;
+    for (auto element : buffer) {
+        std::cout << "count: " << count << " " << static_cast<int>(element) << std::endl;
+        if (count > 180) {
+            break;
+        }
+        count++;
+    }
+    CAFF::CAFFFile caffFile;
+    processCAFF(buffer, caffFile);
 
-    processCAFF(buffer);
-
-   // Feldolgozas
-   // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-//    std::cout << "--------------------------------------------------" << std::endl;
-
-//    int firstID = static_cast<int>(buffer.at(0));
-//    int firstSize = static_cast<int>(buffer.at(1));
-
-//     int convertedLength = convertLength(buffer, 1);
-//     std::cout << "convertedLength " << convertedLength << std::endl;
-
-//    const int lengthFieldSize = 8;
-//    int i = lengthFieldSize + 1;
-//    for (i; i < firstSize + lengthFieldSize + 1; i++) {
-//       std::cout << "***: " << i << "      " << static_cast<int>(buffer.at(i)) << std::endl;
-//    }
-//    int nextId = static_cast<int>(buffer.at(i));
-//    i++;
-//    int nextSize = static_cast<int>(buffer.at(i));
-//    int current = i + lengthFieldSize;
-//    i = i + lengthFieldSize;
-//    std::cout << "henloooo " << current << "     " << nextSize << std::endl;
-//    for (i; i < current + nextSize + 1; i++) {
-//       std::cout << "*hhh**: " << i << "      " << static_cast<int>(buffer.at(i)) << std::endl;
-//    }
-
-//    std::cout << "kövi     : " << static_cast<int>(buffer.at(i)) << std::endl;
-   // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-   return 0;
+    return 0;
 }
