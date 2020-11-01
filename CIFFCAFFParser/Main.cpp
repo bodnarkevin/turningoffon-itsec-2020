@@ -5,7 +5,7 @@
 #include <fstream>
 #include <math.h>
 
-int convert8ByteToInteger(std::vector<unsigned char> buffer, int index) {
+int convert8ByteToInteger(const std::vector<unsigned char>& buffer, int index) {
     if (buffer.size() < index + 8) {
         std::cout << "Size is wrong " << buffer.size() << std::endl;
         return 0;
@@ -25,7 +25,7 @@ int convert8ByteToInteger(std::vector<unsigned char> buffer, int index) {
     return result;
 }
 
-void getCIFFMagic(std::vector<unsigned char> buffer, int index, char* result) {
+void getCIFFMagic(const std::vector<unsigned char>& buffer, int index, char* result) {
     std::cout << "getMagic..." << std::endl;
     int count = 0;
     char temp[4];
@@ -44,7 +44,22 @@ void getCIFFMagic(std::vector<unsigned char> buffer, int index, char* result) {
     }
 }
 
-void parseCIFF(std::vector<unsigned char> buffer, int index, CIFF::CIFFFile& ciff) {
+int getCaption(const std::vector<unsigned char>& buffer, int index, std::string& result) {
+    std::cout << "getCaption..." << std::endl;
+    int size = 0;
+    int idx = index;
+
+    while (buffer[idx] != '\n') {
+        size++;
+        result += buffer[idx];
+        idx++;
+    }
+
+    size++;
+    return size;
+}
+
+void parseCIFF(const std::vector<unsigned char>& buffer, int index, CIFF::CIFFFile& ciff) {
     int idx = index;
 
     char magic[4];
@@ -67,22 +82,25 @@ void parseCIFF(std::vector<unsigned char> buffer, int index, CIFF::CIFFFile& cif
     idx += 8;
     std::cout << "position: " << idx << std::endl;
     // todo: caption (variable length text ending with \n)
+    std::string caption = "";
+    idx += getCaption(buffer, idx, caption);
+    std::cout << "caption: " << caption << std::endl;
     // todo: tags
 }
 
-int handleHeader(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
+int handleHeader(const std::vector<unsigned char>& buffer, int index, CAFF::Block& block) {
     std::cout << "Handling CAFF header..." << std::endl;
     block.length = convert8ByteToInteger(buffer, index);
     return convert8ByteToInteger(buffer, index) + 8;
 }
 
-int handleCredits(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
+int handleCredits(const std::vector<unsigned char>& buffer, int index, CAFF::Block& block) {
     std::cout << "Handling credits..." << std::endl;
     block.length = convert8ByteToInteger(buffer, index);
     return convert8ByteToInteger(buffer, index) + 8;
 }
 
-int handleAnimation(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
+int handleAnimation(const std::vector<unsigned char>& buffer, int index, CAFF::Block& block) {
     std::cout << "Handling animation..." << std::endl;
     int animationLength = convert8ByteToInteger(buffer, index);
     index += 8;
@@ -95,7 +113,7 @@ int handleAnimation(std::vector<unsigned char> buffer, int index, CAFF::Block& b
     return animationLength += 8;
 }
 
-void processCAFF(std::vector<unsigned char> buffer, CAFF::CAFFFile& caffFile) {
+void processCAFF(const std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile) {
     int index = 0;
     while (index < buffer.size()) {
         int identifier = static_cast<int>(buffer[index]);
