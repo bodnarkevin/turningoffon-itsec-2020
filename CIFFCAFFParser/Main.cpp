@@ -25,20 +25,49 @@ int convert8ByteToInteger(std::vector<unsigned char> buffer, int index) {
     return result;
 }
 
+void getCIFFMagic(std::vector<unsigned char> buffer, int index, char* result) {
+    std::cout << "getMagic..." << std::endl;
+    int count = 0;
+    char temp[4];
+    for (int i = index; i < index + 4; i++) {
+        temp[count] = static_cast<char>(buffer[i]);
+        count++;
+    }
+
+    if (temp[0] != 'C' && temp[1] != 'I' && temp[2] != 'F' && temp[3] != 'F') {
+        std::cout << "CIFF magic word not found." << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < 4; i++) {
+        result[i] = temp[i];
+    }
+}
 
 void parseCIFF(std::vector<unsigned char> buffer, int index, CIFF::CIFFFile& ciff) {
-   int idx = index + 4; // CIFF characters skipped for now
-   int headerLength = convert8ByteToInteger(buffer, idx);
-   idx += 8;
-   int contentLength = convert8ByteToInteger(buffer, idx);
-   idx += 8;
-   int width = convert8ByteToInteger(buffer, idx);
-   idx += 8;
-   int height = convert8ByteToInteger(buffer, idx);
-   idx += 8;
-   std::cout << "position: " << idx << std::endl;
-   // todo: caption (variable length text ending with \n)
-   // todo: tags
+    int idx = index;
+
+    char magic[4];
+    getCIFFMagic(buffer, idx, magic);
+
+    std::cout << "Magic: ";
+    for (int i = 0; i < 4; i++) { // debug log
+        std::cout << magic[i];
+    }
+    std::cout << std::endl;
+
+    idx += 4;
+    int headerLength = convert8ByteToInteger(buffer, idx);
+    idx += 8;
+    int contentLength = convert8ByteToInteger(buffer, idx);
+    idx += 8;
+    int width = convert8ByteToInteger(buffer, idx);
+    idx += 8;
+    int height = convert8ByteToInteger(buffer, idx);
+    idx += 8;
+    std::cout << "position: " << idx << std::endl;
+    // todo: caption (variable length text ending with \n)
+    // todo: tags
 }
 
 int handleHeader(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
