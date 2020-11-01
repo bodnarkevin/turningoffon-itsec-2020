@@ -25,30 +25,45 @@ int convert8ByteToInteger(std::vector<unsigned char> buffer, int index) {
     return result;
 }
 
+
+void parseCIFF(std::vector<unsigned char> buffer, int index, CIFF::CIFFFile& ciff) {
+   int idx = index + 4; // CIFF characters skipped for now
+   int headerLength = convert8ByteToInteger(buffer, idx);
+   idx += 8;
+   int contentLength = convert8ByteToInteger(buffer, idx);
+   idx += 8;
+   int width = convert8ByteToInteger(buffer, idx);
+   idx += 8;
+   int height = convert8ByteToInteger(buffer, idx);
+   idx += 8;
+   std::cout << "position: " << idx << std::endl;
+   // todo: caption (variable length text ending with \n)
+   // todo: tags
+}
+
 int handleHeader(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
-    std::cout << "Handling header" << std::endl;
+    std::cout << "Handling CAFF header..." << std::endl;
     block.length = convert8ByteToInteger(buffer, index);
     return convert8ByteToInteger(buffer, index) + 8;
 }
 
 int handleCredits(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
-    std::cout << "Handling credits " << std::endl;
+    std::cout << "Handling credits..." << std::endl;
     block.length = convert8ByteToInteger(buffer, index);
     return convert8ByteToInteger(buffer, index) + 8;
 }
 
 int handleAnimation(std::vector<unsigned char> buffer, int index, CAFF::Block& block) {
-    std::cout << "Handling animation" << std::endl;
+    std::cout << "Handling animation..." << std::endl;
     int animationLength = convert8ByteToInteger(buffer, index);
     index += 8;
     int duration = convert8ByteToInteger(buffer, index);
     index += 8;
-    std::cout << "duration of ciff " << duration << std::endl;
+    std::cout << "   Duration of ciff: " << duration << " ms" << std::endl;
+    CIFF::CIFFFile ciff;
+    parseCIFF(buffer, index, ciff);
+    // todo block.animation_data += ciff ?
     return animationLength += 8;
-}
-
-void parseCIFF(std::vector<unsigned char> buffer, int index, CAFF::CAFFFile& caffFile) {
-
 }
 
 void processCAFF(std::vector<unsigned char> buffer, CAFF::CAFFFile& caffFile) {
