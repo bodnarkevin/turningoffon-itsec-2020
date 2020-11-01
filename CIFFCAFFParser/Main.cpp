@@ -59,9 +59,8 @@ int getCaption(const std::vector<unsigned char>& buffer, int index, std::string&
     return size;
 }
 
-int getTags(const std::vector<unsigned char>& buffer, int index, int headerLength, std::vector<std::string>& result) {
+void getTags(const std::vector<unsigned char>& buffer, int index, int headerLength, std::vector<std::string>& result) {
     std::cout << "getTags" << std::endl;
-    int size = 0;
     int idx = index;
 
     while (idx < index + headerLength) {
@@ -69,17 +68,20 @@ int getTags(const std::vector<unsigned char>& buffer, int index, int headerLengt
         while (buffer[idx] != '\0') {
             tag += buffer[idx];
             idx++;
-            size++;
+
         }
 
         idx++;
-        size++;
-
         result.push_back(tag);
     }
+}
 
-    size++;
-    return size;
+void getPixels(const std::vector<unsigned char>& buffer, int index, int contentLength, std::vector<uint8_t>& result) {
+    std::cout << "getPixels" << std::endl;
+
+    for (int i = index; i < index + contentLength; i++) {
+        result.push_back(static_cast<uint8_t>(buffer[i]));
+    }
 }
 
 void parseCIFF(const std::vector<unsigned char>& buffer, int index, CIFF::CIFFFile& ciff) {
@@ -109,15 +111,21 @@ void parseCIFF(const std::vector<unsigned char>& buffer, int index, CIFF::CIFFFi
     idx += captionLength;
     std::cout << "caption: " << caption << std::endl;
 
-    // todo: tags
     std::vector<std::string> tags;
     int tagsLength = headerLength - 4 - 8 - 8 - 8 - 8 - captionLength;
-    idx += getTags(buffer, idx, tagsLength, tags);
+    getTags(buffer, idx, tagsLength, tags);
+    idx += tagsLength;
 
     std::cout << "tags:" << std::endl;
     for (auto element : tags) {
         std::cout << "#" << element << std::endl;
     }
+
+    std::vector<uint8_t> pixels;
+    getPixels(buffer, idx, contentLength, pixels);
+    idx += contentLength;
+
+    //not logging pixels
 
     std::cout << "position: " << idx << std::endl;
 }
