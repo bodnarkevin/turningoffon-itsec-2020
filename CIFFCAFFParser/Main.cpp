@@ -59,6 +59,29 @@ int getCaption(const std::vector<unsigned char>& buffer, int index, std::string&
     return size;
 }
 
+int getTags(const std::vector<unsigned char>& buffer, int index, int headerLength, std::vector<std::string>& result) {
+    std::cout << "getTags" << std::endl;
+    int size = 0;
+    int idx = index;
+
+    while (idx < index + headerLength) {
+        std::string tag = "";
+        while (buffer[idx] != '\0') {
+            tag += buffer[idx];
+            idx++;
+            size++;
+        }
+
+        idx++;
+        size++;
+
+        result.push_back(tag);
+    }
+
+    size++;
+    return size;
+}
+
 void parseCIFF(const std::vector<unsigned char>& buffer, int index, CIFF::CIFFFile& ciff) {
     int idx = index;
 
@@ -80,12 +103,23 @@ void parseCIFF(const std::vector<unsigned char>& buffer, int index, CIFF::CIFFFi
     idx += 8;
     int height = convert8ByteToInteger(buffer, idx);
     idx += 8;
-    std::cout << "position: " << idx << std::endl;
-    // todo: caption (variable length text ending with \n)
+
     std::string caption = "";
-    idx += getCaption(buffer, idx, caption);
+    int captionLength = getCaption(buffer, idx, caption);
+    idx += captionLength;
     std::cout << "caption: " << caption << std::endl;
+
     // todo: tags
+    std::vector<std::string> tags;
+    int tagsLength = headerLength - 4 - 8 - 8 - 8 - 8 - captionLength;
+    idx += getTags(buffer, idx, tagsLength, tags);
+
+    std::cout << "tags:" << std::endl;
+    for (auto element : tags) {
+        std::cout << "#" << element << std::endl;
+    }
+
+    std::cout << "position: " << idx << std::endl;
 }
 
 int handleHeader(const std::vector<unsigned char>& buffer, int index, CAFF::Block& block) {
