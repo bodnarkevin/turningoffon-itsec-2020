@@ -16,9 +16,14 @@ struct Header {
     std::vector<std::string> tags;
 };
 
-struct CiffFile {
+struct CIFFFile {
     Header* header;
     std::vector<uint8_t> pixels;
+};
+
+class CIFFHandler {
+public:
+    CIFFFile parseCiff(const char* binaryData, size_t binarySize);
 };
 
 } // namespace CIFF

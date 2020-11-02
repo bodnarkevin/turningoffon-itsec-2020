@@ -7,6 +7,8 @@
 
 namespace CAFF {
 
+enum BlockType { HEADER = 1, CREDITS = 2, ANIMATION = 3};
+
 struct Header {
     char magic[4];
     uint64_t header_size;
@@ -29,7 +31,7 @@ struct Credits {
 
 struct Animation {
     uint64_t duration;
-    CIFF::CiffFile* ciff_file;
+    CIFF::CIFFFile* ciff_file;
 };
 
 struct Block {
@@ -40,8 +42,13 @@ struct Block {
     Animation* animation_data;
 };
 
-struct CaffFile {
+struct CAFFFile {
     Block* blocks;
+};
+
+class CAFFHandler {
+public:
+    CAFFFile parseCAFFFile(const char* binaryData);
 };
 
 } // namespace CAFF
