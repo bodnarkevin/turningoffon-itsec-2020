@@ -8,7 +8,7 @@ namespace Converter {
 
 class BytesToIntConverter {
     public:
-        static int convert8BytesToInteger(const std::vector<unsigned char>& buffer, int index);
+        int convert8BytesToInteger(std::vector<unsigned char>& buffer);
     };
 
 } // namespace Converter

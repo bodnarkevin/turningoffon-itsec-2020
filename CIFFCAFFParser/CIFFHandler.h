@@ -17,18 +17,18 @@ struct Header {
 };
 
 struct CIFFFile {
-    Header* header;
+    Header header;
     std::vector<uint8_t> pixels;
 };
 
 class CIFFHandler {
-public:
-    CIFFFile parseCiff(const char* binaryData, size_t binarySize);
-    static void parseCIFF(std::vector<unsigned char>& buffer, CIFF::CIFFFile& ciff);
-    static void getCaption(const std::vector<unsigned char>& buffer, int index, std::string& result);
-    static void getTags(const std::vector<unsigned char>& buffer, int index, int headerLength, std::vector<std::string>& result);
-    static void getPixels(const std::vector<unsigned char>& buffer, int index, int contentLength, std::vector<uint8_t>& result);
-    static void getCIFFMagic(const std::vector<unsigned char>& buffer, int index, char* result);
+    public:
+        CIFFFile parseCIFF(std::vector<unsigned char>& buffer);
+    private:
+        std::string getCaption(std::vector<unsigned char>& buffer, int& captionLength);
+        std::vector<std::string> getTags(std::vector<unsigned char>& buffer, int headerLength);
+        std::vector<uint8_t> getPixels(std::vector<unsigned char>& buffer, int contentLength);
+        void getCIFFMagic(std::vector<unsigned char>& buffer, char* result);
 };
 
 } // namespace CIFF

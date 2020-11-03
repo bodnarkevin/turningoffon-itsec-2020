@@ -2,24 +2,28 @@
 #include <iostream>
 #include <math.h>
 
+#include "Logger.h"
+
 namespace Converter {
 
-    int BytesToIntConverter::convert8BytesToInteger(const std::vector<unsigned char>& buffer, int index) {
-        if (buffer.size() < index + 8) {
-            std::cout << "Size is wrong " << buffer.size() << std::endl;
-            return 0;
+    int BytesToIntConverter::convert8BytesToInteger(std::vector<unsigned char>& buffer) {
+        if (buffer.size() < 8) {
+            std::cout << "ERROR while parsing integer: Buffer too small " << buffer.size() << std::endl;
+            throw "Buffer too small";
         }
 
         std::vector<int> lengthVector(8);
-        int count = 0;
-        for (int i = index; i < index + 8; i++) {
-        lengthVector[count] = static_cast<int>(buffer[i]);
-        count++;
+        for (int i = 0; i < 8; i++) {
+            lengthVector[i] = static_cast<int>(buffer[i]);
         }
 
-        const int valami = 256;
-        int result = lengthVector[0] * pow(valami, 0) + lengthVector[1] * pow(valami, 1) + lengthVector[2] * pow(valami, 2) + lengthVector[3] * pow(valami, 3)
-                + lengthVector[4] * pow(valami, 4) + lengthVector[5] * pow(valami, 5) + lengthVector[6] * pow(valami, 6) + lengthVector[7] * pow(valami, 7);
+        const int multiplier = 256;
+        int result = lengthVector[0] * pow(multiplier, 0) + lengthVector[1] * pow(multiplier, 1) + lengthVector[2] * pow(multiplier, 2) + lengthVector[3] * pow(multiplier, 3)
+                + lengthVector[4] * pow(multiplier, 4) + lengthVector[5] * pow(multiplier, 5) + lengthVector[6] * pow(multiplier, 6) + lengthVector[7] * pow(multiplier, 7);
+
+        // Remove the parsed 8 bytes from the buffer
+        Log::Logger::logBytesProcessed(8);
+        std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
         return result;
     }

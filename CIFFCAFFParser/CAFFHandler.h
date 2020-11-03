@@ -24,35 +24,36 @@ struct Date {
 };
 
 struct Credits {
-    Date* date;
+    Date date;
     uint64_t creator_len;
     std::string creator;
 };
 
 struct Animation {
     uint64_t duration;
-    CIFF::CIFFFile* ciff_file;
+    CIFF::CIFFFile ciff_file;
 };
 
 struct Block {
     uint8_t id;
     uint64_t length;
-    Header* header_data;
-    Credits* credits_data;
-    Animation* animation_data;
+    Header header_data;
+    Credits credits_data;
+    Animation animation_data;
 };
 
 struct CAFFFile {
+    int count = 0;
     Block* blocks;
 };
 
 class CAFFHandler {
 public:
-    CAFFFile parseCAFFFile(const char* binaryData);
-    static void processCAFF(std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile);
-    static void handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
-    static void handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
-    static void handleAnimation(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    CAFFFile processCAFF(std::vector<unsigned char>& buffer);
+private:
+    Header handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    Credits handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    Animation handleAnimation(std::vector<unsigned char>& buffer);
 };
 
 } // namespace CAFF
