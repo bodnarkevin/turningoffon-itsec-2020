@@ -7,6 +7,7 @@
 namespace CIFF {
 
     void CIFFHandler::parseCIFF(std::vector<unsigned char>& buffer, CIFF::CIFFFile& ciff) {
+        Converter::BytesToIntConverter bytesToIntConverter;
         char magic[4];
         getCIFFMagic(buffer, 0, magic);
 
@@ -20,25 +21,25 @@ namespace CIFF {
         Log::Logger::logBytesProcessed(4);
         std::vector<unsigned char>(buffer.begin() + 4, buffer.end()).swap(buffer);
 
-        int headerLength = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int headerLength = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
-        int contentLength = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int contentLength = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
-        int width = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int width = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
-        int height = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int height = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
