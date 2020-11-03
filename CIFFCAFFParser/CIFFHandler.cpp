@@ -21,25 +21,25 @@ namespace CIFF {
         Log::Logger::logBytesProcessed(4);
         std::vector<unsigned char>(buffer.begin() + 4, buffer.end()).swap(buffer);
 
-        int headerLength = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
+        int headerLength = bytesToIntConverter.convert8BytesToInteger(buffer);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
-        int contentLength = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
+        int contentLength = bytesToIntConverter.convert8BytesToInteger(buffer);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
-        int width = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
+        int width = bytesToIntConverter.convert8BytesToInteger(buffer);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
-        int height = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
+        int height = bytesToIntConverter.convert8BytesToInteger(buffer);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);

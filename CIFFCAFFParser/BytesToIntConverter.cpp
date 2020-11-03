@@ -4,17 +4,15 @@
 
 namespace Converter {
 
-    int BytesToIntConverter::convert8BytesToInteger(const std::vector<unsigned char>& buffer, int index) {
-        if (buffer.size() < index + 8) {
-            std::cout << "Size is wrong " << buffer.size() << std::endl;
-            return 0;
+    int BytesToIntConverter::convert8BytesToInteger(const std::vector<unsigned char>& buffer) {
+        if (buffer.size() < 8) {
+            std::cout << "ERROR while parsing integer: Buffer too small " << buffer.size() << std::endl;
+            throw "Buffer too small";
         }
 
         std::vector<int> lengthVector(8);
-        int count = 0;
-        for (int i = index; i < index + 8; i++) {
-        lengthVector[count] = static_cast<int>(buffer[i]);
-        count++;
+        for (int i = 0; i < 8; i++) {
+            lengthVector[i] = static_cast<int>(buffer[i]);
         }
 
         const int valami = 256;
