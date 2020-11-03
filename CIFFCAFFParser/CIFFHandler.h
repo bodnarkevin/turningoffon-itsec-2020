@@ -23,12 +23,12 @@ struct CIFFFile {
 
 class CIFFHandler {
     public:
-        CIFFFile parseCIFF(std::vector<unsigned char>& buffer, CIFF::CIFFFile& ciff);
+        CIFFFile parseCIFF(std::vector<unsigned char>& buffer);
     private:
-        std::string getCaption(const std::vector<unsigned char>& buffer, int& captionLength);
-        std::vector<std::string> getTags(const std::vector<unsigned char>& buffer, int headerLength);
-        std::vector<uint8_t> getPixels(const std::vector<unsigned char>& buffer, int contentLength);
-        void getCIFFMagic(const std::vector<unsigned char>& buffer, char* result);
+        std::string getCaption(std::vector<unsigned char>& buffer, int& captionLength);
+        std::vector<std::string> getTags(std::vector<unsigned char>& buffer, int headerLength);
+        std::vector<uint8_t> getPixels(std::vector<unsigned char>& buffer, int contentLength);
+        void getCIFFMagic(std::vector<unsigned char>& buffer, char* result);
 };
 
 } // namespace CIFF

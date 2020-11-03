@@ -20,10 +20,9 @@ int main() {
     }
     std::cout << std::endl;
 
-    CAFF::CAFFFile caffFile;
+    
     CAFF::CAFFHandler caffHandler;
-    caffHandler.processCAFF(buffer, caffFile);
-
+    CAFF::CAFFFile caffFile = caffHandler.processCAFF(buffer);
 
     delete[] caffFile.blocks;
     return 0;

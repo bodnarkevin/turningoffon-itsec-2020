@@ -49,11 +49,11 @@ struct CAFFFile {
 
 class CAFFHandler {
 public:
-    CAFFFile processCAFF(std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile);
+    CAFFFile processCAFF(std::vector<unsigned char>& buffer);
 private:
     Header handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
     Credits handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
-    Animation handleAnimation(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    Animation handleAnimation(std::vector<unsigned char>& buffer);
 };
 
 } // namespace CAFF

@@ -13,55 +13,47 @@ namespace CAFF {
         std::cout << std::endl << "Handling credits... " << std::endl;
         int length = bytesToIntConverter.convert8BytesToInteger(buffer);
         block.length = length;
-        int fullCreditsLength = length + 8;
 
-        // Remove the processed fullCreditsLength bytes from the buffer
-        Log::Logger::logBytesProcessed(fullCreditsLength);
-        std::vector<unsigned char>(buffer.begin() + fullCreditsLength, buffer.end()).swap(buffer);
+        // todo: process content
+
+        Log::Logger::logBytesProcessed(length);
+        // Remove the processed length bytes from the buffer
+        std::vector<unsigned char>(buffer.begin() + length, buffer.end()).swap(buffer);
 
         std::cout << "Handled credits block" << std::endl << std::endl;
         return credits;
     }
 
-    Animation CAFFHandler::handleAnimation(std::vector<unsigned char>& buffer, CAFF::Block& block) {
+    Animation CAFFHandler::handleAnimation(std::vector<unsigned char>& buffer) {
         Animation animation;
         Converter::BytesToIntConverter bytesToIntConverter;
+
         std::cout << std::endl << "Handling animation..." << std::endl;
+
         int animationLength = bytesToIntConverter.convert8BytesToInteger(buffer);
         Log::Logger::logMessage("  Length of animation block: " + std::to_string(animationLength));
-        // Remove the parsed 8 bytes from the buffer
-        Log::Logger::logBytesProcessed(8);
-        std::vector<unsigned char>(buffer.begin()+8, buffer.end()).swap(buffer);
 
         int duration = bytesToIntConverter.convert8BytesToInteger(buffer);
         Log::Logger::logMessage("  Duration of ciff: " + std::to_string(duration) + " ms");
-        // Remove the parsed 8 bytes from the buffer
-        Log::Logger::logBytesProcessed(8);
-        std::vector<unsigned char>(buffer.begin()+8, buffer.end()).swap(buffer);
 
-
-        CIFF::CIFFFile ciff;
         CIFF::CIFFHandler ciffHandler;
-        ciffHandler.parseCIFF(buffer, ciff);
-        // todo block.animation_data += ciff ?
+        CIFF::CIFFFile ciff = ciffHandler.parseCIFF(buffer);
+        animation.ciff_file = ciff;
 
         std::cout << "Handled animation block" << std::endl << std::endl;
         return animation;
     }
 
     Header CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block) {
-        // TODO: Anetta & Soma & Kevin: fill credits with actual data
+        // TODO: Anetta & Soma & Kevin: fill header with actual data
         Header header;
 
         Converter::BytesToIntConverter bytesToIntConverter;
         std::cout << std::endl << "Handling CAFF header..." << std::endl;
         int length = bytesToIntConverter.convert8BytesToInteger(buffer);
-
-        // Remove the parsed 8 bytes from the buffer
-        Log::Logger::logBytesProcessed(8);
-        std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
-
         block.length = length;
+
+        // todo: content...
 
         // Remove the parsed length bytes from the buffer
         Log::Logger::logBytesProcessed(length);
@@ -71,7 +63,8 @@ namespace CAFF {
         return header;
     }
 
-    CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile) {
+    CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
+        CAFF:CAFFFile caffFile;
         std::vector<CAFF::Block> blocks;
         while (buffer.size() > 0) {
             int identifier = static_cast<int>(buffer[0]);
@@ -97,8 +90,7 @@ namespace CAFF {
                     block.credits_data = credits;
                     break;
                 case CAFF::BlockType::ANIMATION:
-                    animation = handleAnimation(buffer, block);
-
+                    animation = handleAnimation(buffer);
                     block.animation_data = animation;
                     break;
                 default:
