@@ -6,6 +6,7 @@
 
 namespace CIFF {
 
+    // The order of parsing the different parts of the file is relevant, do NOT modify that!
     CIFFFile CIFFHandler::parseCIFF(std::vector<unsigned char>& buffer) {
         CIFF::CIFFFile ciff;
         Converter::BytesToIntConverter bytesToIntConverter;
@@ -85,6 +86,11 @@ namespace CIFF {
     std::vector<uint8_t> CIFFHandler::getPixels(std::vector<unsigned char>& buffer, int contentLength) {
         Log::Logger::logMessage("  Getting pixels ...");
 
+        if (buffer.size() < contentLength) {
+            Log::Logger::logMessage("ERROR while parsing CIFF pixels: Buffer is too small! " + std::to_string(buffer.size()));
+            throw "Buffer is too small!";
+        }
+
         std::vector<uint8_t> result;
         for (int i = 0; i < contentLength; i++) {
             result.push_back(static_cast<uint8_t>(buffer[i]));
@@ -99,6 +105,12 @@ namespace CIFF {
 
     std::vector<std::string> CIFFHandler::getTags(std::vector<unsigned char>& buffer, int headerLength) {
         int idx = 0;
+
+        if (buffer.size() < headerLength) {
+            Log::Logger::logMessage("ERROR while parsing CIFF tags: Buffer is too small! " + std::to_string(buffer.size()));
+            throw "Buffer is too small!";
+        }
+
         std::vector<std::string> result;
         while (idx < headerLength) {
             std::string tag = "";
