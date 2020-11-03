@@ -13,7 +13,7 @@ int main() {
     int count = 0;
     for (auto element : buffer) {
         std::cout << "Index: " << count << " " << static_cast<int>(element) << std::endl;
-        if (count > 180) {
+        if (count > 280) {
             break;
         }
         count++;
@@ -24,5 +24,7 @@ int main() {
     CAFF::CAFFHandler caffHandler;
     caffHandler.processCAFF(buffer, caffFile);
 
+
+    delete[] caffFile.blocks;
     return 0;
 }
