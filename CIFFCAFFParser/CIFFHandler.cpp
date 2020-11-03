@@ -29,6 +29,12 @@ namespace CIFF {
 
         int height = bytesToIntConverter.convert8BytesToInteger(buffer);
 
+        // Validation: content size must be width*heigth*3
+        if (contentLength != width * height * 3) {
+            Log::Logger::logMessage("ERROR: Invalid CIFF content length!");
+            throw "Invalid CIFF content length!";
+        }
+
         int captionLength = 0;
         std::string caption = getCaption(buffer, captionLength);
         Log::Logger::logMessage("  Caption: " + caption);
@@ -44,6 +50,18 @@ namespace CIFF {
         
         std::vector<uint8_t> pixels = getPixels(buffer, contentLength);
         Log::Logger::logMessage("  Number of pixels: " + std::to_string(pixels.size()));
+
+        // Validation: If height or with is zero, there should be no pixels present in the file
+        if ((width == 0 || height == 0) && pixels.size() > 0) {
+            Log::Logger::logMessage("ERROR: No pixels should be present in the CIFF file! (height or with is zero)");
+            throw "No pixels should be present in the CIFF file! (height or with is zero)";
+        }
+
+        // Validation: The number of pixels must be equal to the content size
+        if (pixels.size() != contentLength) {
+            Log::Logger::logMessage("ERROR: The number of pixels must be equal to the content size!");
+            throw "The number of pixels must be equal to the content size!";
+        }
 
         Header ciffHeader;
         for (int i = 0; i < 4; i++)
