@@ -12,8 +12,11 @@ caffhandler.o: CAFFHandler.cpp
 bytestointconverter.o: BytesToIntConverter.cpp
 		g++ -c BytesToIntConverter.cpp
 
-main.exe: main.o logger.o ciffhandler.o caffhandler.o bytestointconverter.o
-		g++ -o main.exe main.o logger.o ciffhandler.o caffhandler.o bytestointconverter.o
+parserexceptions.o: ParserExceptions.cpp
+		g++ -c ParserExceptions.cpp
+
+main.exe: main.o logger.o ciffhandler.o caffhandler.o bytestointconverter.o parserexceptions.o
+		g++ -o main.exe main.o logger.o ciffhandler.o caffhandler.o bytestointconverter.o parserexceptions.o
 
 main.o: Main.cpp
 		g++ -c Main.cpp

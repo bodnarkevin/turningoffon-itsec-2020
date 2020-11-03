@@ -1,11 +1,15 @@
 #include "CIFFHandler.h"
 #include <iostream>
 #include "BytesToIntConverter.h"
+#include "ParserExceptions.h"
 
 #include "Logger.h"
 
+using namespace ParserExceptions;
+
 namespace CIFF {
 
+    // The order of parsing the different parts of the file is relevant, do NOT modify that!
     CIFFFile CIFFHandler::parseCIFF(std::vector<unsigned char>& buffer) {
         CIFF::CIFFFile ciff;
         Converter::BytesToIntConverter bytesToIntConverter;
@@ -29,6 +33,12 @@ namespace CIFF {
 
         int height = bytesToIntConverter.convert8BytesToInteger(buffer);
 
+        // Validation: content size must be width*heigth*3
+        if (contentLength != width * height * 3) {
+            std::string message = "ERROR: Invalid CIFF content length! Content length is " + std::to_string(contentLength) + ", but should be " + std::to_string(width * height * 3) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 33, "parseCIFF");
+        }
+
         int captionLength = 0;
         std::string caption = getCaption(buffer, captionLength);
         Log::Logger::logMessage("  Caption: " + caption);
@@ -44,6 +54,16 @@ namespace CIFF {
         
         std::vector<uint8_t> pixels = getPixels(buffer, contentLength);
         Log::Logger::logMessage("  Number of pixels: " + std::to_string(pixels.size()));
+
+        // Validation: If height or with is zero, there should be no pixels present in the file
+        if ((width == 0 || height == 0) && pixels.size() > 0) {
+            throw ParserException("ERROR: No pixels should be present in the CIFF file! (height or with is zero)", "CIFFHandler", 59, "parseCIFF");
+        }
+
+        // Validation: The number of pixels must be equal to the content size
+        if (pixels.size() != contentLength) {
+            throw ParserException("ERROR: The number of pixels must be equal to the content size!", "CIFFHandler", 64, "parseCIFF");
+        }
 
         Header ciffHeader;
         for (int i = 0; i < 4; i++)
@@ -67,6 +87,11 @@ namespace CIFF {
     std::vector<uint8_t> CIFFHandler::getPixels(std::vector<unsigned char>& buffer, int contentLength) {
         Log::Logger::logMessage("  Getting pixels ...");
 
+        if (buffer.size() < contentLength) {
+            std::string message = "ERROR while parsing CIFF pixels: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 90, "getPixels");
+        }
+
         std::vector<uint8_t> result;
         for (int i = 0; i < contentLength; i++) {
             result.push_back(static_cast<uint8_t>(buffer[i]));
@@ -81,6 +106,12 @@ namespace CIFF {
 
     std::vector<std::string> CIFFHandler::getTags(std::vector<unsigned char>& buffer, int headerLength) {
         int idx = 0;
+
+        if (buffer.size() < headerLength) {
+            std::string message = "ERROR while parsing CIFF tags: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 107, "getTags");
+        }
+
         std::vector<std::string> result;
         while (idx < headerLength) {
             std::string tag = "";
@@ -106,8 +137,8 @@ namespace CIFF {
         int count = 0;
 
         if (buffer.size() < 4) {
-            Log::Logger::logMessage("ERROR while parsing CIFF magic: Buffer too small " + std::to_string(buffer.size()));
-            throw "ERROR while parsing CIFF magic. ";
+            std::string message = "ERROR while parsing CIFF magic: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 135, "getCIFFMagic");
         }
 
         for (int i = 0; i < 4; i++) {
@@ -116,8 +147,7 @@ namespace CIFF {
         }
 
         if (temp[0] != 'C' && temp[1] != 'I' && temp[2] != 'F' && temp[3] != 'F') {
-            Log::Logger::logMessage("ERROR: CIFF magic word not found.");
-            throw "ERROR: CIFF magic word not found.";
+            throw ParserException("ERROR: CIFF magic word not found.", "CIFFHandler", 149, "getCIFFMagic");
         }
 
         for (int i = 0; i < 4; i++) {

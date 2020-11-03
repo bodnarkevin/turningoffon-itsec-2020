@@ -6,6 +6,9 @@
 #include <fstream>
 #include <math.h>
 #include "BytesToIntConverter.h"
+#include "ParserExceptions.h"
+
+using namespace ParserExceptions;
 
 int main() {
     std::ifstream source("1.caff", std::ios_base::binary);
@@ -22,8 +25,22 @@ int main() {
 
     
     CAFF::CAFFHandler caffHandler;
-    CAFF::CAFFFile caffFile = caffHandler.processCAFF(buffer);
+    try
+    {
+        CAFF::CAFFFile caffFile = caffHandler.processCAFF(buffer);
 
-    delete[] caffFile.blocks;
+        // send to C# backend ...
+
+        delete[] caffFile.blocks;
+    }
+    catch(const ParserException e)
+    {
+        std::cerr << e.what() << '\n';
+        std::cerr << "In file:" << e.get_file() << '\n';
+        std::cerr << "   Function" << e.get_func() << '\n';
+        std::cerr << "   Line" << e.get_line() << '\n';
+    }
+    
+
     return 0;
 }

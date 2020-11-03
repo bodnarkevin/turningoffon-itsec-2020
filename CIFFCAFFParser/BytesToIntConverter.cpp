@@ -1,15 +1,17 @@
 #include "BytesToIntConverter.h"
 #include <iostream>
 #include <math.h>
-
+#include "ParserExceptions.h"
 #include "Logger.h"
+
+using namespace ParserExceptions;
 
 namespace Converter {
 
     int BytesToIntConverter::convert8BytesToInteger(std::vector<unsigned char>& buffer) {
         if (buffer.size() < 8) {
-            std::cout << "ERROR while parsing integer: Buffer too small " << buffer.size() << std::endl;
-            throw "Buffer too small";
+            std::string message = "ERROR while parsing integer: Buffer is too small: " + std::to_string(buffer.size()) + "bytes. ";
+            throw ParserException(message.c_str(), "BytesToIntConverter", 11, "convert8BytesToInteger");
         }
 
         std::vector<int> lengthVector(8);

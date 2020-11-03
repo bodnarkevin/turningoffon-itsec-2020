@@ -2,6 +2,9 @@
 #include "Logger.h"
 #include <iostream>
 #include "BytesToIntConverter.h"
+#include "ParserExceptions.h"
+
+using namespace ParserExceptions;
 
 namespace CAFF {
 
@@ -94,8 +97,8 @@ namespace CAFF {
                     block.animation_data = animation;
                     break;
                 default:
-                    Log::Logger::logMessage("Unknown identifier. " + std::to_string(identifier) + " Stopping...");
-                    throw "Could not parse identifier!";
+                    std::string message = "ERROR while parsing integer: Unkown identifier." + std::to_string(identifier);
+                    throw ParserException(message.c_str(), "CAFFHandler", 68, "processCAFF");
             }
 
             blocks.push_back(block);
