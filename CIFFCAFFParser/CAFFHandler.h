@@ -49,10 +49,11 @@ struct CAFFFile {
 class CAFFHandler {
 public:
     CAFFFile parseCAFFFile(const char* binaryData);
-    static void processCAFF(std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile);
-    static void handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
-    static void handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
-    static void handleAnimation(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    void processCAFF(std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile);
+private:
+    void handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    void handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    void handleAnimation(std::vector<unsigned char>& buffer, CAFF::Block& block);
 };
 
 } // namespace CAFF

@@ -10,8 +10,9 @@ namespace CAFF {
     }
 
     void CAFFHandler::handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block) {
+        Converter::BytesToIntConverter bytesToIntConverter;
         std::cout << std::endl << "Handling credits... " << std::endl;
-        int length = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int length = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
         block.length = length;
         int fullCreditsLength = length + 8;
 
@@ -23,14 +24,15 @@ namespace CAFF {
     }
 
     void CAFFHandler::handleAnimation(std::vector<unsigned char>& buffer, CAFF::Block& block) {
+        Converter::BytesToIntConverter bytesToIntConverter;
         std::cout << std::endl << "Handling animation..." << std::endl;
-        int animationLength = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int animationLength = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
         Log::Logger::logMessage("  Length of animation block: " + std::to_string(animationLength));
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin()+8, buffer.end()).swap(buffer);
 
-        int duration = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int duration = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
         Log::Logger::logMessage("  Duration of ciff: " + std::to_string(duration) + " ms");
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);
@@ -38,15 +40,17 @@ namespace CAFF {
 
 
         CIFF::CIFFFile ciff;
-        CIFF::CIFFHandler::parseCIFF(buffer, ciff);
+        CIFF::CIFFHandler ciffHandler;
+        ciffHandler.parseCIFF(buffer, ciff);
         // todo block.animation_data += ciff ?
 
         std::cout << "Handled animation block" << std::endl << std::endl;
     }
 
     void CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block) {
+        Converter::BytesToIntConverter bytesToIntConverter;
         std::cout << std::endl << "Handling CAFF header..." << std::endl;
-        int length = Converter::BytesToIntConverter::convert8BytesToInteger(buffer, 0);
+        int length = bytesToIntConverter.convert8BytesToInteger(buffer, 0);
 
         // Remove the parsed 8 bytes from the buffer
         Log::Logger::logBytesProcessed(8);

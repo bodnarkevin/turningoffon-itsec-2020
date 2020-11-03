@@ -22,13 +22,14 @@ struct CIFFFile {
 };
 
 class CIFFHandler {
-public:
-    CIFFFile parseCiff(const char* binaryData, size_t binarySize);
-    static void parseCIFF(std::vector<unsigned char>& buffer, CIFF::CIFFFile& ciff);
-    static void getCaption(const std::vector<unsigned char>& buffer, int index, std::string& result);
-    static void getTags(const std::vector<unsigned char>& buffer, int index, int headerLength, std::vector<std::string>& result);
-    static void getPixels(const std::vector<unsigned char>& buffer, int index, int contentLength, std::vector<uint8_t>& result);
-    static void getCIFFMagic(const std::vector<unsigned char>& buffer, int index, char* result);
+    public:
+        CIFFFile parseCiff(const char* binaryData, size_t binarySize);
+        void parseCIFF(std::vector<unsigned char>& buffer, CIFF::CIFFFile& ciff);
+    private:
+        void getCaption(const std::vector<unsigned char>& buffer, int index, std::string& result);
+        void getTags(const std::vector<unsigned char>& buffer, int index, int headerLength, std::vector<std::string>& result);
+        void getPixels(const std::vector<unsigned char>& buffer, int index, int contentLength, std::vector<uint8_t>& result);
+        void getCIFFMagic(const std::vector<unsigned char>& buffer, int index, char* result);
 };
 
 } // namespace CIFF

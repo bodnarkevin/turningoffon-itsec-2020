@@ -21,7 +21,8 @@ int main() {
     std::cout << std::endl;
 
     CAFF::CAFFFile caffFile;
-    CAFF::CAFFHandler::processCAFF(buffer, caffFile);
+    CAFF::CAFFHandler caffHandler;
+    caffHandler.processCAFF(buffer, caffFile);
 
     return 0;
 }
