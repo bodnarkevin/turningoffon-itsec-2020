@@ -23,7 +23,6 @@ struct CIFFFile {
 
 class CIFFHandler {
     public:
-        CIFFFile parseCiff(const char* binaryData, size_t binarySize);
         void parseCIFF(std::vector<unsigned char>& buffer, CIFF::CIFFFile& ciff);
     private:
         void getCaption(const std::vector<unsigned char>& buffer, int index, std::string& result);

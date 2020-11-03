@@ -5,10 +5,6 @@
 
 namespace CAFF {
 
-    CAFFFile CAFFHandler::parseCAFFFile(const char* binaryData) {
-
-    }
-
     void CAFFHandler::handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block) {
         Converter::BytesToIntConverter bytesToIntConverter;
         std::cout << std::endl << "Handling credits... " << std::endl;

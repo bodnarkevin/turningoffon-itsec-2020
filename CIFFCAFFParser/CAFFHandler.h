@@ -48,7 +48,6 @@ struct CAFFFile {
 
 class CAFFHandler {
 public:
-    CAFFFile parseCAFFFile(const char* binaryData);
     void processCAFF(std::vector<unsigned char>& buffer, CAFF::CAFFFile& caffFile);
 private:
     void handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
