@@ -1,8 +1,11 @@
 #include "CIFFHandler.h"
 #include <iostream>
 #include "BytesToIntConverter.h"
+#include "ParserExceptions.h"
 
 #include "Logger.h"
+
+using namespace ParserExceptions;
 
 namespace CIFF {
 
@@ -32,8 +35,8 @@ namespace CIFF {
 
         // Validation: content size must be width*heigth*3
         if (contentLength != width * height * 3) {
-            Log::Logger::logMessage("ERROR: Invalid CIFF content length!");
-            throw "Invalid CIFF content length!";
+            std::string message = "ERROR: Invalid CIFF content length! Content length is " + std::to_string(contentLength) + ", but should be " + std::to_string(width * height * 3) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 33, "parseCIFF");
         }
 
         int captionLength = 0;
@@ -54,14 +57,12 @@ namespace CIFF {
 
         // Validation: If height or with is zero, there should be no pixels present in the file
         if ((width == 0 || height == 0) && pixels.size() > 0) {
-            Log::Logger::logMessage("ERROR: No pixels should be present in the CIFF file! (height or with is zero)");
-            throw "No pixels should be present in the CIFF file! (height or with is zero)";
+            throw ParserException("ERROR: No pixels should be present in the CIFF file! (height or with is zero)", "CIFFHandler", 59, "parseCIFF");
         }
 
         // Validation: The number of pixels must be equal to the content size
         if (pixels.size() != contentLength) {
-            Log::Logger::logMessage("ERROR: The number of pixels must be equal to the content size!");
-            throw "The number of pixels must be equal to the content size!";
+            throw ParserException("ERROR: The number of pixels must be equal to the content size!", "CIFFHandler", 64, "parseCIFF");
         }
 
         Header ciffHeader;
@@ -87,8 +88,8 @@ namespace CIFF {
         Log::Logger::logMessage("  Getting pixels ...");
 
         if (buffer.size() < contentLength) {
-            Log::Logger::logMessage("ERROR while parsing CIFF pixels: Buffer is too small! " + std::to_string(buffer.size()));
-            throw "Buffer is too small!";
+            std::string message = "ERROR while parsing CIFF pixels: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 90, "getPixels");
         }
 
         std::vector<uint8_t> result;
@@ -107,8 +108,8 @@ namespace CIFF {
         int idx = 0;
 
         if (buffer.size() < headerLength) {
-            Log::Logger::logMessage("ERROR while parsing CIFF tags: Buffer is too small! " + std::to_string(buffer.size()));
-            throw "Buffer is too small!";
+            std::string message = "ERROR while parsing CIFF tags: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 107, "getTags");
         }
 
         std::vector<std::string> result;
@@ -136,8 +137,8 @@ namespace CIFF {
         int count = 0;
 
         if (buffer.size() < 4) {
-            Log::Logger::logMessage("ERROR while parsing CIFF magic: Buffer too small " + std::to_string(buffer.size()));
-            throw "ERROR while parsing CIFF magic. ";
+            std::string message = "ERROR while parsing CIFF magic: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
+            throw ParserException(message.c_str(), "CIFFHandler", 135, "getCIFFMagic");
         }
 
         for (int i = 0; i < 4; i++) {
@@ -146,8 +147,7 @@ namespace CIFF {
         }
 
         if (temp[0] != 'C' && temp[1] != 'I' && temp[2] != 'F' && temp[3] != 'F') {
-            Log::Logger::logMessage("ERROR: CIFF magic word not found.");
-            throw "ERROR: CIFF magic word not found.";
+            throw ParserException("ERROR: CIFF magic word not found.", "CIFFHandler", 149, "getCIFFMagic");
         }
 
         for (int i = 0; i < 4; i++) {
