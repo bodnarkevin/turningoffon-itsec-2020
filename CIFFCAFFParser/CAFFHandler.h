@@ -16,7 +16,7 @@ struct Header {
 };
 
 struct Date {
-    uint8_t year[2];
+    uint16_t year;
     uint8_t month;
     uint8_t day;
     uint8_t hour;
@@ -52,6 +52,7 @@ public:
     CAFFFile processCAFF(std::vector<unsigned char>& buffer);
 private:
     Header handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block);
+    void getCAFFMagic(std::vector<unsigned char>& buffer, char* result);
     Credits handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
     Animation handleAnimation(std::vector<unsigned char>& buffer);
 };
