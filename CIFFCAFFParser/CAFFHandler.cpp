@@ -11,7 +11,6 @@ namespace CAFF {
     Credits CAFFHandler::handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block) {
         Converter::BytesToIntConverter bytesToIntConverter;
         Credits credits;
-        uint64_t idx = 0;
         std::string creator_name = "";
         std::cout << std::endl << "Handling credits... " << std::endl;
 
@@ -23,9 +22,8 @@ namespace CAFF {
 
         credits.creator_len = bytesToIntConverter.convert8BytesToInteger(buffer);
 
-        while (idx < credits.creator_len) {
+        for(int idx = 0; idx < credits.creator_len; idx++) {
             creator_name += buffer[idx];
-            idx++;
         }
         credits.creator = creator_name;
 
@@ -61,7 +59,7 @@ namespace CAFF {
 
         if (buffer.size() < 4) {
             std::string message = "ERROR while parsing CAFF magic: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
-            throw ParserException(message.c_str(), "CAFFHandler", 56, __FUNCTION__);
+            throw ParserException(message.c_str(), "CAFFHandler", __LINE__, __FUNCTION__);
         }
 
         for (int i = 0; i < 4; i++) {
@@ -110,7 +108,7 @@ namespace CAFF {
         CAFF:CAFFFile caffFile;
         std::vector<CAFF::Block> blocks;
         Converter::BytesToIntConverter bytesToIntConverter;
-        
+
         while (buffer.size() > 0) {
             int identifier = static_cast<int>(buffer[0]);
 
@@ -123,25 +121,19 @@ namespace CAFF {
             int length = bytesToIntConverter.convert8BytesToInteger(buffer);
             
             CAFF::Block block;
-            CAFF::Header header;
-            CAFF::Credits credits;
-            CAFF::Animation animation;
             block.id = identifier;
             block.length = length;
 
             switch (identifier) {
                 case CAFF::BlockType::HEADER:
-                    header = handleHeader(buffer, block);
-                    block.header_data = header;
+                    block.header_data = handleHeader(buffer, block);
                     break;
                 case CAFF::BlockType::CREDITS:
-                    credits = handleCredits(buffer, block);
-                    block.credits_data = credits;
+                    block.credits_data = handleCredits(buffer, block);
                     break;
                 case CAFF::BlockType::ANIMATION:
                     Log::Logger::logMessage("  Length of animation block: " + std::to_string(block.length));
-                    animation = handleAnimation(buffer);
-                    block.animation_data = animation;
+                    block.animation_data = handleAnimation(buffer);
                     break;
                 default:
                     std::string message = "ERROR while parsing integer: Unkown identifier." + std::to_string(identifier);
