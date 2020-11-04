@@ -41,8 +41,8 @@ namespace Converter {
             lengthVector[i] = static_cast<int>(buffer[i]);
         }
 
-        const int multiplier = 4;
-        int result = lengthVector[0] * pow(multiplier, 0) + lengthVector[1] * pow(multiplier, 1);
+        const int multiplier = 2;
+        int result = lengthVector[0] | lengthVector[1] << 8;
         // Remove the parsed 2 bytes from the buffer
         Log::Logger::logBytesProcessed(2);
         std::vector<unsigned char>(buffer.begin() + 2, buffer.end()).swap(buffer);
@@ -56,13 +56,8 @@ namespace Converter {
             throw ParserException(message.c_str(), "BytesToIntConverter", 11, "convert8BytesToInteger");
         }
 
-        std::vector<int> lengthVector(1);
-        for (int i = 0; i < 1; i++) {
-            lengthVector[i] = static_cast<int>(buffer[i]);
-        }
-
-        const int multiplier = 2;
-        int result = lengthVector[0] * pow(multiplier, 0);
+        uint8_t result = static_cast<uint8_t>(buffer[0]);
+        
         // Remove the parsed 1 bytes from the buffer
         Log::Logger::logBytesProcessed(1);
         std::vector<unsigned char>(buffer.begin() + 1, buffer.end()).swap(buffer);

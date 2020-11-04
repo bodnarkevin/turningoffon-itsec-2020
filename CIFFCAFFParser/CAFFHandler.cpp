@@ -11,11 +11,9 @@ namespace CAFF {
     Credits CAFFHandler::handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block) {
         Converter::BytesToIntConverter bytesToIntConverter;
         Credits credits;
-        uint64_t idx;
+        uint64_t idx = 0;
         std::string creator_name = "";
         std::cout << std::endl << "Handling credits... " << std::endl;
-        int length = bytesToIntConverter.convert8BytesToInteger(buffer);
-        block.length = length;
 
         credits.date.year = bytesToIntConverter.convert2BytesToInteger(buffer);
         credits.date.month = bytesToIntConverter.convert1ByteToInteger(buffer);
@@ -25,7 +23,6 @@ namespace CAFF {
 
         credits.creator_len = bytesToIntConverter.convert8BytesToInteger(buffer);
 
-        
         while (idx < credits.creator_len) {
             creator_name += buffer[idx];
             idx++;
@@ -89,8 +86,7 @@ namespace CAFF {
         Header header;
         char magic[4];
         Converter::BytesToIntConverter bytesToIntConverter;
-        int length = bytesToIntConverter.convert8BytesToInteger(buffer);
-        block.length = length;
+
         /* magic */
         CAFFHandler::getCAFFMagic(buffer,magic);
         for (int i = 0; i < 4; i++)
@@ -114,6 +110,7 @@ namespace CAFF {
         CAFF:CAFFFile caffFile;
         std::vector<CAFF::Block> blocks;
         Converter::BytesToIntConverter bytesToIntConverter;
+        
         while (buffer.size() > 0) {
             int identifier = static_cast<int>(buffer[0]);
 
@@ -122,14 +119,15 @@ namespace CAFF {
             Log::Logger::logBytesProcessed(1);
             std::vector<unsigned char>(buffer.begin() + 1, buffer.end()).swap(buffer);
 
-            std::cout << std::endl << "Handling CAFF block header..." << std::endl;
+            std::cout << std::endl << "Handling block ..." << std::endl;
+            int length = bytesToIntConverter.convert8BytesToInteger(buffer);
             
             CAFF::Block block;
             CAFF::Header header;
             CAFF::Credits credits;
             CAFF::Animation animation;
             block.id = identifier;
-
+            block.length = length;
 
             switch (identifier) {
                 case CAFF::BlockType::HEADER:
