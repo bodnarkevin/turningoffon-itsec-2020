@@ -124,7 +124,6 @@ namespace CAFF {
 
             std::cout << std::endl << "Handling CAFF block header..." << std::endl;
             
-
             CAFF::Block block;
             CAFF::Header header;
             CAFF::Credits credits;
