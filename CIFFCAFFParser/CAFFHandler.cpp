@@ -47,13 +47,14 @@ namespace CAFF {
 
         CIFF::CIFFHandler ciffHandler;
         CIFF::CIFFFile ciff = ciffHandler.parseCIFF(buffer);
+        animation.duration = duration;
         animation.ciff_file = ciff;
 
         std::cout << "Handled animation block" << std::endl << std::endl;
         return animation;
     }
 
-        void CAFFHandler::getCAFFMagic(std::vector<unsigned char>& buffer, char* result) {
+    void CAFFHandler::getCAFFMagic(std::vector<unsigned char>& buffer, char* result) {
         char temp[4];
         int count = 0;
 
@@ -67,7 +68,7 @@ namespace CAFF {
             count++;
         }
 
-        if (temp[0] != 'C' && temp[1] != 'A' && temp[2] != 'F' && temp[3] != 'F') {
+        if (temp[0] != 'C' || temp[1] != 'A' || temp[2] != 'F'|| temp[3] != 'F') {
             throw ParserException("ERROR: CAFF magic word not found.", "CAFFHandler", 65, "getCAFFMagic");
         }
 
@@ -79,7 +80,6 @@ namespace CAFF {
         Log::Logger::logBytesProcessed(4);
         std::vector<unsigned char>(buffer.begin() + 4, buffer.end()).swap(buffer);
     }
-
     Header CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block) {
         Header header;
         char magic[4];
