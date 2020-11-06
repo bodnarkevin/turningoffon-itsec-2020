@@ -32,6 +32,10 @@ int main() {
     {
         CAFF::CAFFFile caffFile = caffHandler.processCAFF(buffer);
 
+        if(buffer.size() > 0){
+             throw ParserException("ERROR: All data parsed, but buffer not empty", "Main", __LINE__, __FUNCTION__);
+        }
+
         // send to C# backend ...
 
         delete[] caffFile.blocks;

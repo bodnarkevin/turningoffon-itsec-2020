@@ -20,6 +20,23 @@ namespace CAFF {
         credits.date.hour = bytesToIntConverter.convert1ByteToInteger(buffer);
         credits.date.minute = bytesToIntConverter.convert1ByteToInteger(buffer);
 
+        if(credits.date.year <= 0){
+            throw ParserException("ERROR: Wrong year format", "CAFFHandler", __LINE__, __FUNCTION__);
+        }
+        if(credits.date.month < 1 || credits.date.month > 12 ){
+            throw ParserException("ERROR: Wrong month format", "CAFFHandler", __LINE__, __FUNCTION__);
+        }
+        if(credits.date.day < 1 || credits.date.day > 31){
+            throw ParserException("ERROR: Wrong day format", "CAFFHandler", __LINE__, __FUNCTION__);
+        }
+        if(credits.date.hour > 23){
+            throw ParserException("ERROR: Wrong hour format", "CAFFHandler", __LINE__, __FUNCTION__);
+        }
+        if(credits.date.minute > 59){
+            throw ParserException("ERROR: Wrong minute format", "CAFFHandler", __LINE__, __FUNCTION__);
+        }
+
+
         credits.creator_len = bytesToIntConverter.convert8BytesToInteger(buffer);
 
         for(int idx = 0; idx < credits.creator_len; idx++) {

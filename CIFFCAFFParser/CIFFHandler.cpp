@@ -119,8 +119,12 @@ namespace CIFF {
                 idx++;
 
             }
+            if(tag.find("\n") != std::string::npos){
+                throw ParserException("ERROR: Not allowed multi line tags", "CIFFHandler", 123, "getTags");
+            }
             result.push_back(tag);
         }
+
 
         // Remove the parsed headerLength bytes from the buffer
         Log::Logger::logBytesProcessed(headerLength);
