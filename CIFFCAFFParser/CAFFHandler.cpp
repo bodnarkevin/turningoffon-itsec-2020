@@ -119,7 +119,7 @@ namespace CAFF {
 
             std::cout << std::endl << "Handling block ..." << std::endl;
             int length = bytesToIntConverter.convert8BytesToInteger(buffer);
-            
+
             CAFF::Block block;
             block.id = identifier;
             block.length = length;
@@ -146,10 +146,36 @@ namespace CAFF {
         caffFile.blocks = new CAFF::Block[blocks.size()];
         caffFile.count = blocks.size();
 
+        for (int i = 0; i < caffFile.count; i++) { // fill up blocks from vector
+            caffFile.blocks[i] = blocks[i];
+        }
+
+        if (!verifyNumAnim(caffFile)) {
+            throw ParserException("ERROR: Animation count missmatch.", "CAFFHandler", 150, "processCAFF");
+        }
+
         Log::Logger::logSuccess();
         Log::Logger::logMessage("Block count: " + std::to_string(blocks.size()));
 
         return caffFile;
+    }
+
+    bool CAFFHandler::verifyNumAnim(const CAFFFile& caffFile) {
+        int total_anim = 0;
+        int anim_count = 0;
+
+        for (int i = 0; i < caffFile.count; i++) {
+            if (caffFile.blocks[i].id == static_cast<uint8_t>(1)) {
+                total_anim += caffFile.blocks[i].header_data.num_anim;
+            } else if (caffFile.blocks[i].id == static_cast<uint8_t>(3)) {
+                anim_count++;
+            }
+        }
+
+        Log::Logger::logMessage("total anim: " + std::to_string(total_anim));
+        Log::Logger::logMessage("counted anim: " + std::to_string(anim_count));
+
+        return total_anim == anim_count;
     }
 
 } // namespace CAFF
