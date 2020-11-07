@@ -38,7 +38,7 @@ int main() {
 
         // send to C# backend ...
 
-        delete[] caffFile.blocks;
+        //delete[] caffFile.blocks;
     }
 
     catch(const ParserException e)
