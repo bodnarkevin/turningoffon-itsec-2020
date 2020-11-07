@@ -6,6 +6,9 @@ trigger:
     include:
       - CIFFCAFFParser/*
 
+pr:
+- master
+
 pool:
   vmImage: 'ubuntu-latest'
 
