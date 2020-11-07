@@ -5,9 +5,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: Build
+  - stage: Valgrind
     jobs:
-      - job: Build
+      - job: Valgrind
         steps:
           - script: |
               sudo apt-get install build-essential
