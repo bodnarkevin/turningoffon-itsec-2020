@@ -105,7 +105,6 @@ namespace CIFF {
     }
 
     std::vector<std::string> CIFFHandler::getTags(std::vector<unsigned char>& buffer, int headerLength) {
-        int idx = 0;
 
         if (buffer.size() < headerLength) {
             std::string message = "ERROR while parsing CIFF tags: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
@@ -113,17 +112,19 @@ namespace CIFF {
         }
 
         std::vector<std::string> result;
-        while (idx < headerLength) {
+        for(int idx = 0; idx < headerLength; idx++) {
             std::string tag = "";
             while (buffer[idx] != '\0') {
                 tag += buffer[idx];
                 idx++;
 
             }
-
-            idx++;
+            if(tag.find("\n") != std::string::npos){
+                throw ParserException("ERROR: Not allowed multi line tags", "CIFFHandler", 123, "getTags");
+            }
             result.push_back(tag);
         }
+
 
         // Remove the parsed headerLength bytes from the buffer
         Log::Logger::logBytesProcessed(headerLength);
