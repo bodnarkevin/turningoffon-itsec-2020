@@ -1,5 +1,8 @@
 all: Main.exe
 
+check: Main.exe
+		valgrind --leak-check=full --error-exitcode=1 ./Main.exe
+
 lodepng.o: lodepng.cpp
 		g++ -c lodepng.cpp
 
