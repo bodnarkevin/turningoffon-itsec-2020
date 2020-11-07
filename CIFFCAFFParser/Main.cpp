@@ -11,7 +11,7 @@
 using namespace ParserExceptions;
 
 int main() {
-    std::ifstream source("1.caff", std::ios_base::binary);
+    std::ifstream source("3.caff", std::ios_base::binary);
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(source), {});
 
     //Ez csak debug?

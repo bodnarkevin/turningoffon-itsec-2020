@@ -1,5 +1,8 @@
 all: Main.exe
 
+lodepng.o: lodepng.cpp
+		g++ -c lodepng.cpp
+
 Logger.o: Logger.cpp
 		g++ -c Logger.cpp
 
@@ -15,11 +18,11 @@ BytesToIntConverter.o: BytesToIntConverter.cpp
 ParserExceptions.o: ParserExceptions.cpp
 		g++ -c ParserExceptions.cpp
 
-Main.exe: Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o
-		g++ -o Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o
+Main.exe: Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o lodepng.o
+		g++ -o Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o lodepng.o
 
 Main.o: Main.cpp
 		g++ -c Main.cpp
 
 clean:
-		rm Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o
+		rm Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o lodepng.o

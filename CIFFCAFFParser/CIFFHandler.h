@@ -29,6 +29,7 @@ class CIFFHandler {
         std::vector<std::string> getTags(std::vector<unsigned char>& buffer, int headerLength);
         std::vector<uint8_t> getPixels(std::vector<unsigned char>& buffer, int contentLength);
         void getCIFFMagic(std::vector<unsigned char>& buffer, char* result);
+        void printPixels(const CIFFFile& ciffFile, int id);
 };
 
 } // namespace CIFF
