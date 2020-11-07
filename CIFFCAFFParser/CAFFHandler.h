@@ -55,6 +55,7 @@ private:
     void getCAFFMagic(std::vector<unsigned char>& buffer, char* result);
     Credits handleCredits(std::vector<unsigned char>& buffer, CAFF::Block& block);
     Animation handleAnimation(std::vector<unsigned char>& buffer);
+    bool verifyNumAnim(const CAFFFile& caffFile);
 };
 
 } // namespace CAFF

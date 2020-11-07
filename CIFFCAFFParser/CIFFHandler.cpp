@@ -147,7 +147,7 @@ namespace CIFF {
             count++;
         }
 
-        if (temp[0] != 'C' && temp[1] != 'I' && temp[2] != 'F' && temp[3] != 'F') {
+        if (temp[0] != 'C' || temp[1] != 'I' || temp[2] != 'F' || temp[3] != 'F') {
             throw ParserException("ERROR: CIFF magic word not found.", "CIFFHandler", 149, "getCIFFMagic");
         }
 
