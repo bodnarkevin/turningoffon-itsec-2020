@@ -1,0 +1,19 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - script: |
+              sudo apt-get install build-essential
+              sudo apt-get install valgrind
+            displayName: Install dependencies
+          - script: |
+              make check
+            workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
+            displayName: Run Valgrind
