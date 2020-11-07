@@ -1,25 +1,25 @@
-all: main.exe
+all: Main.exe
 
-logger.o: Logger.cpp
+Logger.o: Logger.cpp
 		g++ -c Logger.cpp
 
-ciffhandler.o: CIFFHandler.cpp
+CIFFHandler.o: CIFFHandler.cpp
 		g++ -c CIFFHandler.cpp
 
-caffhandler.o: CAFFHandler.cpp
+CAFFHandler.o: CAFFHandler.cpp
 		g++ -c CAFFHandler.cpp
 
-bytestointconverter.o: BytesToIntConverter.cpp
+BytesToIntConverter.o: BytesToIntConverter.cpp
 		g++ -c BytesToIntConverter.cpp
 
-parserexceptions.o: ParserExceptions.cpp
+ParserExceptions.o: ParserExceptions.cpp
 		g++ -c ParserExceptions.cpp
 
-main.exe: main.o logger.o ciffhandler.o caffhandler.o bytestointconverter.o parserexceptions.o
-		g++ -o main.exe main.o logger.o ciffhandler.o caffhandler.o bytestointconverter.o parserexceptions.o
+Main.exe: Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o
+		g++ -o Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o
 
-main.o: Main.cpp
+Main.o: Main.cpp
 		g++ -c Main.cpp
 
 clean:
-		rm main.o main.exe
+		rm Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o
