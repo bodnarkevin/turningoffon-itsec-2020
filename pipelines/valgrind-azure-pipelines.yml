@@ -12,7 +12,6 @@ stages:
           - script: |
               sudo apt-get install build-essential
               sudo apt-get install valgrind
-            workingDirectory: CIFFCAFFParser/
             displayName: Install dependencies
           - script: |
               make check
