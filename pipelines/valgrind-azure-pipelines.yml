@@ -15,5 +15,5 @@ stages:
             displayName: Install dependencies
           - script: |
               make check
-            workingDirectory: CIFFCAFFParser/
+            workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
             displayName: Run Valgrind
