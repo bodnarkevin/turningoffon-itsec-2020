@@ -9,6 +9,10 @@ trigger:
 pr:
 - master
 
+variables:
+  workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
+  buildWrapperOutput: $(Build.SourcesDirectory)/CIFFCAFFParser/bw-output
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -23,11 +27,11 @@ stages:
             displayName: Install dependencies
           - script: |
               make
-            workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
+            workingDirectory: $(workingDirectory)
             displayName: Build
           - script: |
               make check
-            workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
+            workingDirectory: $(workingDirectory)
             displayName: Valgrind
   - stage: SonarCloud
     jobs:
@@ -40,17 +44,20 @@ stages:
               scannerMode: 'CLI'
               configMode: 'manual'
               cliProjectKey: 'caffly-parser'
-              cliSources: '$(Build.SourcesDirectory)/CIFFCAFFParser'
+              cliSources: $(workingDirectory)
               extraProperties: |
-                sonar.cfamily.build-wrapper-output=$(Build.SourcesDirectory)/CIFFCAFFParser/bw-output
+                sonar.cfamily.build-wrapper-output=$(buildWrapperOutput)
                 sonar.exclusions=**/lodepng.cpp
           - script: |
               curl --create-dirs -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
               unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
               export PATH=$HOME/.sonar/build-wrapper-linux-x86:$PATH
-
-              build-wrapper-linux-x86-64 --out-dir $(Build.SourcesDirectory)/CIFFCAFFParser/bw-output make
-            workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
+            workingDirectory: $(workingDirectory)
+            displayName: Install build wrapper
+          - script: |
+              build-wrapper-linux-x86-64 --out-dir $(buildWrapperOutput) make
+            workingDirectory: $(workingDirectory)
+            displayName: Build
           - task: SonarCloudAnalyze@1
           - task: SonarCloudPublish@1
             inputs:
