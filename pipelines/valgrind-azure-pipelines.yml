@@ -41,6 +41,8 @@ stages:
               configMode: 'manual'
               cliProjectKey: 'caffly-parser'
               cliSources: '$(Build.SourcesDirectory)/CIFFCAFFParser'
+              extraProperties: |
+                sonar.cfamily.build-wrapper-output=build_wrapper_output_directory
           - task: SonarCloudAnalyze@1
           - task: SonarCloudPublish@1
             inputs:
