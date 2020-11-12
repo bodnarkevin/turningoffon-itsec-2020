@@ -9,6 +9,9 @@ trigger:
 pr:
 - master
 
+variables:
+  workingDirectory: $(Build.SourcesDirectory)/CaffStore.Frontend
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -24,7 +27,7 @@ stages:
               scannerMode: 'CLI'
               configMode: 'manual'
               cliProjectKey: 'caffly-frontend'
-              cliSources: '$(Build.SourcesDirectory)/CaffStore.Frontend'
+              cliSources: $(workingDirectory)
           - task: SonarCloudAnalyze@1
           - task: SonarCloudPublish@1
             inputs:
@@ -39,8 +42,8 @@ stages:
               containerRegistry: 'containerRegistry'
               repository: 'caffly-frontend'
               command: 'buildAndPush'
-              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Frontend/Dockerfile'
-              buildContext: '$(Build.SourcesDirectory)/CaffStore.Frontend'
+              Dockerfile: $(workingDirectory)/Dockerfile
+              buildContext: $(workingDirectory)
               tags: 'latest'
   - stage: Deploy
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
