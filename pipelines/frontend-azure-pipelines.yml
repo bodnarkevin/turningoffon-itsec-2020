@@ -50,7 +50,7 @@ stages:
             inputs:
               pollingTimeoutSec: '300'
   - stage: Docker
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
     jobs:
       - job: Docker
         steps:
@@ -63,7 +63,7 @@ stages:
               buildContext: '$(Build.SourcesDirectory)/CaffStore.Frontend'
               tags: 'latest'
   - stage: Deploy
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest')
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
     jobs:
       - job: Deploy
         steps:
