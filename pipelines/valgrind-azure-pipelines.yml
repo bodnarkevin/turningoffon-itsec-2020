@@ -11,7 +11,7 @@ pr:
 
 variables:
   workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
-  buildWrapperOutput: $(Build.SourcesDirectory)/CIFFCAFFParser/bw-output
+  buildWrapperOutput: $(workingDirectory)/bw-output
 
 pool:
   vmImage: 'ubuntu-latest'
