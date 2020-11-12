@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Api", "CaffStore.Backend.Api\CaffStore.Backend.Api.csproj", "{DAADC750-45B7-4811-A9C5-800D77398870}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Bll", "CaffStore.Backend.Bll\CaffStore.Backend.Bll.csproj", "{852E706F-27EB-4174-8795-052D2F9E4B69}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Dal", "CaffStore.Backend.Data\CaffStore.Backend.Dal.csproj", "{5997EF81-408E-4A42-8BBC-7A32E9221C68}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Common", "CaffStore.Backend.Common\CaffStore.Backend.Common.csproj", "{434342E6-3676-4114-8446-57C2B2317CF3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Interface.Bll", "CaffStore.Backend.Interface.Bll\CaffStore.Backend.Interface.Bll.csproj", "{333D926C-37B0-4269-B110-906849CAA57E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaffStore.Backend.Test", "CaffStore.Backend.Test\CaffStore.Backend.Test.csproj", "{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAADC750-45B7-4811-A9C5-800D77398870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAADC750-45B7-4811-A9C5-800D77398870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAADC750-45B7-4811-A9C5-800D77398870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAADC750-45B7-4811-A9C5-800D77398870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852E706F-27EB-4174-8795-052D2F9E4B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852E706F-27EB-4174-8795-052D2F9E4B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852E706F-27EB-4174-8795-052D2F9E4B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852E706F-27EB-4174-8795-052D2F9E4B69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5997EF81-408E-4A42-8BBC-7A32E9221C68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5997EF81-408E-4A42-8BBC-7A32E9221C68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5997EF81-408E-4A42-8BBC-7A32E9221C68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5997EF81-408E-4A42-8BBC-7A32E9221C68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{434342E6-3676-4114-8446-57C2B2317CF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{434342E6-3676-4114-8446-57C2B2317CF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{434342E6-3676-4114-8446-57C2B2317CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{434342E6-3676-4114-8446-57C2B2317CF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{333D926C-37B0-4269-B110-906849CAA57E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{333D926C-37B0-4269-B110-906849CAA57E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{333D926C-37B0-4269-B110-906849CAA57E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{333D926C-37B0-4269-B110-906849CAA57E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F95378A-E06D-4C27-ADD9-199F8AC34E82}
+	EndGlobalSection
+EndGlobal
