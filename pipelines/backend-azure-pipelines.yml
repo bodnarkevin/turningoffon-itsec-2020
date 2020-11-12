@@ -9,6 +9,9 @@ trigger:
 pr:
 - master
 
+variables:
+  workingDirectory: $(Build.SourcesDirectory)/CaffStore.Backend
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -34,16 +37,16 @@ stages:
           - task: DotNetCoreCLI@2
             inputs:
               command: 'restore'
-              projects: '$(Build.SourcesDirectory)/CaffStore.Backend/**/*.csproj'
+              projects: $(workingDirectory)/**/*.csproj
               feedsToUse: 'select'
           - task: DotNetCoreCLI@2
             inputs:
               command: 'build'
-              projects: '$(Build.SourcesDirectory)/CaffStore.Backend/**/*.csproj'
+              projects: $(workingDirectory)/**/*.csproj
           - task: DotNetCoreCLI@2
             inputs:
               command: 'test'
-              projects: '$(Build.SourcesDirectory)/CaffStore.Backend/**/*.csproj'
+              projects: $(workingDirectory)/**/*.csproj
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
@@ -62,8 +65,8 @@ stages:
               containerRegistry: 'containerRegistry'
               repository: 'caffly-backend'
               command: 'buildAndPush'
-              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Backend/CaffStore.Backend.Api/Dockerfile'
-              buildContext: '$(Build.SourcesDirectory)/CaffStore.Backend'
+              Dockerfile: $(workingDirectory)/CaffStore.Backend.Api/Dockerfile
+              buildContext: $(workingDirectory)
               tags: 'latest'
   - stage: Deploy
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
