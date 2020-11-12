@@ -69,5 +69,5 @@ stages:
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: 'Azure for Students(96a88808-5be2-437f-8629-6c45fba7e081)'
-              appName: 'caffly'
+              appName: 'api-caffly'
               containers: 'caffly.azurecr.io/caffly-backend:latest'
