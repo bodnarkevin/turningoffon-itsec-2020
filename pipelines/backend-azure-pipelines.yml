@@ -1,0 +1,73 @@
+trigger:
+  branches:
+   include:
+     - master
+  paths:
+    include:
+      - CaffStore.Backend/*
+
+pr:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  # - stage: Build
+  #   jobs:
+  #     - job: Build
+  #       steps:
+  #         - task: UseDotNet@2
+  #           inputs:
+  #             packageType: 'sdk'
+  #             version: '2.x'
+  #         - task: SonarCloudPrepare@1
+  #           inputs:
+  #             SonarCloud: 'sonarCloud'
+  #             organization: 'bodnarkevin-github'
+  #             scannerMode: 'MSBuild'
+  #             projectKey: 'TODO'
+  #         - task: UseDotNet@2
+  #           inputs:
+  #             packageType: 'sdk'
+  #             version: '3.1.x'
+  #         - task: DotNetCoreCLI@2
+  #           inputs:
+  #             command: 'restore'
+  #             feedsToUse: 'select'
+  #         - task: DotNetCoreCLI@2
+  #           inputs:
+  #             command: 'build'
+  #         - task: DotNetCoreCLI@2
+  #           inputs:
+  #             command: 'test'
+  #         - task: UseDotNet@2
+  #           inputs:
+  #             packageType: 'sdk'
+  #             version: '2.x'
+  #         - task: SonarCloudAnalyze@1
+  #         - task: SonarCloudPublish@1
+  #           inputs:
+  #             pollingTimeoutSec: '300'
+  - stage: Docker
+    jobs:
+      - job: Docker
+        steps:
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'containerRegistry'
+              repository: 'caffly-backend'
+              command: 'buildAndPush'
+              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Backend/Dockerfile'
+              buildContext: '$(Build.SourcesDirectory)/CaffStore.Backend'
+              tags: 'latest'
+  - stage: Deploy
+    jobs:
+      - job: Deploy
+        steps:
+          - checkout: none
+          - task: AzureWebAppContainer@1
+            inputs:
+              azureSubscription: 'Azure for Students(96a88808-5be2-437f-8629-6c45fba7e081)'
+              appName: 'caffly'
+              containers: 'caffly.azurecr.io/caffly-backend:latest'
