@@ -23,7 +23,7 @@ stages:
               version: '2.x'
           - task: SonarCloudPrepare@1
             inputs:
-              SonarCloud: 'sonarCloud'
+              SonarCloud: 'sonarCloudBackend'
               organization: 'bodnarkevin'
               scannerMode: 'MSBuild'
               projectKey: 'caffly-backend'
