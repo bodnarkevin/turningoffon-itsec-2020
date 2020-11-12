@@ -58,7 +58,7 @@ stages:
               containerRegistry: 'containerRegistry'
               repository: 'caffly-backend'
               command: 'buildAndPush'
-              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Backend/Dockerfile'
+              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Backend/CaffStore.Backend.Api/Dockerfile'
               buildContext: '$(Build.SourcesDirectory)/CaffStore.Backend'
               tags: 'latest'
   - stage: Deploy
