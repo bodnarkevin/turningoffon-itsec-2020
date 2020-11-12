@@ -13,15 +13,35 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: Valgrind
+  - stage: Build
     jobs:
-      - job: Valgrind
+      - job: Build
         steps:
           - script: |
               sudo apt-get install build-essential
               sudo apt-get install valgrind
             displayName: Install dependencies
           - script: |
+              make
+            workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
+            displayName: Build
+          - script: |
               make check
             workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
-            displayName: Run Valgrind
+            displayName: Valgrind
+  - stage: SonarCloud
+    jobs:
+      - job: SonarCloud
+        steps:
+          - task: SonarCloudPrepare@1
+            inputs:
+              SonarCloud: 'sonarCloudParser'
+              organization: 'bodnarkevin'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'caffly-parser'
+              cliSources: '$(Build.SourcesDirectory)/CIFFCAFFParser'
+          - task: SonarCloudAnalyze@1
+          - task: SonarCloudPublish@1
+            inputs:
+              pollingTimeoutSec: '300'
