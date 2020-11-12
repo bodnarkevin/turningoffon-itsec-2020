@@ -59,7 +59,7 @@ stages:
               containerRegistry: 'containerRegistry'
               repository: 'caffly-backend'
               command: 'buildAndPush'
-              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Backend/Dockerfile'
+              Dockerfile: '$(Build.SourcesDirectory)/CaffStore.Backend/CaffStore.Backend.Api/Dockerfile'
               buildContext: '$(Build.SourcesDirectory)/CaffStore.Backend'
               tags: 'latest'
   - stage: Deploy
@@ -71,5 +71,5 @@ stages:
           - task: AzureWebAppContainer@1
             inputs:
               azureSubscription: 'Azure for Students(96a88808-5be2-437f-8629-6c45fba7e081)'
-              appName: 'caffly'
+              appName: 'api-caffly'
               containers: 'caffly.azurecr.io/caffly-backend:latest'
