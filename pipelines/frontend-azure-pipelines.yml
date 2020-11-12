@@ -17,34 +17,14 @@ stages:
     jobs:
       - job: Build
         steps:
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '2.x'
           - task: SonarCloudPrepare@1
             inputs:
-              SonarCloud: 'sonarCloud'
+              SonarCloud: 'sonarCloudFrontend'
               organization: 'bodnarkevin'
-              scannerMode: 'MSBuild'
-              projectKey: 'caffly-frontend'
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '3.1.x'
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: 'restore'
-              feedsToUse: 'select'
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: 'build'
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: 'test'
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '2.x'
+              scannerMode: 'CLI'
+              configMode: 'manual'
+              cliProjectKey: 'caffly-frontend'
+              cliSources: '$(Build.SourcesDirectory)/CaffStore.Frontend'
           - task: SonarCloudAnalyze@1
           - task: SonarCloudPublish@1
             inputs:
