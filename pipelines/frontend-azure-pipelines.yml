@@ -22,6 +22,11 @@ stages:
     jobs:
       - job: Build
         steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+                sudo apt install ./google-chrome-stable_current_amd64.deb
           - task: Npm@1
             displayName: Npm ci
             inputs:
