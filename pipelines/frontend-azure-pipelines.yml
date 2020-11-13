@@ -18,24 +18,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-  - stage: Test
+  - stage: Build
     jobs:
-      - job: Test
-        steps:
-          - task: Npm@1
-            displayName: Npm ci
-            inputs:
-              command: 'ci'
-              workingDir: $(workingDirectory)
-          - task: Npm@1
-            displayName: Test
-            inputs:
-              command: 'custom'
-              customCommand: 'run test -- --watch=false --browsers ChromeHeadless'
-              workingDir: '$(workingDirectory)'
-  - stage: SonarCloud
-    jobs:
-      - job: SonarCloud
+      - job: Build
         steps:
           - task: SonarCloudPrepare@1
             inputs:
@@ -45,6 +30,17 @@ stages:
               configMode: 'manual'
               cliProjectKey: 'caffly-frontend'
               cliSources: $(workingDirectory)
+          - task: Npm@1
+            displayName: Npm ci
+            inputs:
+              command: 'ci'
+              workingDir: $(workingDirectory)
+          - task: Npm@1
+            displayName: Test
+            inputs:
+              command: 'custom'
+              customCommand: 'run test -- --watch=false --browsers ChromeHeadless --code-coverage'
+              workingDir: '$(workingDirectory)'
           - task: SonarCloudAnalyze@1
           - task: SonarCloudPublish@1
             inputs:
