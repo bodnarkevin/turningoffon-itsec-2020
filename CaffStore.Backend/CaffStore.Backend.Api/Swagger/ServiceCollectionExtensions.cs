@@ -42,6 +42,7 @@ namespace CaffStore.Backend.Api.Swagger
 							Password = new OpenApiOAuthFlow
 							{
 								TokenUrl = new Uri(swaggerOptions.TokenUri),
+								RefreshUrl = new Uri(swaggerOptions.TokenUri),
 								//Scopes = new Dictionary<string, string>
 								//{
 								//	{ "api", "Provides access to the API" },
