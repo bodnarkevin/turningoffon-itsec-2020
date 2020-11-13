@@ -20,6 +20,8 @@
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=caffly-frontend&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=caffly-frontend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=caffly-frontend&metric=coverage)](https://sonarcloud.io/dashboard?id=caffly-frontend)
 
+https://caffly.azurewebsites.net/
+
 # Backend
 
 [![Build Status](https://dev.azure.com/bodnarkevin/Caffly/_apis/build/status/Backend?branchName=master)](https://dev.azure.com/bodnarkevin/Caffly/_build/latest?definitionId=25&branchName=master)
@@ -30,3 +32,5 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=caffly-backend&metric=code_smells)](https://sonarcloud.io/dashboard?id=caffly-backend)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=caffly-backend&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=caffly-backend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=caffly-backend&metric=coverage)](https://sonarcloud.io/dashboard?id=caffly-backend)
+
+https://api-caffly.azurewebsites.net/swagger
