@@ -33,7 +33,7 @@ stages:
               extraProperties: |
                 sonar.sources=$(workingDirectory)
                 sonar.projectBaseDir=$(workingDirectory)
-                # sonar.test.inclusions=**/*.spec.ts
+                sonar.test.inclusions=**/*.spec.ts
                 sonar.typescript.lcov.reportPaths=coverage/caff-store/lcov.info
                 sonar.javascript.lcov.reportPaths=coverage/caff-store/lcov.info
           - task: Npm@1
