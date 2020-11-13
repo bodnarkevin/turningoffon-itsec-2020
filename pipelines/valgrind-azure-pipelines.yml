@@ -7,7 +7,9 @@ trigger:
       - CIFFCAFFParser/*
 
 pr:
-- master
+  branches:
+   include:
+     - master
 
 variables:
   workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser

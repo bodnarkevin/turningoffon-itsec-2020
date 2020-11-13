@@ -41,7 +41,7 @@ namespace CaffStore.Backend.Api.Controllers
 		}
 
 		[Authorize]
-		[HttpPost("me",
+		[HttpPut("me",
 			Name = nameof(UpdateUserProfile))]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
 		public async Task<UserProfileDto> UpdateUserProfile([FromBody] UpdateUserProfileDto updateUserProfile)

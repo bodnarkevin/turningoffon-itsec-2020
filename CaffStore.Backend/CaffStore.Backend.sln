@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Common", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Interface.Bll", "CaffStore.Backend.Interface.Bll\CaffStore.Backend.Interface.Bll.csproj", "{333D926C-37B0-4269-B110-906849CAA57E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaffStore.Backend.Test", "CaffStore.Backend.Test\CaffStore.Backend.Test.csproj", "{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaffStore.Backend.Test", "CaffStore.Backend.Test\CaffStore.Backend.Test.csproj", "{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaffStore.Backend.Parser", "CaffStore.Backend.Parser\CaffStore.Backend.Parser.csproj", "{C521EC6D-E532-46AA-BCBD-9A9AF6543A23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55923ECF-DD65-4D4A-B1F9-D76A5A7D114E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C521EC6D-E532-46AA-BCBD-9A9AF6543A23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C521EC6D-E532-46AA-BCBD-9A9AF6543A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C521EC6D-E532-46AA-BCBD-9A9AF6543A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C521EC6D-E532-46AA-BCBD-9A9AF6543A23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
