@@ -31,8 +31,11 @@ stages:
               cliProjectKey: 'caffly-frontend'
               cliSources: '$(workingDirectory)'
               extraProperties: |
+                sonar.sources=$(workingDirectory)
+                sonar.projectBaseDir=$(workingDirectory)
                 # sonar.test.inclusions=**/*.spec.ts
-                sonar.javascript.lcov.reportPaths=/coverage/caff-store/lcov.info
+                sonar.typescript.lcov.reportPaths=coverage/caff-store/lcov.info
+                sonar.javascript.lcov.reportPaths=coverage/caff-store/lcov.info
           - task: Npm@1
             displayName: Npm ci
             inputs:
