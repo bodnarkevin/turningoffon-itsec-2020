@@ -50,7 +50,7 @@ namespace CaffStore.Backend.Api
 
 			services.AddCaffStoreBlobStorage(_configuration);
 
-			services.AddCaffStoreSwaggerGen();
+			services.AddCaffStoreSwaggerGen(_configuration);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

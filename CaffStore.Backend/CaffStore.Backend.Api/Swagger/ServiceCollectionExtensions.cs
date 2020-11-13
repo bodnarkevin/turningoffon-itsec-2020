@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CaffStore.Backend.Bll.Options.Swagger;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
@@ -9,7 +11,7 @@ namespace CaffStore.Backend.Api.Swagger
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static IServiceCollection AddCaffStoreSwaggerGen(this IServiceCollection services)
+		public static IServiceCollection AddCaffStoreSwaggerGen(this IServiceCollection services, IConfiguration configuration)
 		{
 			return services
 				.AddSwaggerGen(options =>
@@ -24,6 +26,14 @@ namespace CaffStore.Backend.Api.Swagger
 					//	return name.EndsWith(dtoSuffix) ? name.Remove(name.Length - dtoSuffix.Length) : name;
 					//});
 
+					var swaggerOptions = new SwaggerGenOptions();
+					configuration.Bind(nameof(SwaggerGenOptions), swaggerOptions);
+
+					options.AddServer(new OpenApiServer
+					{
+						Url = swaggerOptions.ServerUri
+					});
+
 					options.AddSecurityDefinition("caffStoreAuth", new OpenApiSecurityScheme
 					{
 						Type = SecuritySchemeType.OAuth2,
@@ -34,7 +44,10 @@ namespace CaffStore.Backend.Api.Swagger
 								TokenUrl = new Uri("/connect/token", UriKind.Relative),
 								Scopes = new Dictionary<string, string>
 								{
-									{ "api", "Provides access to the API" }
+									{ "api", "Provides access to the API" },
+									{ "openid", "" },
+									{ "profile", "" },
+									{ "offline_access", "" },
 								}
 							}
 						}
