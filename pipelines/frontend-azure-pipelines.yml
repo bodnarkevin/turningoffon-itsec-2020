@@ -33,8 +33,8 @@ stages:
                 sonar.projectBaseDir=$(workingDirectory)
                 sonar.sources=src
                 sonar.tests=src
-                sonar.exclusions=**/*.spec.ts,**/*test.ts,**/*.js
-                sonar.test.inclusions=**/*.spec.ts,**/*test.ts
+                sonar.exclusions=**/*.spec.ts,**/*.js
+                sonar.test.inclusions=**/*.spec.ts
                 sonar.coverage.exclusions=**/*.js,src/main.ts,src/polyfills.ts,**/*environment*.ts,**/*module.ts
                 sonar.javascript.lcov.reportPaths=coverage/caff-store/lcov.info
           - task: Npm@1
