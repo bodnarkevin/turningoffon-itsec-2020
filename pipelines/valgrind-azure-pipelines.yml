@@ -10,9 +10,6 @@ pr:
   branches:
    include:
      - master
-  paths:
-    include:
-      - CIFFCAFFParser/*
 
 variables:
   workingDirectory: $(Build.SourcesDirectory)/CIFFCAFFParser
