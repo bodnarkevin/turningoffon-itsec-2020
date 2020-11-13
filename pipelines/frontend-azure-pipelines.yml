@@ -18,6 +18,20 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:
+          - task: Npm@1
+            displayName: Npm ci
+            inputs:
+              command: 'ci'
+              workingDir: $(workingDirectory)
+          - task: CmdLine@2
+            displayName: Test
+            inputs:
+              script: ng test --watch=false
+              workingDirectory: $(workingDirectory)
   - stage: SonarCloud
     jobs:
       - job: SonarCloud
