@@ -37,15 +37,18 @@ stages:
               packageType: 'sdk'
               version: '3.1.x'
           - task: DotNetCoreCLI@2
+            displayName: Restore
             inputs:
               command: 'restore'
               projects: $(workingDirectory)/**/*.csproj
               feedsToUse: 'select'
           - task: DotNetCoreCLI@2
+            displayName: Build
             inputs:
               command: 'build'
               projects: $(workingDirectory)/**/*.csproj
           - task: DotNetCoreCLI@2
+            displayName: Test
             inputs:
               command: 'test'
               projects: $(workingDirectory)/**/*.csproj
