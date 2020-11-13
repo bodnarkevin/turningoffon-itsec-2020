@@ -27,11 +27,12 @@ stages:
             inputs:
               command: 'ci'
               workingDir: $(workingDirectory)
-          - task: CmdLine@2
+          - task: Npm@1
             displayName: Test
             inputs:
-              script: ng test --watch=false
-              workingDirectory: $(workingDirectory)
+              command: 'custom'
+              customCommand: 'run test -- --watch=false'
+              workingDir: '$(workingDirectory)'
   - stage: SonarCloud
     jobs:
       - job: SonarCloud
