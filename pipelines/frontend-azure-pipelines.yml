@@ -31,7 +31,6 @@ stages:
               cliProjectKey: 'caffly-frontend'
               cliSources: '$(workingDirectory)'
               extraProperties: |
-                sonar.tests=src
                 sonar.test.inclusions=**/*.spec.ts
                 sonar.typescript.lcov.reportPaths=coverage/lcov.info
           - task: Npm@1
