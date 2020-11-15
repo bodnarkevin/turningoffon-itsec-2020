@@ -1,0 +1,18 @@
+<label>
+  Email
+  <input #email type="text"/>
+</label>
+<label>
+  First Name
+  <input #firstName type="text"/>
+</label>
+<label>
+  Last Name
+  <input #lastName type="text"/>
+</label>
+<label>
+  Password
+  <input #password type="text"/>
+</label>
+<button (click)="register(email.value, firstName.value, lastName.value, password.value)">Register</button>
+<p>{{message}}</p>

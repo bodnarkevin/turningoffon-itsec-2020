@@ -1,18 +1,45 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
+import {HttpClientModule} from '@angular/common/http';
+import {ApiModule, Configuration} from './api-generated';
+import {environment} from '../environments/environment';
+import {LoginComponent} from './login/login.component';
+import {RegisterComponent} from './register/register.component';
+import {ProfileComponent} from './profile/profile.component';
+import {AuthService} from './auth/auth.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    RegisterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    OAuthModule.forRoot(),
+    ApiModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: Configuration,
+      useFactory: (oauthService: AuthService) => new Configuration(
+        {
+          basePath: environment.apiBasePath,
+          accessToken: oauthService.getAccessToken.bind(oauthService)
+        }
+      ),
+      deps: [AuthService],
+      multi: false
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

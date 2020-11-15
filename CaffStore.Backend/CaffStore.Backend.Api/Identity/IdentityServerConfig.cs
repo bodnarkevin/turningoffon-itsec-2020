@@ -41,7 +41,16 @@ namespace CaffStore.Backend.Api.Identity
 					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 					RequireClientSecret = false,
 					AllowOfflineAccess = true,
-					AllowedScopes = { "openid", "profile", "api" },
+					AllowedScopes = { "openid", "profile", "api", "offline_access" },
+				},
+				new Client
+				{
+					ClientId = "spa-test",
+					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+					RequireClientSecret = false,
+					AllowOfflineAccess = true,
+					AllowedScopes = { "openid", "profile", "api", "offline_access" },
+					AccessTokenLifetime = 300 // 5 minutes
 				}
 			};
 	}

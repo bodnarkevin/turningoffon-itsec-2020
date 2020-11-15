@@ -3,7 +3,14 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  auth: {
+    clientId: 'spa-test',
+    scope: '',
+    issuer: 'https://api-caffly.azurewebsites.net',
+    discoveryDocument: 'https://api-caffly.azurewebsites.net/.well-known/openid-configuration'
+  },
+  apiBasePath: 'https://api-caffly.azurewebsites.net'
 };
 
 /*
