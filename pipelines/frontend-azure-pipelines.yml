@@ -1,15 +1,15 @@
 trigger:
   branches:
-   include:
-     - master
+    include:
+      - master
   paths:
     include:
       - CaffStore.Frontend/*
 
 pr:
   branches:
-   include:
-     - master
+    include:
+      - master
 
 variables:
   workingDirectory: $(Build.SourcesDirectory)/CaffStore.Frontend
