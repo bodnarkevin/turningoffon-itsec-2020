@@ -2,9 +2,11 @@
   Email
   <input #username type="text"/>
 </label>
+
 <label>
   Password
   <input #password type="password"/>
 </label>
+
 <button (click)="login(username.value, password.value)">Login</button>
 <p>{{message}}</p>
