@@ -37,6 +37,7 @@ namespace CaffStore.Backend.Api.Controllers
 		[Authorize]
 		[HttpGet("me",
 			Name = nameof(GetUserProfile))]
+		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
 		public async Task<UserProfileDto> GetUserProfile()
 		{
