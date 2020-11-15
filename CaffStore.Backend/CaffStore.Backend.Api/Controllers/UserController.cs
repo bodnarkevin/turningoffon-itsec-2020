@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using CaffStore.Backend.Interface.Bll.Dtos.Error;
@@ -21,6 +22,7 @@ namespace CaffStore.Backend.Api.Controllers
 
 		[HttpPost("register",
 			Name = nameof(RegisterUser))]
+		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Conflict)]
@@ -43,6 +45,7 @@ namespace CaffStore.Backend.Api.Controllers
 		[Authorize]
 		[HttpPut("me",
 			Name = nameof(UpdateUserProfile))]
+		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
 		public async Task<UserProfileDto> UpdateUserProfile([FromBody] UpdateUserProfileDto updateUserProfile)
 		{
@@ -52,6 +55,7 @@ namespace CaffStore.Backend.Api.Controllers
 		[Authorize]
 		[HttpPost("me/changePassword",
 			Name = nameof(ChangePassword))]
+		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
 		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePassword)
