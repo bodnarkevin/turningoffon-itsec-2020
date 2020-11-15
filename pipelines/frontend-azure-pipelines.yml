@@ -42,12 +42,12 @@ stages:
             inputs:
               command: 'ci'
               workingDir: $(workingDirectory)
-          - task: Npm@1
-            displayName: Test
-            inputs:
-              command: 'custom'
-              customCommand: 'run test -- --watch=false --browsers ChromeHeadless' # --code-coverage'
-              workingDir: '$(workingDirectory)'
+          # - task: Npm@1
+          #   displayName: Test
+          #   inputs:
+          #     command: 'custom'
+          #     customCommand: 'run test -- --watch=false --browsers ChromeHeadless --code-coverage'
+          #     workingDir: '$(workingDirectory)'
           - task: SonarCloudAnalyze@1
           - task: SonarCloudPublish@1
             inputs:
