@@ -10,9 +10,6 @@ pr:
   branches:
     include:
       - master
-  paths:
-    include:
-      - CaffStore.Backend/*
 
 variables:
   workingDirectory: $(Build.SourcesDirectory)/CaffStore.Backend
