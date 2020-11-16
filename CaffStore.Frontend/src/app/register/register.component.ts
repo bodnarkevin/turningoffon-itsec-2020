@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {RegisterUserDto, UserService} from '../api-generated';
+import {RegisterUserDto, UserService} from '../api/generated';
 
 @Component({
   selector: 'app-register',

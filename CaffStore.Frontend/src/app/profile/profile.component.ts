@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UserProfileDto, UserService} from '../api-generated';
+import {UserProfileDto, UserService} from '../api/generated';
 
 @Component({
   selector: 'app-profile',

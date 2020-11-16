@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "generate-api": "openapi-generator-cli generate -g typescript-angular -o src/app/api-generated --additional-properties=ngVersion=10.2.0 -i https://api-caffly.azurewebsites.net/swagger/v1/swagger.json"
+    "generate-api": "openapi-generator-cli generate -g typescript-angular -o src/app/api/generated --additional-properties=ngVersion=10.2.0 -i https://api-caffly.azurewebsites.net/swagger/v1/swagger.json"
   },
   "private": true,
   "dependencies": {
