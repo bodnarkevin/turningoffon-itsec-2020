@@ -29,10 +29,10 @@ import {AuthService} from './auth/auth.service';
   providers: [
     {
       provide: Configuration,
-      useFactory: (oauthService: AuthService) => new Configuration(
+      useFactory: (authService: AuthService) => new Configuration(
         {
           basePath: environment.apiBasePath,
-          accessToken: oauthService.getAccessToken.bind(oauthService)
+          accessToken: authService.getAccessToken.bind(authService)
         }
       ),
       deps: [AuthService],
