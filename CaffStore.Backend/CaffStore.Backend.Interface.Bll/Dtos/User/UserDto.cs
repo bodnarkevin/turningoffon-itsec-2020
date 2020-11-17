@@ -5,7 +5,7 @@ namespace CaffStore.Backend.Interface.Bll.Dtos.User
 	public class UserDto
 	{
 		[Required]
-		public int Id { get; set; }
+		public long Id { get; set; }
 
 		[Required]
 		public string Email { get; set; }

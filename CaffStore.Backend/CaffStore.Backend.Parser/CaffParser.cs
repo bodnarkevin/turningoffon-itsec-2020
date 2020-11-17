@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace CaffStore.Backend.Parser
 {
-	public class CaffParser
+	public static class CaffParser
 	{
-		public async Task<CaffParseResult> ParseCaffFileAsync(Stream fileStream)
+		public static async Task<CaffParseResult> ParseCaffFileAsync(Stream fileStream)
 		{
 			// TODO
 

@@ -11,7 +11,7 @@ namespace CaffStore.Backend.Api.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
@@ -26,7 +26,7 @@ namespace CaffStore.Backend.Api.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
@@ -52,12 +52,54 @@ namespace CaffStore.Backend.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CaffData",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Creator = table.Column<string>(nullable: false),
+                    Creation = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CaffData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CiffData",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Width = table.Column<int>(nullable: false),
+                    Height = table.Column<int>(nullable: false),
+                    Caption = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CiffData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<int>(nullable: false),
+                    RoleId = table.Column<long>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -78,7 +120,7 @@ namespace CaffStore.Backend.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -100,7 +142,7 @@ namespace CaffStore.Backend.Api.Migrations
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: false)
+                    UserId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,8 +159,8 @@ namespace CaffStore.Backend.Api.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
-                    RoleId = table.Column<int>(nullable: false)
+                    UserId = table.Column<long>(nullable: false),
+                    RoleId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,7 +183,7 @@ namespace CaffStore.Backend.Api.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -165,9 +207,9 @@ namespace CaffStore.Backend.Api.Migrations
                     Extension = table.Column<string>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(nullable: false),
-                    CreatedById = table.Column<int>(nullable: true),
+                    CreatedById = table.Column<long>(nullable: true),
                     LastModifiedAt = table.Column<DateTimeOffset>(nullable: false),
-                    LastModifiedById = table.Column<int>(nullable: true)
+                    LastModifiedById = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -182,6 +224,113 @@ namespace CaffStore.Backend.Api.Migrations
                         name: "FK_Files_AspNetUsers_LastModifiedById",
                         column: x => x.LastModifiedById,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CaffAnimationData",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Order = table.Column<int>(nullable: false),
+                    Duration = table.Column<int>(nullable: false),
+                    CiffDataId = table.Column<long>(nullable: false),
+                    CaffDataId = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CaffAnimationData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CaffAnimationData_CaffData_CaffDataId",
+                        column: x => x.CaffDataId,
+                        principalTable: "CaffData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CaffAnimationData_CiffData_CiffDataId",
+                        column: x => x.CiffDataId,
+                        principalTable: "CiffData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CiffDataTags",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CiffDataId = table.Column<long>(nullable: false),
+                    TagId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CiffDataTags", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CiffDataTags_CiffData_CiffDataId",
+                        column: x => x.CiffDataId,
+                        principalTable: "CiffData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CiffDataTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CaffItems",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    DownloadedTimes = table.Column<int>(nullable: false),
+                    CaffDataId = table.Column<long>(nullable: false),
+                    CaffFileId = table.Column<Guid>(nullable: true),
+                    PreviewFileId = table.Column<Guid>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    CreatedById = table.Column<long>(nullable: true),
+                    LastModifiedAt = table.Column<DateTimeOffset>(nullable: false),
+                    LastModifiedById = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CaffItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CaffItems_CaffData_CaffDataId",
+                        column: x => x.CaffDataId,
+                        principalTable: "CaffData",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CaffItems_Files_CaffFileId",
+                        column: x => x.CaffFileId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CaffItems_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CaffItems_AspNetUsers_LastModifiedById",
+                        column: x => x.LastModifiedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CaffItems_Files_PreviewFileId",
+                        column: x => x.PreviewFileId,
+                        principalTable: "Files",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -226,6 +375,52 @@ namespace CaffStore.Backend.Api.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CaffAnimationData_CaffDataId",
+                table: "CaffAnimationData",
+                column: "CaffDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaffAnimationData_CiffDataId",
+                table: "CaffAnimationData",
+                column: "CiffDataId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaffItems_CaffDataId",
+                table: "CaffItems",
+                column: "CaffDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaffItems_CaffFileId",
+                table: "CaffItems",
+                column: "CaffFileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaffItems_CreatedById",
+                table: "CaffItems",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaffItems_LastModifiedById",
+                table: "CaffItems",
+                column: "LastModifiedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CaffItems_PreviewFileId",
+                table: "CaffItems",
+                column: "PreviewFileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CiffDataTags_CiffDataId",
+                table: "CiffDataTags",
+                column: "CiffDataId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CiffDataTags_TagId",
+                table: "CiffDataTags",
+                column: "TagId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Files_CreatedById",
                 table: "Files",
                 column: "CreatedById");
@@ -254,10 +449,28 @@ namespace CaffStore.Backend.Api.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Files");
+                name: "CaffAnimationData");
+
+            migrationBuilder.DropTable(
+                name: "CaffItems");
+
+            migrationBuilder.DropTable(
+                name: "CiffDataTags");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "CaffData");
+
+            migrationBuilder.DropTable(
+                name: "Files");
+
+            migrationBuilder.DropTable(
+                name: "CiffData");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

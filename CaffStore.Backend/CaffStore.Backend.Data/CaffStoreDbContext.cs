@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CaffStore.Backend.Dal
 {
-	public class CaffStoreDbContext : IdentityDbContext<User, Role, int>
+	public class CaffStoreDbContext : IdentityDbContext<User, Role, long>
 	{
 		private readonly ITimeService _timeService;
 		private readonly IHttpRequestContext _requestContext;
@@ -26,6 +26,12 @@ namespace CaffStore.Backend.Dal
 
 		// Adding entities
 		public DbSet<File> Files { get; set; }
+		public DbSet<CaffItem> CaffItems { get; set; }
+		public DbSet<CaffData> CaffData { get; set; }
+		public DbSet<CaffAnimationData> CaffAnimationData { get; set; }
+		public DbSet<CiffData> CiffData { get; set; }
+		public DbSet<CiffDataTag> CiffDataTags { get; set; }
+		public DbSet<Tag> Tags { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{

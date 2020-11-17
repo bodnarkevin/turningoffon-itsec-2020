@@ -6,6 +6,7 @@ using CaffStore.Backend.Interface.Bll.Services;
 using System;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 
 namespace CaffStore.Backend.Bll.Services
 {
@@ -21,12 +22,12 @@ namespace CaffStore.Backend.Bll.Services
 			_blobContainerClient = blobContainerClient;
 		}
 
-		public async Task<FileDto> UploadFileAsync(UploadFileDto uploadFile)
+		public async Task<FileDto> UploadFileAsync(IFormFile file)
 		{
 			var fileEntity = new File
 			{
 				Id = Guid.NewGuid(),
-				Extension = System.IO.Path.GetExtension(uploadFile.File.FileName),
+				Extension = System.IO.Path.GetExtension(file.FileName),
 			};
 
 			_context.Files.Add(fileEntity);
@@ -34,7 +35,7 @@ namespace CaffStore.Backend.Bll.Services
 			var blobName = fileEntity.Id + fileEntity.Extension;
 			var blobClient = _blobContainerClient.GetBlobClient(blobName);
 
-			await blobClient.UploadAsync(uploadFile.File.OpenReadStream());
+			await blobClient.UploadAsync(file.OpenReadStream());
 
 			await _context.SaveChangesAsync();
 
