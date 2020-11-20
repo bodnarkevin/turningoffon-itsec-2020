@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
-using System.IO;
-using AutoMapper;
+﻿using AutoMapper;
 using CaffStore.Backend.Bll.Exceptions;
 using CaffStore.Backend.Bll.Pagination.Extensions;
 using CaffStore.Backend.Dal;
 using CaffStore.Backend.Dal.Entities;
 using CaffStore.Backend.Interface.Bll.Dtos.Caff;
+using CaffStore.Backend.Interface.Bll.Enums;
 using CaffStore.Backend.Interface.Bll.Pagination.Queries;
 using CaffStore.Backend.Interface.Bll.Pagination.Responses;
 using CaffStore.Backend.Interface.Bll.Services;
 using CaffStore.Backend.Parser;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CaffStore.Backend.Interface.Bll.Enums;
+using CaffStore.Backend.Interface.Bll.Dtos.File;
 
 namespace CaffStore.Backend.Bll.Services
 {
@@ -27,10 +27,10 @@ namespace CaffStore.Backend.Bll.Services
 
 		private readonly IMapper _mapper;
 
-		public CaffItemService(CaffStoreDbContext context, IMapper mapper)
+		public CaffItemService(CaffStoreDbContext context, IFileService fileService, IMapper mapper)
 		{
 			_context = context;
-			//_fileService = fileService;
+			_fileService = fileService;
 			_mapper = mapper;
 		}
 
@@ -61,9 +61,9 @@ namespace CaffStore.Backend.Bll.Services
 
 			ThrowNotFoundIfNull(caffItemEntity);
 
-			var response =  _mapper.Map<CaffItemDetailsDto>(caffItemEntity);
+			var response = _mapper.Map<CaffItemDetailsDto>(caffItemEntity);
 
-			//await _fileService.SetPreviewFileUri(response.PreviewFile);
+			await _fileService.SetPreviewFileUri(response.PreviewFile);
 
 			return response;
 		}
@@ -75,32 +75,45 @@ namespace CaffStore.Backend.Bll.Services
 			if (!parseResult.Succeeded)
 				throw new CaffStoreBusinessException(parseResult.Message);
 
-			//Guid caffFileId = await _fileService.UploadFileAsync(caffItem.CaffFile.OpenReadStream(), ".caff", FileType.Caff);
-
-			//Guid previewFileId;
-			//await using (var previewStream = new MemoryStream())
-			//{
-			//	parseResult.Preview.Save(previewStream, ImageFormat.Png);
-			//	previewFileId = await _fileService.UploadFileAsync(previewStream, ".png", FileType.Preview);
-			//}
-
 			var caffData = _mapper.Map<CaffData>(parseResult.Result);
 
-			//List<CaffAnimationData> animations = new List<CaffAnimationData>();
+			// Get all tags
+			var parsedTags = caffData.Animations.Select(a => a.CiffData.Tags).SelectMany(t => t).ToList();
+			var tagStrings = parsedTags.Select(t => t.Tag.Text).ToHashSet();
 
-			//var caffData = new CaffData
-			//{
-			//	Creator = parseResult.Result.Creator,
-			//	Creation = parseResult.Result.Creation,
-			//	Animations = animations,
-			//};
+			// Prefetch existing tags
+			var existingTags = await _context
+				.Tags
+				.Where(t => tagStrings.Contains(t.Text))
+				.ToListAsync();
+
+			// If a tag is already in the database, do not store again, only set reference
+			foreach (var parsedTag in parsedTags)
+			{
+				var existingTag = existingTags
+					.FirstOrDefault(t => t.Text == parsedTag.Tag.Text);
+
+				if (existingTag == null)
+					existingTags.Add(parsedTag.Tag);
+				else
+					parsedTag.Tag = existingTag;
+			}
+
+			Guid caffFileId = await _fileService.UploadFileAsync(caffItem.CaffFile.OpenReadStream(), ".caff", FileType.Caff);
+
+			Guid previewFileId;
+			await using (var previewStream = new MemoryStream())
+			{
+				parseResult.Preview.Save(previewStream, ImageFormat.Png);
+				previewFileId = await _fileService.UploadFileAsync(previewStream, ".png", FileType.Preview);
+			}
 
 			var caffItemEntity = new CaffItem
 			{
 				Title = caffItem.Title,
 				Description = caffItem.Description,
-				//CaffFileId = caffFileId,
-				//PreviewFileId = previewFileId,
+				CaffFileId = caffFileId,
+				PreviewFileId = previewFileId,
 				CaffData = caffData
 			};
 
@@ -111,7 +124,24 @@ namespace CaffStore.Backend.Bll.Services
 			return await GetCaffItemAsync(caffItemEntity.Id);
 		}
 
+		public async Task<FileDto> DownloadCaffFileAsync(long caffItemId)
+		{
+			var caffItemEntity = await _context
+				.CaffItems
+				.Include(ci => ci.CaffFile)
+				.Where(ci => ci.Id == caffItemId)
+				.SingleOrDefaultAsync();
 
+			ThrowNotFoundIfNull(caffItemEntity);
+
+			var response = await _fileService.GetFileAsync(caffItemEntity.CaffFile.Id);
+
+			caffItemEntity.DownloadedTimes++;
+
+			await _context.SaveChangesAsync();
+
+			return response;
+		}
 
 		private void ThrowNotFoundIfNull(CaffItem caffItem)
 		{
