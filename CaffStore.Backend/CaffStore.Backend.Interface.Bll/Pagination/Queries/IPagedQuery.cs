@@ -1,6 +1,6 @@
 ﻿namespace CaffStore.Backend.Interface.Bll.Pagination.Queries
 {
-	public interface IPaginationQuery
+	public interface IPagedQuery
 	{
 		public int Page { get; set; }
 

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CaffStore.Backend.Data\CaffStore.Backend.Dal.csproj" />
     <ProjectReference Include="..\CaffStore.Backend.Interface.Bll\CaffStore.Backend.Interface.Bll.csproj" />
+    <ProjectReference Include="..\CaffStore.Backend.Parser\CaffStore.Backend.Parser.csproj" />
   </ItemGroup>
 
 </Project>

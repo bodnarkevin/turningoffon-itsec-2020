@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CaffStore.Backend.Api.Pagination.Queries
 {
-	public class PaginationQuery : IPaginationQuery
+	public class PagedQuery : IPagedQuery
 	{
 		[FromQuery(Name = "page")]
 		[DefaultValue(1)]

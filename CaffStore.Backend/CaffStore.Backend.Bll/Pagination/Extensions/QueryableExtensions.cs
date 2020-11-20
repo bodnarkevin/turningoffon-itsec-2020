@@ -10,20 +10,20 @@ namespace CaffStore.Backend.Bll.Pagination.Extensions
 {
 	public static class QueryableExtensions
 	{
-		public static async Task<PagedResult<TDestination>> ToPagedAsync<TSource, TDestination>(this IQueryable<TSource> query, IPaginationQuery paginationQuery, IMapper mapper) where TSource : class
+		public static async Task<PagedResponse<TDestination>> ToPagedAsync<TSource, TDestination>(this IQueryable<TSource> query, IPagedQuery pagedQuery, IMapper mapper) where TSource : class
 		{
-			var result = new PagedResult<TDestination>
+			var result = new PagedResponse<TDestination>
 			{
-				CurrentPage = paginationQuery.Page,
-				PageSize = paginationQuery.PageSize,
+				CurrentPage = pagedQuery.Page,
+				PageSize = pagedQuery.PageSize,
 				TotalResultCount = await query.CountAsync()
 			};
 
-			var skip = (paginationQuery.Page - 1) * paginationQuery.PageSize;
+			var skip = (pagedQuery.Page - 1) * pagedQuery.PageSize;
 
 			result.Results = await query
 				.Skip(skip)
-				.Take(paginationQuery.PageSize)
+				.Take(pagedQuery.PageSize)
 				.ProjectTo<TDestination>(mapper.ConfigurationProvider)
 				.ToListAsync();
 

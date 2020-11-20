@@ -33,11 +33,14 @@ namespace CaffStore.Backend.Dal
 		public DbSet<CiffDataTag> CiffDataTags { get; set; }
 		public DbSet<Tag> Tags { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder builder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			base.OnModelCreating(builder);
+			modelBuilder.Entity<CaffFile>();
+			modelBuilder.Entity<PreviewFile>();
 
-			builder.RegisterSoftDeleteQueryFilter();
+			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.RegisterSoftDeleteQueryFilter();
 		}
 
 		public override int SaveChanges()

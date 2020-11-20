@@ -7,6 +7,8 @@ namespace CaffStore.Backend.Interface.Bll.Services
 {
 	public interface ICaffItemService
 	{
-		public Task<PagedResult<CaffItemDto>> ListPagedCaffItemsAsync(IPaginationQuery paginationQuery);
+		public Task<PagedResponse<CaffItemDto>> GetPagedCaffItemsAsync(IPagedQuery pagedQuery);
+		public Task<CaffItemDetailsDto> GetCaffItemAsync(long caffItemId);
+		Task<CaffItemDetailsDto> AddCaffItemAsync(AddCaffItemDto caffItem);
 	}
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CaffStore.Backend.Dal.Entities
 {
-	public class File : ISoftDeletableEntity, IAuditableEntity
+	public abstract class File : ISoftDeletableEntity, IAuditableEntity
 	{
 		public Guid Id { get; set; }
 

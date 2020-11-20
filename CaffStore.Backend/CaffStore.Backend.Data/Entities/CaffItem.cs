@@ -21,11 +21,11 @@ namespace CaffStore.Backend.Dal.Entities
 
 		public Guid? CaffFileId { get; set; }
 
-		public File CaffFile { get; set; }
+		public CaffFile CaffFile { get; set; }
 
 		public Guid? PreviewFileId { get; set; }
 
-		public File PreviewFile { get; set; }
+		public PreviewFile PreviewFile { get; set; }
 
 		public bool IsDeleted { get; set; }
 

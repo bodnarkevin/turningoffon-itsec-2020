@@ -4,6 +4,8 @@
 	{
 		public string ConnectionString { get; set; }
 
-		public string ContainerName { get; set; }
+		public string CaffContainerName { get; set; }
+
+		public string PreviewContainerName { get; set; }
 	}
 }
