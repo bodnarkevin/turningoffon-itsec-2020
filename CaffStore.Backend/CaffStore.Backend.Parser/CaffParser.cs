@@ -1,5 +1,6 @@
 ﻿using CaffStore.Backend.Interface.Bll.Dtos.Caff;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -9,6 +10,8 @@ namespace CaffStore.Backend.Parser
 	{
 		public static async Task<CaffParseResult> ParseCaffFileAsync(Stream fileStream)
 		{
+			// TODO fill with real data
+
 			var tags = new[] { "tag1", "tag2", "tag3" };
 			var ciffData = new CiffDataDto
 			{
@@ -29,11 +32,14 @@ namespace CaffStore.Backend.Parser
 				Creation = DateTime.Now,
 				Animations = new[] { animation },
 			};
+			var preview = new Bitmap(100, 200);
+			preview.SetPixel(1, 1, Color.Red);
+
 			return new CaffParseResult
 			{
 				Succeeded = true,
 				Message = "Success",
-				Preview = null,
+				Preview = preview,
 				Result = caffData,
 			};
 		}

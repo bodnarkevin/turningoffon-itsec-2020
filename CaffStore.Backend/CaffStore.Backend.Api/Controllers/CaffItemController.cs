@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using CaffStore.Backend.Interface.Bll.Dtos.Error;
+using CaffStore.Backend.Interface.Bll.Dtos.File;
 
 namespace CaffStore.Backend.Api.Controllers
 {
@@ -51,6 +52,16 @@ namespace CaffStore.Backend.Api.Controllers
 		public Task<CaffItemDetailsDto> AddCaffItem([FromForm] AddCaffItemDto addCaffItem)
 		{
 			return _caffItemService.AddCaffItemAsync(addCaffItem);
+		}
+
+		[HttpGet("{caffItemId}/download",
+			Name = nameof(DownloadCaffItem))]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(FileDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public Task<FileDto> DownloadCaffItem([FromRoute] long caffItemId)
+		{
+			return _caffItemService.DownloadCaffFileAsync(caffItemId);
 		}
 	}
 }
