@@ -121,13 +121,16 @@ namespace CaffStore.Backend.Bll.Services
 
 		public async Task SetPreviewFileUris(IEnumerable<FileDto> files)
 		{
+			var fileDtos = files.ToList();
+			var fileIds = fileDtos.Select(f => f.Id);
+
 			// Prefetch all needed files
 			await _context
 				.Files
-				.Where(entity => files.Any(dto => dto.Id == entity.Id))
+				.Where(f => fileIds.Contains(f.Id))
 				.ToListAsync();
 
-			foreach (var file in files)
+			foreach (var file in fileDtos)
 				await SetPreviewFileUri(file);
 		}
 
