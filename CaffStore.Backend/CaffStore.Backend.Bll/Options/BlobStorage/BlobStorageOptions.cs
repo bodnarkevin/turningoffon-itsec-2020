@@ -10,8 +10,10 @@ namespace CaffStore.Backend.Bll.Options.BlobStorage
 
 		public string StorageAccountKey { get; set; }
 
+		public string PreviewContainerName { get; set; }
+
 		public string CaffContainerName { get; set; }
 
-		public string PreviewContainerName { get; set; }
+		public int SasTokenLifetimeSeconds { get; set; }
 	}
 }
