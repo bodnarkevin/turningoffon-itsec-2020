@@ -1,4 +1,3 @@
-using CaffStore.Backend.Api.BlobStorage;
 using CaffStore.Backend.Api.Identity;
 using CaffStore.Backend.Api.Swagger;
 using CaffStore.Backend.Bll.AutoMapper;
@@ -47,8 +46,6 @@ namespace CaffStore.Backend.Api
 			services.AddCaffStoreIdentityServer(_configuration);
 
 			services.AddCaffStoreAuthentication(_configuration);
-
-			services.AddCaffStoreBlobStorage(_configuration);
 
 			services.AddCaffStoreSwaggerGen(_configuration);
 		}

@@ -29,8 +29,8 @@ namespace CaffStore.Backend.Api.Identity
 				.AddEntityFrameworkStores<CaffStoreDbContext>()
 				.AddDefaultTokenProviders()
 				.AddRoles<Role>()
-				.AddUserStore<UserStore<User, Role, CaffStoreDbContext, int>>()
-				.AddRoleStore<RoleStore<Role, CaffStoreDbContext, int>>()
+				.AddUserStore<UserStore<User, Role, CaffStoreDbContext, long>>()
+				.AddRoleStore<RoleStore<Role, CaffStoreDbContext, long>>()
 				.AddSignInManager<SignInManager<User>>();
 		}
 
