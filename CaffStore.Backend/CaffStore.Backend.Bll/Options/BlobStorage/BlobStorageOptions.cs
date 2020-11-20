@@ -1,8 +1,14 @@
-﻿namespace CaffStore.Backend.Bll.Options.BlobStorage
+﻿using System;
+
+namespace CaffStore.Backend.Bll.Options.BlobStorage
 {
 	public class BlobStorageOptions
 	{
-		public string ConnectionString { get; set; }
+		public Uri StorageAccountUri { get; set; }
+
+		public string StorageAccountName { get; set; }
+
+		public string StorageAccountKey { get; set; }
 
 		public string CaffContainerName { get; set; }
 

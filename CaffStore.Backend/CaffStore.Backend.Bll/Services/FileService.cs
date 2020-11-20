@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage;
 using File = CaffStore.Backend.Dal.Entities.File;
 
 namespace CaffStore.Backend.Bll.Services
@@ -34,7 +35,10 @@ namespace CaffStore.Backend.Bll.Services
 			var blobStorageOptions = new BlobStorageOptions();
 			configuration.Bind(nameof(BlobStorageOptions), blobStorageOptions);
 
-			var blobServiceClient = new BlobServiceClient(blobStorageOptions.ConnectionString);
+			var storageSharedKeyCredential = new StorageSharedKeyCredential(blobStorageOptions.StorageAccountName, blobStorageOptions.StorageAccountKey);
+			var blobServiceClient = new BlobServiceClient(blobStorageOptions.StorageAccountUri, storageSharedKeyCredential);
+
+			var canSign = blobServiceClient.CanGenerateAccountSasUri;
 
 			_caffBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.CaffContainerName);
 			_previewBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.PreviewContainerName);
