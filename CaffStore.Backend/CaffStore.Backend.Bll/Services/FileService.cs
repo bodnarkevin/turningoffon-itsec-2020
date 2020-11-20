@@ -101,7 +101,7 @@ namespace CaffStore.Backend.Bll.Services
 
 			var uri = fileEntity switch
 			{
-				CaffFile _ => GenerateSasUriForCaffFile(blobClient.Uri),
+				CaffFile _ => GenerateSasUri(blobClient.Uri),
 				PreviewFile _ => blobClient.Uri,
 				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
 			};
@@ -174,7 +174,7 @@ namespace CaffStore.Backend.Bll.Services
 			return file.Id + file.Extension;
 		}
 
-		private Uri GenerateSasUriForCaffFile(Uri bloUri)
+		private Uri GenerateSasUri(Uri bloUri)
 		{
 			var blobClient = new BlobClient(bloUri, _sharedKeyCredential);
 			return blobClient.GenerateSasUri(BlobSasPermissions.Read, DateTimeOffset.Now.AddSeconds(_sasTokenLifetimeSeconds));
