@@ -4,12 +4,6 @@
     align-items: center;
 }
 
-.form-element label {
-    font: normal normal 600 18px/20px Roboto;
-    color: #787878;
-    margin-bottom: 10px;
-}
-
 .btn-primary {
     background-color: #0276aa;
     border-radius: 10px;
@@ -44,7 +38,7 @@
 
 input {
     border-radius: 5px;
-    border: 1px solid transparent;
+    border: 2px solid transparent;
     height: 30px;
     padding: 0 10px;
     font: normal normal 600 13px/15px Roboto;
@@ -52,7 +46,8 @@ input {
 }
 
 input:focus {
-    border: 1px solid #015e88;
+    border: 2px solid #015e88 !important;
+    outline: none;
 }
 
 .panel {
