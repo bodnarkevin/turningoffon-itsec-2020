@@ -105,6 +105,8 @@ namespace CaffStore.Backend.Bll.Services
 			await using (var previewStream = new MemoryStream())
 			{
 				parseResult.Preview.Save(previewStream, ImageFormat.Png);
+				previewStream.Position = 0;
+
 				previewFileId = await _fileService.UploadFileAsync(previewStream, ".png", FileType.Preview);
 			}
 
