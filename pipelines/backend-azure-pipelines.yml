@@ -32,6 +32,9 @@ stages:
               organization: 'bodnarkevin'
               scannerMode: 'MSBuild'
               projectKey: 'caffly-backend'
+              extraProperties: |
+                sonar.projectBaseDir=$(workingDirectory)
+                sonar.exclusions=CaffStore.Backend.Api/Migrations/**/*
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
