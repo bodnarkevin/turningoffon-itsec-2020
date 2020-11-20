@@ -1,0 +1,18 @@
+.form-element {
+    margin-bottom: 40px;
+    width: 80%;
+}
+
+.btn-primary {
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.form-element input {
+    width: 70%;
+}
+
+.row .form-element input {
+    width: 60%;
+}
+

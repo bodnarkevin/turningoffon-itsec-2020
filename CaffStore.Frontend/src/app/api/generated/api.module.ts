@@ -3,6 +3,7 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
+import { CaffItemService } from './api/caffItem.service';
 import { UserService } from './api/user.service';
 
 @NgModule({

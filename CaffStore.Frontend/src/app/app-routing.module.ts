@@ -1,25 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
-import {ProfileComponent} from './profile/profile.component';
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    pathMatch: 'full'
-  },
-  {
-    path: 'profile',
-    component: ProfileComponent,
-    pathMatch: 'full'
-  }
+  { path: '', loadChildren: () => import('./startpage/startpage.module').then(m => m.StartpageModule) },
+  { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
+  { path: 'caff', loadChildren: () => import('./caff-details/caff-details.module').then(m => m.CaffDetailsModule) },
+  { path: 'list', loadChildren: () => import('./caff-list/caff-list.module').then(m => m.CaffListModule) },
+  { path: 'my_caffs', loadChildren: () => import('./caff-list/caff-list.module').then(m => m.CaffListModule) },
+  { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule) }
 ];
 
 @NgModule({

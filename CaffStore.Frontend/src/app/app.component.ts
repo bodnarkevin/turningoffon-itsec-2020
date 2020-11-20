@@ -1,6 +1,9 @@
-import {Component} from '@angular/core';
-import {OAuthService} from 'angular-oauth2-oidc';
-import {environment} from '../environments/environment';
+import { Component } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
+
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +12,18 @@ import {environment} from '../environments/environment';
 })
 export class AppComponent {
 
-  constructor(private oAuthService: OAuthService) {
+  showFrame: boolean = false;
+
+  constructor(private oAuthService: OAuthService, private router: Router) {
+
+    // keret komponenst a keződoldalon ne jelenítsük meg
+    this.router.events.pipe(filter((event: any) => event instanceof NavigationEnd)).subscribe(event => {
+        if (event.url == '/') {
+          this.showFrame = false;
+        } else {
+            this.showFrame = true;
+        }
+      });
 
     // Required for password flow
     this.oAuthService.oidc = false;
