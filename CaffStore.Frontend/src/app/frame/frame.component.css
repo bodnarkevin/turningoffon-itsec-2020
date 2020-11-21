@@ -1,0 +1,43 @@
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: #03a9f4;
+    margin-bottom: 40px;
+}
+
+.content {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 30px;
+}
+
+h1 {
+    color: #FFFFFF;
+    font: normal normal 600 35px/40px Roboto;
+}
+
+button {
+    background-color: #FFFFFF;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.menu-container {
+    height: calc(100vh - 80px);
+    width: 250px;
+    background-color: #03a9f4;
+    z-index: 150;
+    position: absolute;
+    top: 80px;
+}
+
+.menu {
+    height: 60px;
+    background-color: #0276aa;
+    cursor: pointer;    
+}

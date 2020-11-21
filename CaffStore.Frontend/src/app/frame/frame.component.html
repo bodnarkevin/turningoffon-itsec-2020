@@ -1,1 +1,12 @@
-<p>frame works!</p>
+<div class="header">
+    <div class="content row">
+        <button (click)="menuOpened = !menuOpened;"></button>
+        <h1>CAFFly {{ title.length > 0 ? '- ' : '' }}{{ title }}</h1>
+    </div>
+</div>
+<div *ngIf="menuOpened" class="menu-container">
+    <!--tudom, hogy lehet router-link, de ide inkább ez kell-->
+    <div class="menu" (click)="onNavigateTo('/profile')">
+        Profile
+    </div>
+</div>

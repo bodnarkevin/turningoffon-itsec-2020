@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 export class AppComponent {
 
   showFrame: boolean = false;
+  title: string = '';
 
   constructor(private oAuthService: OAuthService, private router: Router) {
 
@@ -22,6 +23,27 @@ export class AppComponent {
           this.showFrame = false;
         } else {
             this.showFrame = true;
+            
+            switch(event.url) {
+                case '/profile':
+                    this.title = 'User profile';
+                    break;
+                case '/users':
+                    this.title = 'Users';
+                    break;
+                case '/list':
+                    this.title = '';
+                    break;
+                case '/my-caffs':
+                    this.title = 'CAFF list';
+                    break;
+                case '/caff':
+                    this.title = 'CAFF';
+                    break;
+                default:
+                    this.title = '';
+                    break;
+            }
         }
       });
 
