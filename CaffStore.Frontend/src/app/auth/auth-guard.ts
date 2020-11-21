@@ -4,25 +4,23 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 // https://angular.io/guide/router#resolve-pre-fetching-component-data
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
   
-  constructor(private router: Router) {}
+    constructor(private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): boolean {
-    let url: string = state.url;
-    return this.canAccess(url);
-  }
-
-  canAccess(url: string): boolean {
-    if (url === '/users' || url.includes('userId')) {
-        // TODO: csak adminként lehessen elérni ezeket a route-okat
-        this.router.navigate(['/error']);
-        return false;
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot): boolean {
+            let url: string = state.url;
+            if (url === '/users' || (route.queryParams && route.queryParams.userId)) {
+                // TODO: csak adminként lehessen elérni ezeket a route-okat
+                // this.router.navigate(['/error']);
+            } else if (url === '/') {
+                // TODO: ha úgy navigál a loginra, hogy már be van jelentkezve, akkor irányítsuk át a listára
+                // this.router.navigate(['/list']);
+            }
+            return true;
     }
-    return true;
-  }
 }
