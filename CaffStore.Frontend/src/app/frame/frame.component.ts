@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
     selector: 'app-frame',
@@ -12,7 +13,7 @@ export class FrameComponent implements OnInit, OnChanges {
 
     menuOpened: boolean = false;
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private oAuthService: OAuthService) { }
 
     ngOnInit() { }
 
@@ -24,7 +25,8 @@ export class FrameComponent implements OnInit, OnChanges {
     }
 
     onLogout(): void {
-        // TODO: logout
+        // TODO: test
+        this.oAuthService.revokeTokenAndLogout();
         this.router.navigate(['/']);
     }
 

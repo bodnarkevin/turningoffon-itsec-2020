@@ -10,6 +10,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
 })
 export class LoginComponent implements OnInit {
 
+    // TODO: pw validation: 1 small char, 1 big char, 1 number, at least 8 chars
+
     loginForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', Validators.required)
@@ -23,6 +25,7 @@ export class LoginComponent implements OnInit {
         this.oAuthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
             this.loginForm.controls.email.value, this.loginForm.controls.password.value)
             .then(tokenInfo => {
+                // TODO: tokenInfo role --> admin
                 this.router.navigate(['/list']);
             })
             .catch(() => {
