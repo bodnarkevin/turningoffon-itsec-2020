@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
@@ -8,14 +9,13 @@ import { OAuthService } from 'angular-oauth2-oidc';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-    message: string = '';
 
     loginForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         password: new FormControl('', Validators.required)
     });
 
-    constructor(private oAuthService: OAuthService) { }
+    constructor(private oAuthService: OAuthService, private router: Router) { }
 
     ngOnInit() { }
 
@@ -23,22 +23,10 @@ export class LoginComponent implements OnInit {
         this.oAuthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
             this.loginForm.controls.email.value, this.loginForm.controls.password.value)
             .then(tokenInfo => {
-                console.log(this.message);
-                this.message = JSON.stringify(tokenInfo);
+                this.router.navigate(['/list']);
             })
             .catch(() => {
-                this.message = 'Invalid username or password';
+                alert('Invalid username or password');
             });
     }
-
-    /*login(username: string, password: string): void {
-        this.oAuthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(username, password)
-        .then(tokenInfo => {
-            this.message = JSON.stringify(tokenInfo);
-        })
-        .catch(() => {
-            this.message = 'Invalid username or password';
-        });
-    }*/
-
 }
