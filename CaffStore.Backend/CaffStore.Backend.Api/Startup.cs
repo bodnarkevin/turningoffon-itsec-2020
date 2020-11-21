@@ -5,7 +5,6 @@ using CaffStore.Backend.Bll.Services.Extensions;
 using CaffStore.Backend.Dal;
 using CaffStore.Backend.Dal.Entities;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,22 +39,17 @@ namespace CaffStore.Backend.Api
 					builder => builder.MigrationsAssembly("CaffStore.Backend.Api")));
 
 			services.AddCaffStoreAutoMapper();
-
 			services.AddCaffStoreBusinessServices();
-
 			services.AddCaffStoreIdentity();
-
 			services.AddCaffStoreIdentityServer(_configuration);
-
 			services.AddCaffStoreAuthentication(_configuration);
-
+			services.AddCaffStoreAuthorization();
 			services.AddCaffStoreSwaggerGen(_configuration);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(
 			IApplicationBuilder app,
-			IWebHostEnvironment env,
 			UserManager<User> userManager,
 			RoleManager<Role> roleManager)
 		{

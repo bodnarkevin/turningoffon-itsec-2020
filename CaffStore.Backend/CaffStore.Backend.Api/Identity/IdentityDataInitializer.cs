@@ -14,14 +14,14 @@ namespace CaffStore.Backend.Api.Identity
 
 		public static async Task SeedRolesAsync(RoleManager<Role> roleManager)
 		{
-			var exists = await roleManager.RoleExistsAsync(Roles.Admin);
+			var exists = await roleManager.RoleExistsAsync(CaffStoreRoles.Admin);
 
 			if (exists)
 				return;
 
 			Role role = new Role
 			{
-				Name = Roles.Admin
+				Name = CaffStoreRoles.Admin
 			};
 
 			await roleManager.CreateAsync(role);
@@ -49,7 +49,7 @@ namespace CaffStore.Backend.Api.Identity
 
 			if (result.Succeeded)
 			{
-				await userManager.AddToRoleAsync(user, Roles.Admin);
+				await userManager.AddToRoleAsync(user, CaffStoreRoles.Admin);
 			}
 		}
 	}

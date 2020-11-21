@@ -88,5 +88,15 @@ namespace CaffStore.Backend.Api.Identity
 					options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
 				});
 		}
+
+		public static IServiceCollection AddCaffStoreAuthorization(this IServiceCollection services)
+		{
+			return services
+				.AddAuthorizationCore(options =>
+				{
+					options.AddPolicy(CaffStorePolicies.AdminOnly, policy =>
+						policy.RequireRole(CaffStoreRoles.Admin));
+				});
+		}
 	}
 }
