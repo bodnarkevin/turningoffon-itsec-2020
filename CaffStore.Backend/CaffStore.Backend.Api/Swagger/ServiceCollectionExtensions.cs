@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CaffStore.Backend.Bll.Options.Swagger;
+﻿using CaffStore.Backend.Bll.Options.Swagger;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
 
 namespace CaffStore.Backend.Api.Swagger
 {

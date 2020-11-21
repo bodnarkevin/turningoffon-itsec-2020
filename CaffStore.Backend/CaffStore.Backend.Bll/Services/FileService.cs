@@ -90,7 +90,7 @@ namespace CaffStore.Backend.Bll.Services
 			{
 				CaffFile _ => _caffBlobContainerClient,
 				PreviewFile _ => _previewBlobContainerClient,
-				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
+				_ => throw new InvalidOperationException()
 			};
 
 			var blobClient = blobContainerClient.GetBlobClient(blobName);
@@ -99,7 +99,7 @@ namespace CaffStore.Backend.Bll.Services
 			{
 				CaffFile _ => GenerateSasUri(blobClient.Uri),
 				PreviewFile _ => blobClient.Uri,
-				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
+				_ => throw new InvalidOperationException()
 			};
 
 			return new FileDto
@@ -152,7 +152,7 @@ namespace CaffStore.Backend.Bll.Services
 			{
 				CaffFile _ => _caffBlobContainerClient,
 				PreviewFile _ => _previewBlobContainerClient,
-				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
+				_ => throw new InvalidOperationException()
 			};
 
 			var blobName = GetBlobName(fileEntity);
