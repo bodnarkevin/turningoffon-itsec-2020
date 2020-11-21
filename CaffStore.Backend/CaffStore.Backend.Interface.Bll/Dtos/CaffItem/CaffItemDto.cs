@@ -2,7 +2,7 @@
 using CaffStore.Backend.Interface.Bll.Dtos.File;
 using CaffStore.Backend.Interface.Bll.Dtos.User;
 
-namespace CaffStore.Backend.Interface.Bll.Dtos.Caff
+namespace CaffStore.Backend.Interface.Bll.Dtos.CaffItem
 {
 	public class CaffItemDto
 	{

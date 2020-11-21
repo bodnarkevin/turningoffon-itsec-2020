@@ -13,9 +13,7 @@ namespace CaffStore.Backend.Bll.Services
 	public class UserService : IUserService
 	{
 		private readonly IHttpRequestContext _requestContext;
-
 		private readonly UserManager<User> _userManager;
-
 		private readonly IMapper _mapper;
 
 		public UserService(IHttpRequestContext requestContext, UserManager<User> userManager, IMapper mapper)

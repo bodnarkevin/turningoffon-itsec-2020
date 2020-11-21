@@ -1,4 +1,4 @@
-﻿using CaffStore.Backend.Interface.Bll.Dtos.Caff;
+﻿using CaffStore.Backend.Interface.Bll.Dtos.CaffItem;
 using System;
 using System.Drawing;
 using System.IO;

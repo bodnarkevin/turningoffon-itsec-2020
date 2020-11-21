@@ -22,13 +22,9 @@ namespace CaffStore.Backend.Bll.Services
 	public class FileService : IFileService
 	{
 		private readonly CaffStoreDbContext _context;
-
 		private readonly StorageSharedKeyCredential _sharedKeyCredential;
-
 		private readonly BlobContainerClient _caffBlobContainerClient;
-
 		private readonly BlobContainerClient _previewBlobContainerClient;
-
 		private readonly int _sasTokenLifetimeSeconds;
 
 		public FileService(CaffStoreDbContext context, IConfiguration configuration)
