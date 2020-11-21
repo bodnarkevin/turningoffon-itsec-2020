@@ -129,7 +129,7 @@ namespace CaffStore.Backend.Bll.Services
 			return await GetCaffItemAsync(caffItemEntity.Id);
 		}
 
-		public async Task<CaffItemDetailsDto> UpdateCaffItemAsync(long caffItemId, UpdateCaffItemDto updateCaffItem)
+		public async Task<CaffItemDetailsDto> UpdateMyCaffItemAsync(long caffItemId, UpdateCaffItemDto updateCaffItem)
 		{
 			var caffItemEntity = await _context
 				.CaffItems
@@ -146,7 +146,7 @@ namespace CaffStore.Backend.Bll.Services
 			return await GetCaffItemAsync(caffItemId);
 		}
 
-		public async Task DeleteCaffItemAsync(long caffItemId)
+		public async Task DeleteMyCaffItemAsync(long caffItemId)
 		{
 			var caffItemEntity = await _context
 				.CaffItems

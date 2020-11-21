@@ -13,8 +13,8 @@ namespace CaffStore.Backend.Interface.Bll.Services
 		Task<PagedResponse<CaffItemDto>> GetPagedCaffItemsAsync(IPagedQuery pagedQuery);
 		Task<CaffItemDetailsDto> GetCaffItemAsync(long caffItemId);
 		Task<CaffItemDetailsDto> AddCaffItemAsync(AddCaffItemDto caffItem);
-		Task<CaffItemDetailsDto> UpdateCaffItemAsync(long caffItemId, UpdateCaffItemDto updateCaffItem);
-		Task DeleteCaffItemAsync(long caffItemId);
+		Task<CaffItemDetailsDto> UpdateMyCaffItemAsync(long caffItemId, UpdateCaffItemDto updateCaffItem);
+		Task DeleteMyCaffItemAsync(long caffItemId);
 		Task<FileDto> DownloadCaffFileAsync(long caffItemId);
 		Task<IEnumerable<CommentDto>> GetCaffItemCommentsAsync(long caffItemId);
 		Task<CommentDto> AddCaffItemCommentAsync(long caffItemId, AddCommentDto addComment);

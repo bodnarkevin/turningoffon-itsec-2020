@@ -37,7 +37,7 @@ namespace CaffStore.Backend.Bll.Services
 			return _mapper.Map<CommentDto>(commentEntity);
 		}
 		
-		public async Task<CommentDto> UpdateCommentAsync(long commentId, UpdateCommentDto updateComment)
+		public async Task<CommentDto> UpdateMyCommentAsync(long commentId, UpdateCommentDto updateComment)
 		{
 			var commentEntity = await _context
 				.Comments
@@ -55,7 +55,7 @@ namespace CaffStore.Backend.Bll.Services
 			return _mapper.Map<CommentDto>(commentEntity);
 		}
 		
-		public async Task DeleteCommentAsync(long commentId)
+		public async Task DeleteMyCommentAsync(long commentId)
 		{
 			var commentEntity = await _context
 				.Comments

@@ -51,6 +51,12 @@ namespace CaffStore.Backend.Dal
 			return base.SaveChanges();
 		}
 
+		public override int SaveChanges(bool acceptAllChangesOnSuccess)
+		{
+			SaveChangesCore();
+			return base.SaveChanges(acceptAllChangesOnSuccess);
+		}
+
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
 		{
 			SaveChangesCore();
@@ -61,12 +67,6 @@ namespace CaffStore.Backend.Dal
 		{
 			SaveChangesCore();
 			return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-		}
-
-		public override int SaveChanges(bool acceptAllChangesOnSuccess)
-		{
-			SaveChangesCore();
-			return base.SaveChanges(acceptAllChangesOnSuccess);
 		}
 
 		private void SaveChangesCore()

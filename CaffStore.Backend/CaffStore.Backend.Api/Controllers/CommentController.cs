@@ -32,24 +32,24 @@ namespace CaffStore.Backend.Api.Controllers
 		}
 
 		[HttpPut("{commentId}",
-			Name = nameof(UpdateComment))]
+			Name = nameof(UpdateMyComment))]
 		[Produces(MediaTypeNames.Application.Json)]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(CommentDto), (int)HttpStatusCode.OK)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
-		public Task<CommentDto> UpdateComment([FromRoute] long commentId, [FromBody] UpdateCommentDto updateComment)
+		public Task<CommentDto> UpdateMyComment([FromRoute] long commentId, [FromBody] UpdateCommentDto updateComment)
 		{
-			return _commentService.UpdateCommentAsync(commentId, updateComment);
+			return _commentService.UpdateMyCommentAsync(commentId, updateComment);
 		}
 
 		[HttpDelete("{commentId}",
-			Name = nameof(DeleteComment))]
+			Name = nameof(DeleteMyComment))]
 		[Produces(MediaTypeNames.Application.Json)]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
-		public async Task<IActionResult> DeleteComment([FromRoute] long commentId)
+		public async Task<IActionResult> DeleteMyComment([FromRoute] long commentId)
 		{
-			await _commentService.DeleteCommentAsync(commentId);
+			await _commentService.DeleteMyCommentAsync(commentId);
 
 			return NoContent();
 		}

@@ -1,10 +1,9 @@
 ﻿using CaffStore.Backend.Interface.Bll.Dtos.File;
+using CaffStore.Backend.Interface.Bll.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CaffStore.Backend.Interface.Bll.Enums;
-using Microsoft.AspNetCore.Http;
 
 namespace CaffStore.Backend.Interface.Bll.Services
 {

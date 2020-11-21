@@ -34,14 +34,14 @@ namespace CaffStore.Backend.Bll.Services
 			var blobStorageOptions = new BlobStorageOptions();
 			configuration.Bind(nameof(BlobStorageOptions), blobStorageOptions);
 
-			_sasTokenLifetimeSeconds = blobStorageOptions.SasTokenLifetimeSeconds;
+			//_sasTokenLifetimeSeconds = blobStorageOptions.SasTokenLifetimeSeconds;
 
-			_sharedKeyCredential = new StorageSharedKeyCredential(blobStorageOptions.StorageAccountName, blobStorageOptions.StorageAccountKey);
+			//_sharedKeyCredential = new StorageSharedKeyCredential(blobStorageOptions.StorageAccountName, blobStorageOptions.StorageAccountKey);
 
-			var blobServiceClient = new BlobServiceClient(blobStorageOptions.StorageAccountUri, _sharedKeyCredential);
+			//var blobServiceClient = new BlobServiceClient(blobStorageOptions.StorageAccountUri, _sharedKeyCredential);
 
-			_caffBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.CaffContainerName);
-			_previewBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.PreviewContainerName);
+			//_caffBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.CaffContainerName);
+			//_previewBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.PreviewContainerName);
 		}
 
 		public async Task<Guid> UploadFileAsync(Stream stream, string extension, FileType fileType)
@@ -90,7 +90,7 @@ namespace CaffStore.Backend.Bll.Services
 			{
 				CaffFile _ => _caffBlobContainerClient,
 				PreviewFile _ => _previewBlobContainerClient,
-				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
+				_ => throw new InvalidOperationException()
 			};
 
 			var blobClient = blobContainerClient.GetBlobClient(blobName);
@@ -99,7 +99,7 @@ namespace CaffStore.Backend.Bll.Services
 			{
 				CaffFile _ => GenerateSasUri(blobClient.Uri),
 				PreviewFile _ => blobClient.Uri,
-				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
+				_ => throw new InvalidOperationException()
 			};
 
 			return new FileDto
@@ -152,7 +152,7 @@ namespace CaffStore.Backend.Bll.Services
 			{
 				CaffFile _ => _caffBlobContainerClient,
 				PreviewFile _ => _previewBlobContainerClient,
-				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
+				_ => throw new InvalidOperationException()
 			};
 
 			var blobName = GetBlobName(fileEntity);
