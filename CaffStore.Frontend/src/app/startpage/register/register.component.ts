@@ -9,8 +9,6 @@ import { RegisterUserDto, UserService } from '../../api/generated';
 })
 export class RegisterComponent implements OnInit {
 
-    public message: string;
-
     registerForm = new FormGroup({
         firstName: new FormControl('', Validators.required),
         lastName: new FormControl('', Validators.required),
@@ -22,7 +20,6 @@ export class RegisterComponent implements OnInit {
 
     ngOnInit() { }
 
-
     onRegister(): void {
         const registerUserDto: RegisterUserDto = {
             email: this.registerForm.controls.email.value,
@@ -33,11 +30,21 @@ export class RegisterComponent implements OnInit {
     
         this.userService.registerUser(registerUserDto).toPromise()
             .then(() => {
-                this.message = 'User registered!';
+                // Clear form
+                this.registerForm.reset();
+                alert('Successful registration');
             })
             .catch((response) => {
-                console.log(response);
-                this.message = JSON.stringify(response);
+                // Conflict
+                if (response.status === 409) {
+                    alert(response.error.message);
+                }
+                // Bad request
+                if (response.status === 400) {
+                    alert('Registration failed');
+                } else {
+                    alert('Something went wrong. Please try again later.');
+                }
             });
     }
 }
