@@ -43,7 +43,7 @@ namespace CaffStore.Backend.Bll.Services
 				throw new CaffStoreBusinessException("Registration failed", result.Errors.Select(e => e.Description));
 		}
 
-		public async Task<UserProfileDto> GetUserProfileAsync()
+		public async Task<UserProfileDto> GetMyUserProfileAsync()
 		{
 			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
 
@@ -54,7 +54,7 @@ namespace CaffStore.Backend.Bll.Services
 			return responseUserProfile;
 		}
 
-		public async Task<UserProfileDto> UpdateUserProfileAsync(UpdateUserProfileDto updateUserProfile)
+		public async Task<UserProfileDto> UpdateMyUserProfileAsync(UpdateUserProfileDto updateUserProfile)
 		{
 			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
 
@@ -69,7 +69,7 @@ namespace CaffStore.Backend.Bll.Services
 			return responseUserProfile;
 		}
 
-		public async Task ChangePasswordAsync(ChangePasswordDto changePassword)
+		public async Task ChangeMyPasswordAsync(ChangePasswordDto changePassword)
 		{
 			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
 

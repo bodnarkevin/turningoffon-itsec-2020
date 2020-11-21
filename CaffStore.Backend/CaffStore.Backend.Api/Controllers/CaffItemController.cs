@@ -39,11 +39,13 @@ namespace CaffStore.Backend.Api.Controllers
 		[HttpPost(
 			Name = nameof(AddCaffItem))]
 		[Produces(MediaTypeNames.Application.Json)]
-		[ProducesResponseType(typeof(CaffItemDetailsDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(CaffItemDetailsDto), (int)HttpStatusCode.Created)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
-		public Task<CaffItemDetailsDto> AddCaffItem([FromForm] AddCaffItemDto addCaffItem)
+		public async Task<ActionResult<CaffItemDetailsDto>> AddCaffItem([FromForm] AddCaffItemDto addCaffItem)
 		{
-			return _caffItemService.AddCaffItemAsync(addCaffItem);
+			var response = await _caffItemService.AddCaffItemAsync(addCaffItem);
+
+			return CreatedAtAction(nameof(GetCaffItem), new {caffItemId = response.Id}, response);
 		}
 
 		[HttpGet("{caffItemId}",
@@ -57,23 +59,23 @@ namespace CaffStore.Backend.Api.Controllers
 		}
 
 		[HttpPut("{caffItemId}",
-			Name = nameof(UpdateCaffItem))]
+			Name = nameof(UpdateMyCaffItem))]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(CaffItemDetailsDto), (int)HttpStatusCode.OK)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
-		public Task<CaffItemDetailsDto> UpdateCaffItem([FromRoute] long caffItemId,
+		public Task<CaffItemDetailsDto> UpdateMyCaffItem([FromRoute] long caffItemId,
 			[FromBody] UpdateCaffItemDto updateCaffItem)
 		{
-			return _caffItemService.UpdateCaffItemAsync(caffItemId, updateCaffItem);
+			return _caffItemService.UpdateMyCaffItemAsync(caffItemId, updateCaffItem);
 		}
 
 		[HttpDelete("{caffItemId}",
-			Name = nameof(DeleteCaffItem))]
+			Name = nameof(DeleteMyCaffItem))]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
-		public async Task<IActionResult> DeleteCaffItem([FromRoute] long caffItemId)
+		public async Task<IActionResult> DeleteMyCaffItem([FromRoute] long caffItemId)
 		{
-			await _caffItemService.DeleteCaffItemAsync(caffItemId);
+			await _caffItemService.DeleteMyCaffItemAsync(caffItemId);
 			return NoContent();
 		}
 
@@ -101,11 +103,13 @@ namespace CaffStore.Backend.Api.Controllers
 			Name = nameof(AddCaffItemComment))]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(MediaTypeNames.Application.Json)]
-		[ProducesResponseType(typeof(CommentDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(CommentDto), (int)HttpStatusCode.Created)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
-		public Task<CommentDto> AddCaffItemComment([FromRoute] long caffItemId, [FromBody] AddCommentDto addComment)
+		public async Task<ActionResult<CommentDto>> AddCaffItemComment([FromRoute] long caffItemId, [FromBody] AddCommentDto addComment)
 		{
-			return _caffItemService.AddCaffItemCommentAsync(caffItemId, addComment);
+			var response = await _caffItemService.AddCaffItemCommentAsync(caffItemId, addComment);
+			
+			return CreatedAtAction(nameof(CommentController.GetComment), "Comment",new {commentId = response.Id}, response);
 		}
 	}
 }

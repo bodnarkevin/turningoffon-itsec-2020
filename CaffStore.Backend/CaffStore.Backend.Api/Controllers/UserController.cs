@@ -30,41 +30,40 @@ namespace CaffStore.Backend.Api.Controllers
 		public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto registerUser)
 		{
 			await _userService.RegisterUserAsync(registerUser);
-
 			return NoContent();
 		}
 
 		[Authorize]
 		[HttpGet("me",
-			Name = nameof(GetUserProfile))]
+			Name = nameof(GetMyUserProfile))]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
-		public async Task<UserProfileDto> GetUserProfile()
+		public async Task<UserProfileDto> GetMyUserProfile()
 		{
-			return await _userService.GetUserProfileAsync();
+			return await _userService.GetMyUserProfileAsync();
 		}
 
 		[Authorize]
 		[HttpPut("me",
-			Name = nameof(UpdateUserProfile))]
+			Name = nameof(UpdateMyUserProfile))]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
-		public async Task<UserProfileDto> UpdateUserProfile([FromBody] UpdateUserProfileDto updateUserProfile)
+		public async Task<UserProfileDto> UpdateMyUserProfile([FromBody] UpdateUserProfileDto updateUserProfile)
 		{
-			return await _userService.UpdateUserProfileAsync(updateUserProfile);
+			return await _userService.UpdateMyUserProfileAsync(updateUserProfile);
 		}
 
 		[Authorize]
 		[HttpPost("me/changePassword",
-			Name = nameof(ChangePassword))]
+			Name = nameof(ChangeMyPassword))]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
-		public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePassword)
+		public async Task<IActionResult> ChangeMyPassword([FromBody] ChangePasswordDto changePassword)
 		{
-			await _userService.ChangePasswordAsync(changePassword);
+			await _userService.ChangeMyPasswordAsync(changePassword);
 
 			return NoContent();
 		}
