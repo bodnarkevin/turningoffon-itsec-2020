@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 
+import { AuthService } from './auth.service';
+
 // https://angular.io/guide/router#resolve-pre-fetching-component-data
 
 @Injectable({
@@ -8,7 +10,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 })
 export class AuthGuard implements CanActivate {
   
-    constructor(private router: Router) {}
+    constructor(private router: Router, private authService: AuthService) {}
 
     canActivate(
         route: ActivatedRouteSnapshot,
@@ -18,8 +20,11 @@ export class AuthGuard implements CanActivate {
                 // TODO: csak adminként lehessen elérni ezeket a route-okat
                 // this.router.navigate(['/error']);
             } else if (url === '/') {
-                // TODO: ha úgy navigál a loginra, hogy már be van jelentkezve, akkor irányítsuk át a listára
-                // this.router.navigate(['/list']);
+                if (this.authService.isLoggedIn()) {
+                    this.router.navigate(['/list']);
+                } else {
+                    return true;
+                }
             }
             return true;
     }

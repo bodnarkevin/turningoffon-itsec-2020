@@ -34,7 +34,9 @@ export class RegisterComponent implements OnInit {
         this.userService.registerUser(registerUserDto).toPromise()
             .then(() => {
                 this.message = 'User registered!';
-            }).catch(response => {
+            })
+            .catch((response) => {
+                console.log(response);
                 this.message = JSON.stringify(response);
             });
     }
