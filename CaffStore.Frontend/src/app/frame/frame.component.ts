@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
     templateUrl: './frame.component.html',
     styleUrls: ['./frame.component.css']
 })
-export class FrameComponent implements OnInit {
+export class FrameComponent implements OnInit, OnChanges {
 
     @Input() title: string = '';
 
@@ -16,9 +16,16 @@ export class FrameComponent implements OnInit {
 
     ngOnInit() { }
 
-    onNavigateTo(navigateTo: string): void {
-        this.router.navigate([navigateTo]);
-        this.menuOpened = false;
+    
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes && changes.title && changes.title.currentValue !== changes.title.previousValue) {
+            this.menuOpened  = false;
+        }
+    }
+
+    onLogout(): void {
+        // TODO: logout
+        this.router.navigate(['/']);
     }
 
 }

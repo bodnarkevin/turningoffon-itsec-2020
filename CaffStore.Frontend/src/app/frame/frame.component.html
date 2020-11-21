@@ -5,8 +5,20 @@
     </div>
 </div>
 <div *ngIf="menuOpened" class="menu-container">
-    <!--tudom, hogy lehet router-link, de ide inkább ez kell-->
-    <div class="menu" (click)="onNavigateTo('/profile')">
-        Profile
+    <div class="menu">
+        <a routerLink="/list">Home</a>
+    </div>
+    <div class="menu">
+        <a routerLink="/my-caffs">My images</a>
+    </div>
+    <div class="menu">
+        <a routerLink="/profile">Profile</a>
+    </div>
+    <!--TODO: csak admin lássa-->
+    <div class="menu">
+        <a routerLink="/users">Users</a>
+    </div>
+    <div class="menu">
+        <a (click)="onLogout()">Logout</a>
     </div>
 </div>
