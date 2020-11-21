@@ -98,12 +98,12 @@ namespace CaffStore.Backend.Api.Controllers
 		}
 
 		[HttpPost("{caffItemId}/comments",
-			Name = nameof(AddCaffItemComments))]
+			Name = nameof(AddCaffItemComment))]
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(CommentDto), (int)HttpStatusCode.OK)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
-		public Task<CommentDto> AddCaffItemComments([FromRoute] long caffItemId, [FromBody] AddCommentDto addComment)
+		public Task<CommentDto> AddCaffItemComment([FromRoute] long caffItemId, [FromBody] AddCommentDto addComment)
 		{
 			return _caffItemService.AddCaffItemCommentAsync(caffItemId, addComment);
 		}
