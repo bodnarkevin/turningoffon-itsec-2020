@@ -1,14 +1,16 @@
 ﻿using CaffStore.Backend.Api.Pagination.Queries;
-using CaffStore.Backend.Interface.Bll.Dtos.Caff;
+using CaffStore.Backend.Interface.Bll.Dtos.CaffItem;
+using CaffStore.Backend.Interface.Bll.Dtos.Comment;
+using CaffStore.Backend.Interface.Bll.Dtos.Error;
+using CaffStore.Backend.Interface.Bll.Dtos.File;
 using CaffStore.Backend.Interface.Bll.Pagination.Responses;
 using CaffStore.Backend.Interface.Bll.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using CaffStore.Backend.Interface.Bll.Dtos.Error;
-using CaffStore.Backend.Interface.Bll.Dtos.File;
 
 namespace CaffStore.Backend.Api.Controllers
 {
@@ -34,16 +36,6 @@ namespace CaffStore.Backend.Api.Controllers
 			return _caffItemService.GetPagedCaffItemsAsync(pagedQuery);
 		}
 
-		[HttpGet("{caffItemId}",
-			Name = nameof(GetCaffItem))]
-		[Produces(MediaTypeNames.Application.Json)]
-		[ProducesResponseType(typeof(CaffItemDetailsDto), (int)HttpStatusCode.OK)]
-		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
-		public Task<CaffItemDetailsDto> GetCaffItem([FromRoute] long caffItemId)
-		{
-			return _caffItemService.GetCaffItemAsync(caffItemId);
-		}
-
 		[HttpPost(
 			Name = nameof(AddCaffItem))]
 		[Produces(MediaTypeNames.Application.Json)]
@@ -54,6 +46,37 @@ namespace CaffStore.Backend.Api.Controllers
 			return _caffItemService.AddCaffItemAsync(addCaffItem);
 		}
 
+		[HttpGet("{caffItemId}",
+			Name = nameof(GetCaffItem))]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(CaffItemDetailsDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public Task<CaffItemDetailsDto> GetCaffItem([FromRoute] long caffItemId)
+		{
+			return _caffItemService.GetCaffItemAsync(caffItemId);
+		}
+
+		[HttpPut("{caffItemId}",
+			Name = nameof(UpdateCaffItem))]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(CaffItemDetailsDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public Task<CaffItemDetailsDto> UpdateCaffItem([FromRoute] long caffItemId,
+			[FromBody] UpdateCaffItemDto updateCaffItem)
+		{
+			return _caffItemService.UpdateCaffItemAsync(caffItemId, updateCaffItem);
+		}
+
+		[HttpDelete("{caffItemId}",
+			Name = nameof(DeleteCaffItem))]
+		[ProducesResponseType((int)HttpStatusCode.NoContent)]
+		public async Task<IActionResult> DeleteCaffItem([FromRoute] long caffItemId)
+		{
+			await _caffItemService.DeleteCaffItemAsync(caffItemId);
+			return NoContent();
+		}
+
 		[HttpGet("{caffItemId}/download",
 			Name = nameof(DownloadCaffItem))]
 		[Produces(MediaTypeNames.Application.Json)]
@@ -62,6 +85,27 @@ namespace CaffStore.Backend.Api.Controllers
 		public Task<FileDto> DownloadCaffItem([FromRoute] long caffItemId)
 		{
 			return _caffItemService.DownloadCaffFileAsync(caffItemId);
+		}
+
+		[HttpGet("{caffItemId}/comments",
+			Name = nameof(GetCaffItemComments))]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(IEnumerable<CommentDto>), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public Task<IEnumerable<CommentDto>> GetCaffItemComments([FromRoute] long caffItemId)
+		{
+			return _caffItemService.GetCaffItemCommentsAsync(caffItemId);
+		}
+
+		[HttpPost("{caffItemId}/comments",
+			Name = nameof(AddCaffItemComments))]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(CommentDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public Task<CommentDto> AddCaffItemComments([FromRoute] long caffItemId, [FromBody] AddCommentDto addComment)
+		{
+			return _caffItemService.AddCaffItemCommentAsync(caffItemId, addComment);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CaffStore.Backend.Dal.Entities;
-using CaffStore.Backend.Interface.Bll.Dtos.Caff;
+using CaffStore.Backend.Interface.Bll.Dtos.CaffItem;
 using System.Linq;
 
 namespace CaffStore.Backend.Bll.AutoMapper.Profiles
@@ -32,6 +32,7 @@ namespace CaffStore.Backend.Bll.AutoMapper.Profiles
 								Text = t
 							}
 						})));
+			CreateMap<UpdateCaffItemDto, CaffItem>();
 		}
 	}
 }

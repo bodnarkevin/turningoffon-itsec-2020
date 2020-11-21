@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using CaffStore.Backend.Interface.Bll.Dtos.Caff;
+using CaffStore.Backend.Interface.Bll.Dtos.CaffItem;
 
 namespace CaffStore.Backend.Parser
 {

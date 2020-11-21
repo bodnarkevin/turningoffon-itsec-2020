@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Storage;
+using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
 using CaffStore.Backend.Bll.Exceptions;
 using CaffStore.Backend.Bll.Options.BlobStorage;
@@ -7,7 +8,6 @@ using CaffStore.Backend.Dal.Entities;
 using CaffStore.Backend.Interface.Bll.Dtos.File;
 using CaffStore.Backend.Interface.Bll.Enums;
 using CaffStore.Backend.Interface.Bll.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Azure.Storage;
 using File = CaffStore.Backend.Dal.Entities.File;
 
 namespace CaffStore.Backend.Bll.Services
@@ -23,10 +22,10 @@ namespace CaffStore.Backend.Bll.Services
 	public class FileService : IFileService
 	{
 		private readonly CaffStoreDbContext _context;
-
+		private readonly StorageSharedKeyCredential _sharedKeyCredential;
 		private readonly BlobContainerClient _caffBlobContainerClient;
-
 		private readonly BlobContainerClient _previewBlobContainerClient;
+		private readonly int _sasTokenLifetimeSeconds;
 
 		public FileService(CaffStoreDbContext context, IConfiguration configuration)
 		{
@@ -35,10 +34,11 @@ namespace CaffStore.Backend.Bll.Services
 			var blobStorageOptions = new BlobStorageOptions();
 			configuration.Bind(nameof(BlobStorageOptions), blobStorageOptions);
 
-			var storageSharedKeyCredential = new StorageSharedKeyCredential(blobStorageOptions.StorageAccountName, blobStorageOptions.StorageAccountKey);
-			var blobServiceClient = new BlobServiceClient(blobStorageOptions.StorageAccountUri, storageSharedKeyCredential);
+			_sasTokenLifetimeSeconds = blobStorageOptions.SasTokenLifetimeSeconds;
 
-			var canSign = blobServiceClient.CanGenerateAccountSasUri;
+			_sharedKeyCredential = new StorageSharedKeyCredential(blobStorageOptions.StorageAccountName, blobStorageOptions.StorageAccountKey);
+
+			var blobServiceClient = new BlobServiceClient(blobStorageOptions.StorageAccountUri, _sharedKeyCredential);
 
 			_caffBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.CaffContainerName);
 			_previewBlobContainerClient = blobServiceClient.GetBlobContainerClient(blobStorageOptions.PreviewContainerName);
@@ -97,8 +97,9 @@ namespace CaffStore.Backend.Bll.Services
 
 			var uri = fileEntity switch
 			{
-				CaffFile _ => blobClient.GenerateSasUri(BlobSasPermissions.Read, DateTimeOffset.Now.AddMinutes(3)),
-				PreviewFile _ => blobClient.Uri
+				CaffFile _ => GenerateSasUri(blobClient.Uri),
+				PreviewFile _ => blobClient.Uri,
+				_ => throw new ArgumentOutOfRangeException(nameof(fileEntity), fileEntity, null)
 			};
 
 			return new FileDto
@@ -167,6 +168,12 @@ namespace CaffStore.Backend.Bll.Services
 		private string GetBlobName(File file)
 		{
 			return file.Id + file.Extension;
+		}
+
+		private Uri GenerateSasUri(Uri bloUri)
+		{
+			var blobClient = new BlobClient(bloUri, _sharedKeyCredential);
+			return blobClient.GenerateSasUri(BlobSasPermissions.Read, DateTimeOffset.Now.AddSeconds(_sasTokenLifetimeSeconds));
 		}
 	}
 }

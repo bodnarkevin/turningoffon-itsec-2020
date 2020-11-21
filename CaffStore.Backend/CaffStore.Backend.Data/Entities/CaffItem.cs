@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace CaffStore.Backend.Dal.Entities
@@ -26,6 +27,8 @@ namespace CaffStore.Backend.Dal.Entities
 		public Guid? PreviewFileId { get; set; }
 
 		public PreviewFile PreviewFile { get; set; }
+
+		public ICollection<CaffItemComment> Comments { get; set; }
 
 		public bool IsDeleted { get; set; }
 
