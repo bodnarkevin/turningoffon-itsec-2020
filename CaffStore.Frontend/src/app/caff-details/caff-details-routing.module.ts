@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard } from '../auth/auth-guard';
 import { CaffDetailsComponent } from './caff-details.component';
 
-const routes: Routes = [{ path: '', component: CaffDetailsComponent }];
+const routes: Routes = [{ path: '', component: CaffDetailsComponent, canActivate: [AuthGuard] }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

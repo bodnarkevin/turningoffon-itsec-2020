@@ -32,13 +32,13 @@ export class AppComponent {
                     this.title = 'Users';
                     break;
                 case '/list':
-                    this.title = '';
+                    this.title = 'CAFFs';
                     break;
                 case '/my-caffs':
-                    this.title = 'CAFF list';
+                    this.title = 'My images';
                     break;
                 case '/caff':
-                    this.title = 'CAFF';
+                    this.title = 'CAFF details';
                     break;
                 default:
                     this.title = '';

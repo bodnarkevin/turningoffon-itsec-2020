@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.user-container {
+    width: 15%;
+    height: 80px;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgba(53, 186, 246, 0.5);
+    color: #FFFFFF;
+    font: normal normal 500 20px/25px Roboto;
+    line-height: 80px;
+    cursor: pointer;
+    margin: 10px;
+}
