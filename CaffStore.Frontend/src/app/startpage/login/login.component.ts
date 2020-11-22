@@ -24,7 +24,8 @@ export class LoginComponent implements OnInit {
     onLogin(): void {
         this.oAuthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
             this.loginForm.controls.email.value, this.loginForm.controls.password.value)
-            .then(tokenInfo => {
+            .then((tokenInfo) => {
+                console.log(tokenInfo);
                 // TODO: tokenInfo role --> admin
                 this.router.navigate(['/list']);
             })

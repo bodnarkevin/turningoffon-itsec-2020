@@ -25,8 +25,9 @@ export class FrameComponent implements OnInit, OnChanges {
     }
 
     onLogout(): void {
-        // TODO: test
-        this.oAuthService.revokeTokenAndLogout();
+        // TODO: maybe revokeToken needed? 
+        // this.oAuthService.revokeTokenAndLogout();
+        this.oAuthService.logOut();
         this.router.navigate(['/']);
     }
 
