@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CaffStore.Backend.Dal
 {
-	public class CaffStoreDbContext : IdentityDbContext<User, Role, int>
+	public class CaffStoreDbContext : IdentityDbContext<User, Role, long>
 	{
 		private readonly ITimeService _timeService;
 		private readonly IHttpRequestContext _requestContext;
@@ -26,9 +26,20 @@ namespace CaffStore.Backend.Dal
 
 		// Adding entities
 		public DbSet<File> Files { get; set; }
+		public DbSet<CaffItem> CaffItems { get; set; }
+		public DbSet<CaffData> CaffData { get; set; }
+		public DbSet<CaffAnimationData> CaffAnimationData { get; set; }
+		public DbSet<CiffData> CiffData { get; set; }
+		public DbSet<CiffDataTag> CiffDataTags { get; set; }
+		public DbSet<Tag> Tags { get; set; }
+		public DbSet<Comment> Comments { get; set; }
+		public DbSet<CaffItemComment> CaffItemComments { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
+			builder.Entity<CaffFile>();
+			builder.Entity<PreviewFile>();
+
 			base.OnModelCreating(builder);
 
 			builder.RegisterSoftDeleteQueryFilter();
@@ -38,6 +49,12 @@ namespace CaffStore.Backend.Dal
 		{
 			SaveChangesCore();
 			return base.SaveChanges();
+		}
+
+		public override int SaveChanges(bool acceptAllChangesOnSuccess)
+		{
+			SaveChangesCore();
+			return base.SaveChanges(acceptAllChangesOnSuccess);
 		}
 
 		public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -50,12 +67,6 @@ namespace CaffStore.Backend.Dal
 		{
 			SaveChangesCore();
 			return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-		}
-
-		public override int SaveChanges(bool acceptAllChangesOnSuccess)
-		{
-			SaveChangesCore();
-			return base.SaveChanges(acceptAllChangesOnSuccess);
 		}
 
 		private void SaveChangesCore()

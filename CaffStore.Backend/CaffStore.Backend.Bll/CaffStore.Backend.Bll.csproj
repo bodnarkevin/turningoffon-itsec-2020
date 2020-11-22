@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CaffStore.Backend.Data\CaffStore.Backend.Dal.csproj" />
     <ProjectReference Include="..\CaffStore.Backend.Interface.Bll\CaffStore.Backend.Interface.Bll.csproj" />
+    <ProjectReference Include="..\CaffStore.Backend.Parser\CaffStore.Backend.Parser.csproj" />
   </ItemGroup>
 
 </Project>

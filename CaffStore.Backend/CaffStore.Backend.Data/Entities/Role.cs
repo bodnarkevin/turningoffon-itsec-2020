@@ -2,7 +2,7 @@
 
 namespace CaffStore.Backend.Dal.Entities
 {
-	public class Role : IdentityRole<int>
+	public class Role : IdentityRole<long>
 	{
 	}
 }

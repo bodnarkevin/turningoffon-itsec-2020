@@ -29,8 +29,8 @@ namespace CaffStore.Backend.Api.Identity
 				.AddEntityFrameworkStores<CaffStoreDbContext>()
 				.AddDefaultTokenProviders()
 				.AddRoles<Role>()
-				.AddUserStore<UserStore<User, Role, CaffStoreDbContext, int>>()
-				.AddRoleStore<RoleStore<Role, CaffStoreDbContext, int>>()
+				.AddUserStore<UserStore<User, Role, CaffStoreDbContext, long>>()
+				.AddRoleStore<RoleStore<Role, CaffStoreDbContext, long>>()
 				.AddSignInManager<SignInManager<User>>();
 		}
 
@@ -42,9 +42,6 @@ namespace CaffStore.Backend.Api.Identity
 				options.Events.RaiseInformationEvents = true;
 				options.Events.RaiseFailureEvents = true;
 				options.Events.RaiseSuccessEvents = true;
-
-				// see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
-				//options.EmitStaticAudienceClaim = true;
 			})
 				.AddInMemoryIdentityResources(IdentityServerConfig.IdentityResources)
 				.AddInMemoryApiScopes(IdentityServerConfig.ApiScopes)
@@ -86,6 +83,16 @@ namespace CaffStore.Backend.Api.Identity
 
 					// IdentityServer emits a typ header by default, recommended extra check
 					options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+				});
+		}
+
+		public static IServiceCollection AddCaffStoreAuthorization(this IServiceCollection services)
+		{
+			return services
+				.AddAuthorizationCore(options =>
+				{
+					options.AddPolicy(CaffStorePolicies.AdminOnly, policy =>
+						policy.RequireRole(CaffStoreRoles.Admin));
 				});
 		}
 	}

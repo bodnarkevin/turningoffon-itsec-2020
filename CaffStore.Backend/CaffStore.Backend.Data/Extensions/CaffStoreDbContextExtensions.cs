@@ -12,7 +12,7 @@ namespace CaffStore.Backend.Dal.Extensions
 			var entityTypes = modelBuilder
 				.Model
 				.GetEntityTypes()
-				.Where(e => typeof(ISoftDeletableEntity).IsAssignableFrom(e.ClrType));
+				.Where(e => typeof(ISoftDeletableEntity).IsAssignableFrom(e.ClrType) && e.BaseType == null);
 
 			foreach (var entityType in entityTypes)
 			{

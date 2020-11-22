@@ -1,12 +1,12 @@
-using CaffStore.Backend.Api.BlobStorage;
 using CaffStore.Backend.Api.Identity;
 using CaffStore.Backend.Api.Swagger;
 using CaffStore.Backend.Bll.AutoMapper;
 using CaffStore.Backend.Bll.Services.Extensions;
 using CaffStore.Backend.Dal;
+using CaffStore.Backend.Dal.Entities;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,22 +39,19 @@ namespace CaffStore.Backend.Api
 					builder => builder.MigrationsAssembly("CaffStore.Backend.Api")));
 
 			services.AddCaffStoreAutoMapper();
-
 			services.AddCaffStoreBusinessServices();
-
 			services.AddCaffStoreIdentity();
-
 			services.AddCaffStoreIdentityServer(_configuration);
-
 			services.AddCaffStoreAuthentication(_configuration);
-
-			services.AddCaffStoreBlobStorage(_configuration);
-
+			services.AddCaffStoreAuthorization();
 			services.AddCaffStoreSwaggerGen(_configuration);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(
+			IApplicationBuilder app,
+			UserManager<User> userManager,
+			RoleManager<Role> roleManager)
 		{
 			app.UseExceptionHandler("/api/error");
 
@@ -76,6 +73,9 @@ namespace CaffStore.Backend.Api
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			// Seed default Roles and Users
+			IdentityDataInitializer.SeedDataAsync(userManager, roleManager).Wait();
 
 			app.UseEndpoints(endpoints =>
 			{
