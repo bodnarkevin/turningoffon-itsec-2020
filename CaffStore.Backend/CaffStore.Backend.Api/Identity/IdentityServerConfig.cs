@@ -38,6 +38,7 @@ namespace CaffStore.Backend.Api.Identity
 					AllowedScopes = {
 						IdentityServerConstants.StandardScopes.OpenId,
 						IdentityServerConstants.StandardScopes.Profile,
+						"role",
 						"api"
 					},
 				},
@@ -51,6 +52,7 @@ namespace CaffStore.Backend.Api.Identity
 						IdentityServerConstants.StandardScopes.OpenId,
 						IdentityServerConstants.StandardScopes.Profile,
 						IdentityServerConstants.StandardScopes.OfflineAccess,
+						"role",
 						"api"
 					},
 				},
@@ -65,6 +67,7 @@ namespace CaffStore.Backend.Api.Identity
 						IdentityServerConstants.StandardScopes.OpenId,
 						IdentityServerConstants.StandardScopes.Profile,
 						IdentityServerConstants.StandardScopes.OfflineAccess,
+						"role",
 						"api"
 					},
 				}
