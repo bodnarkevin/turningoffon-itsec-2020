@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { UserProfileDto, UserService } from '../api/generated';
+import { ChangePasswordDto, UserProfileDto, UserService } from '../api/generated';
 
 @Component({
     selector: 'app-profile',
@@ -84,7 +84,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             },
             (err) => {
                 alert('Personal data change failed');
-            })
+            });
     }
 
     /** Delete account */
@@ -105,7 +105,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     /** Start change password (enable form) */
-    onChangePassword(): void {
+    onChangePasswordClicked(): void {
         this.passwordChangeInProgress = true;
         this.passwordChangeForm.controls.currentPassword.enable();
         this.passwordChangeForm.controls.newPassword.enable();
@@ -113,8 +113,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     /** Change password */
     onSavePassword(): void {
-        this.passwordChangeInProgress = false;
-        this.passwordChangeForm.disable();
-        // TODO: change password
+        const changePwData: ChangePasswordDto = {
+            currentPassword: this.passwordChangeForm.controls.currentPassword.value,
+            newPassword: this.passwordChangeForm.controls.newPassword.value
+        }
+        this.userService.changeMyPassword(changePwData).subscribe(
+            (res) => {
+                this.passwordChangeInProgress = false;
+                this.passwordChangeForm.disable();
+                this.passwordChangeForm.controls.currentPassword.setValue('');
+                this.passwordChangeForm.controls.newPassword.setValue('');
+            },
+            (err) => {
+                if (err.error.title) {
+                    alert (err.error.title);
+                } else {
+                    alert('Password change failed');
+                }
+            });
     }
 }

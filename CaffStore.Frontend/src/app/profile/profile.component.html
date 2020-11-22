@@ -31,8 +31,8 @@
                 <input type="password" id="newPassword" formControlName="newPassword" />
             </div>
             <div class="row">
-                <button class="btn-primary" *ngIf="!passwordChangeInProgress" style="background-color: #03a9f4;" (click)="onChangePassword()">Change password</button>
-                <button class="btn-primary" *ngIf="passwordChangeInProgress" style="background-color: #03a9f4;" (click)="onSavePassword()">Save password</button>
+                <button class="btn-primary" *ngIf="!passwordChangeInProgress" style="background-color: #03a9f4;" (click)="onChangePasswordClicked()">Change password</button>
+                <button class="btn-primary" *ngIf="passwordChangeInProgress" [disabled]="!passwordChangeForm.valid" style="background-color: #03a9f4;" (click)="onSavePassword()">Save password</button>
                 <button class="btn-primary" *ngIf="passwordChangeInProgress" style="background-color: #B0B0B0;" (click)="onCancelChangePassword()">Cancel</button>
             </div>
         </div>
