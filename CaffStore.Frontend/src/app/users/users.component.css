@@ -12,7 +12,7 @@
     border-radius: 10px;
     background-color: rgba(53, 186, 246, 0.5);
     color: #FFFFFF;
-    font: normal normal 500 20px/25px Roboto;
+    font: normal normal 500 20px/25px Roboto, sans-serif;
     line-height: 80px;
     cursor: pointer;
     margin: 10px;
@@ -25,7 +25,7 @@
 
 a {
     text-decoration: none;
-    font: normal normal 500 20px/25px Roboto;
+    font: normal normal 500 20px/25px Roboto, sans-serif;
     color:  rgba(53, 186, 246, 0.5);
     cursor: pointer;
 }

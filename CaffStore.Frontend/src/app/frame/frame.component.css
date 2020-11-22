@@ -14,7 +14,7 @@
 
 h1 {
     color: #FFFFFF;
-    font: normal normal 600 35px/40px Roboto;
+    font: normal normal 600 35px/40px Roboto, sans-serif;
 }
 
 button {
@@ -50,7 +50,7 @@ button {
     display: inline-block;
     text-decoration: none;
     text-align: center;
-    font: normal normal bold 18px/20px Roboto;
+    font: normal normal bold 18px/20px Roboto, sans-serif;
     line-height: 60px;
     color: #FFFFFF;
 }

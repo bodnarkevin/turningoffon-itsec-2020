@@ -32,7 +32,7 @@
 p {
     margin: 0;
     margin-bottom: 100px;
-    font: normal normal 500 20px/25px Roboto;
+    font: normal normal 500 20px/25px Roboto, sans-serif;
 }
 
 .profile-panel .row {

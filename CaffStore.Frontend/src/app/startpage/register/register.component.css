@@ -4,7 +4,7 @@
 }
 
 .form-element label {
-    font: normal normal 600 18px/20px Roboto, sans-serif;
+    font: normal normal 600 18px/20px Roboto, sans-serif, sans-serif;
     color: #787878;
     margin-bottom: 10px;
 }
