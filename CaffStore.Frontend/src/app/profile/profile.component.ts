@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { ChangePasswordDto, UserProfileDto, UserService } from '../api/generated';
+import { AdminUserService, ChangePasswordDto, UserProfileDto, UserService } from '../api/generated';
 
 @Component({
     selector: 'app-profile',
@@ -27,22 +27,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
     passwordChangeInProgress: boolean = false;
     queryParamSubscription: Subscription = Subscription.EMPTY;
 
-    // ha van userId, akkor az azt jelenti, hogy az adott id-jű felhasználó profilját tekintjük meg
+    // if there's a userId, we're looking at the given user's profile
     userId: number = null;
 
-    constructor(private route: ActivatedRoute, private userService: UserService, private router: Router) { }
-
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private userService: UserService,
+        private adminUserService: AdminUserService) { }
+    
     ngOnInit() {
-        // TODO: csak admin
         this.queryParamSubscription = this.route.queryParams.subscribe((params: Params) => {
             if (params && params.userId) {
                 this.userId = params.userId;
+                this.getUserProfileById();
             } else {
                 this.userId = null;
+                this.getUserProfile();
             }
         });
 
-        this.getUserProfile();
         this.profileDataForm.disable();
         this.passwordChangeForm.disable();
     }
@@ -51,7 +55,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.queryParamSubscription.unsubscribe();
     }
 
-    /** get user profile */
+    /** Get user profile by ID */
+    getUserProfileById(): void {
+        this.adminUserService.getUserProfile(this.userId).subscribe(
+            (res: UserProfileDto) => {
+                this.profileDataForm.controls.firstName.setValue(res.firstName);
+                this.profileDataForm.controls.lastName.setValue(res.lastName);
+                this.passwordChangeForm.controls.email.setValue(res.email);
+            },
+            (err) => {
+                if (err.status === 404) {
+                    alert('User not found.')
+                    this.router.navigate(['/users']);
+                } else {
+                    // 401, 403, 500 if unauthorized, redirect to error
+                    this.router.navigate(['/error']);
+                }
+            });
+    }
+
+    /** Get user profile */
     getUserProfile(): void {
         this.userService.getMyUserProfile().subscribe(
             (res: UserProfileDto) => {
@@ -77,14 +100,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
             firstName: this.profileDataForm.controls.firstName.value,
             lastName: this.profileDataForm.controls.lastName.value
         }
-        this.userService.updateMyUserProfile(userData).subscribe(
-            (res: UserProfileDto) => {
-                this.editingInProgress = false;
-                this.profileDataForm.disable();
-            },
-            (err) => {
-                alert('Personal data change failed');
-            });
+
+        if (this.userId) {
+            // TODO: update profile by ID
+        } else {
+            this.userService.updateMyUserProfile(userData).subscribe(
+                (res: UserProfileDto) => {
+                    this.editingInProgress = false;
+                    this.profileDataForm.disable();
+                },
+                (err) => {
+                    alert('Personal data change failed');
+                });
+        }
     }
 
     /** Delete account */
@@ -118,19 +146,24 @@ export class ProfileComponent implements OnInit, OnDestroy {
             currentPassword: this.passwordChangeForm.controls.currentPassword.value,
             newPassword: this.passwordChangeForm.controls.newPassword.value
         }
-        this.userService.changeMyPassword(changePwData).subscribe(
-            (res) => {
-                this.passwordChangeInProgress = false;
-                this.passwordChangeForm.disable();
-                this.passwordChangeForm.controls.currentPassword.setValue('');
-                this.passwordChangeForm.controls.newPassword.setValue('');
-            },
-            (err) => {
-                if (err.error.title) {
-                    alert (err.error.title);
-                } else {
-                    alert('Password change failed');
-                }
-            });
+
+        if (this.userId) {
+            // TODO: change password by ID
+        } else {
+            this.userService.changeMyPassword(changePwData).subscribe(
+                (res) => {
+                    this.passwordChangeInProgress = false;
+                    this.passwordChangeForm.disable();
+                    this.passwordChangeForm.controls.currentPassword.setValue('');
+                    this.passwordChangeForm.controls.newPassword.setValue('');
+                },
+                (err) => {
+                    if (err.error.title) {
+                        alert (err.error.title);
+                    } else {
+                        alert('Password change failed');
+                    }
+                });
+        }
     }
 }
