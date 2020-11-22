@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
             }
 
             if (url === '/users' || (route.queryParams && route.queryParams.userId)) {
-                // TODO: csak adminként lehessen elérni ezeket a route-okat
+                // TODO: just admin can access these routes
                 // this.router.navigate(['/error']);
             } else if (this.authService.isLoggedIn() && url === '/' || url === '') {
                 // if navigates to login, and logged in, redirect to list

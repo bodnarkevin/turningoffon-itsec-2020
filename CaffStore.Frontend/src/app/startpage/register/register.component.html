@@ -18,5 +18,9 @@
         <label for="password">Password</label>
         <input type="password" id="password" formControlName="password" />
     </div>
+    <div class="form-element">
+        <label for="password">Password again</label>
+        <input type="password" id="password" formControlName="passwordAgain" />
+    </div>
     <button class="btn-primary" (click)="onRegister()" [disabled]="!registerForm.valid">Register</button>
 </div>

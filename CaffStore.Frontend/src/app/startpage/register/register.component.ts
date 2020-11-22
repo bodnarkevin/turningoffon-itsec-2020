@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import Util from '../../shared/utils';
+import { samePasswordValidator } from '../../shared/validators/samePasswordValidator';
 import { RegisterUserDto, UserService } from '../../api/generated';
 
 @Component({
@@ -13,8 +16,9 @@ export class RegisterComponent implements OnInit {
         firstName: new FormControl('', Validators.required),
         lastName: new FormControl('', Validators.required),
         email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', Validators.required)
-    });
+        password: new FormControl('', [Validators.required, Validators.pattern(Util.passwordRegex)]),
+        passwordAgain: new FormControl('', Validators.required)
+    }, { validators: samePasswordValidator });
 
     constructor(private userService: UserService) { }
 
