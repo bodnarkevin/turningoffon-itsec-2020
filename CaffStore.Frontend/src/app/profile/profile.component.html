@@ -10,15 +10,17 @@
                 <label for="firstname">Last name</label>
                 <input type="text" id="firstname" formControlName="firstName" />
             </div>
-            <button class="btn-primary" *ngIf="editingInProgress" style="background-color: #787878;" (click)="onCancelEditing()">Cancel</button>
-            <button class="btn-primary" *ngIf="!editingInProgress" style="background-color: red;" (click)="onEditProfile()">Edit personal data</button>
-            <button class="btn-primary" *ngIf="editingInProgress" style="background-color: #35baf6;" (click)="onSaveProfile()">Save changes</button>
+            <div class="row">
+                <button class="btn-primary" *ngIf="!editingInProgress" style="background-color: #03a9f4;" (click)="onEditProfile()">Edit personal data</button>
+                <button class="btn-primary" *ngIf="editingInProgress" [disabled]="!profileDataForm.valid" style="background-color: #03a9f4;" (click)="onSaveProfile()">Save changes</button>
+                <button class="btn-primary" *ngIf="editingInProgress" style="background-color: #B0B0B0;" (click)="onCancelEditing()">Cancel</button>
+            </div>
         </div>
         <div class="profile-panel" [formGroup]="passwordChangeForm">
             <p>Login data</p>
             <div class="form-element">
                 <label for="email">E-mail address</label>
-                <input type="email" id="email" />
+                <input type="email" id="email"  formControlName="email"/>
             </div>
             <div class="form-element">
                 <label for="currentPassword">Current password</label>
@@ -28,12 +30,14 @@
                 <label for="newPassword">New password</label>
                 <input type="password" id="newPassword" formControlName="newPassword" />
             </div>
-            <button class="btn-primary" *ngIf="passwordChangeInProgress" style="background-color: #787878;" (click)="onCancelChangePassword()">Cancel</button>
-            <button class="btn-primary" *ngIf="!passwordChangeInProgress" style="background-color: red;" (click)="onChangePassword()">Change password</button>
-            <button class="btn-primary" *ngIf="passwordChangeInProgress" style="background-color: #35baf6;" (click)="onSavePassword()">Save password</button>
+            <div class="row">
+                <button class="btn-primary" *ngIf="!passwordChangeInProgress" style="background-color: #03a9f4;" (click)="onChangePassword()">Change password</button>
+                <button class="btn-primary" *ngIf="passwordChangeInProgress" style="background-color: #03a9f4;" (click)="onSavePassword()">Save password</button>
+                <button class="btn-primary" *ngIf="passwordChangeInProgress" style="background-color: #B0B0B0;" (click)="onCancelChangePassword()">Cancel</button>
+            </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: 20px; padding: 0 15px; width: 100%; box-sizing: border-box;">
         <button class="btn-primary" *ngIf="!editingInProgress && !passwordChangeInProgress" style="background-color: red;" (click)="onDeleteAccount()">Delete account</button>
     </div>
 </div>

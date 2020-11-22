@@ -23,11 +23,11 @@
 }
 
 .btn-primary:hover {
-    background-color: #015e88;
+    background-color: #015e88 !important;
 }
 
 .btn-primary:disabled {
-    background-color: #787878;
+    background-color: #787878 !important;
     cursor: not-allowed;
 }
 

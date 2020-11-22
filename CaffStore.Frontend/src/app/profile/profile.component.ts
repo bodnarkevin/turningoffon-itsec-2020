@@ -18,6 +18,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
 
     passwordChangeForm = new FormGroup({
+        email: new FormControl(''),
         currentPassword: new FormControl('', Validators.required),
         newPassword: new FormControl('', Validators.required)
     });
@@ -50,11 +51,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.queryParamSubscription.unsubscribe();
     }
 
+    /** get user profile */
     getUserProfile(): void {
-        this.userService.getUserProfile().subscribe(
+        this.userService.getMyUserProfile().subscribe(
             (res: UserProfileDto) => {
                 this.profileDataForm.controls.firstName.setValue(res.firstName);
                 this.profileDataForm.controls.lastName.setValue(res.lastName);
+                this.passwordChangeForm.controls.email.setValue(res.email);
             },
             (err) => {
                 // 401, 403, 500 if unauthorized, redirect to error
@@ -62,39 +65,56 @@ export class ProfileComponent implements OnInit, OnDestroy {
             });
     }
 
+    /** Start user profile editing (enable form) */
     onEditProfile(): void {
         this.editingInProgress = true;
         this.profileDataForm.enable();
     }
 
+    /** Save user data */
     onSaveProfile(): void {
-        this.editingInProgress = false;
-        this.profileDataForm.disable();
-        // TODO: edit profile
+        const userData = {
+            firstName: this.profileDataForm.controls.firstName.value,
+            lastName: this.profileDataForm.controls.lastName.value
+        }
+        this.userService.updateMyUserProfile(userData).subscribe(
+            (res: UserProfileDto) => {
+                this.editingInProgress = false;
+                this.profileDataForm.disable();
+            },
+            (err) => {
+                alert('Personal data change failed');
+            })
     }
 
+    /** Delete account */
     onDeleteAccount(): void {
         // TODO: delete account
     }
 
+    /** Cancel profile data editing */
     onCancelEditing(): void {
         this.editingInProgress = false;
         this.profileDataForm.disable();
     }
 
+    /** Cancel passwrod change */
     onCancelChangePassword(): void {
         this.passwordChangeInProgress = false;
         this.passwordChangeForm.disable();
     }
 
+    /** Start change password (enable form) */
     onChangePassword(): void {
         this.passwordChangeInProgress = true;
-        this.passwordChangeForm.enable();
+        this.passwordChangeForm.controls.currentPassword.enable();
+        this.passwordChangeForm.controls.newPassword.enable();
     }
 
+    /** Change password */
     onSavePassword(): void {
         this.passwordChangeInProgress = false;
         this.passwordChangeForm.disable();
+        // TODO: change password
     }
-
 }
