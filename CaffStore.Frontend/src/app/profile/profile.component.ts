@@ -115,22 +115,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    /** Delete account */
-    onDeleteAccount(): void {
-        // TODO: delete account
-        console.log('delete account');
-    }
-
     /** Cancel profile data editing */
     onCancelEditing(): void {
         this.editingInProgress = false;
         this.profileDataForm.disable();
-    }
-
-    /** Cancel passwrod change */
-    onCancelChangePassword(): void {
-        this.passwordChangeInProgress = false;
-        this.passwordChangeForm.disable();
     }
 
     /** Start change password (enable form) */
@@ -165,5 +153,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     }
                 });
         }
+    }
+
+    
+    /** Cancel password change */
+    onCancelChangePassword(): void {
+        this.passwordChangeInProgress = false;
+        this.passwordChangeForm.disable();
+    }
+    
+    /** Delete account */
+    onDeleteAccount(): void {
+        // TODO: delete account
+        console.log('delete account');
     }
 }

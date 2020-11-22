@@ -1,10 +1,10 @@
 <div class="container">
     <div class="user-list-container">
-        <div class="user-container" *ngFor="let user of users;" (click)="onSelectUser(user.id)">
+        <div class="user-container" *ngFor="let user of users" (click)="onSelectUser(user.id)">
             {{ user.fullName }}
         </div>
     </div>
     <div class="row">
-        <a *ngIf="page < pageCount" (click)="onLoadMore()">Load more users</a>
+        <a *ngIf="pageCount > page" (click)="onLoadMore()">Load more users</a>
     </div>
 </div>

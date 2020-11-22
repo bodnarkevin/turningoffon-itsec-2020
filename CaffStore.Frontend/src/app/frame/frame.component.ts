@@ -10,14 +10,12 @@ import { OAuthService } from 'angular-oauth2-oidc';
 export class FrameComponent implements OnInit, OnChanges {
 
     @Input() title: string = '';
-
     menuOpened: boolean = false;
 
     constructor(private router: Router, private oAuthService: OAuthService) { }
 
     ngOnInit() { }
 
-    
     ngOnChanges(changes: SimpleChanges) {
         if (changes && changes.title && changes.title.currentValue !== changes.title.previousValue) {
             this.menuOpened  = false;

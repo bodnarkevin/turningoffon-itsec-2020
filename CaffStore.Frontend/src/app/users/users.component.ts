@@ -34,7 +34,7 @@ export class UsersComponent implements OnInit {
                 } 
             },
             (err) => {
-                alert('Something wen wrong. Please try again later.');
+                alert('Something went wrong. Please try again later.');
             }
         );
     }
@@ -51,7 +51,6 @@ export class UsersComponent implements OnInit {
             queryParams: {
                 userId: userId
             }
-        })
+        });
     }
-
 }

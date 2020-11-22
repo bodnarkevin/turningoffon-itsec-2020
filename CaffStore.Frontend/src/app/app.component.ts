@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { NavigationEnd, Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { filter } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
@@ -43,6 +43,10 @@ export class AppComponent {
                 default:
                     this.title = '';
                     break;
+            }
+
+            if (event.url.includes('userId')) {
+                this.title = 'User profile'
             }
         }
       });
