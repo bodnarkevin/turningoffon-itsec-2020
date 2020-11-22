@@ -76,7 +76,9 @@ export class AppComponent {
     // Load Discovery Document and then try to login the user
     this.oAuthService.loadDiscoveryDocument(environment.auth.discoveryDocument).then(() => {
       // Try to refresh access token
-      this.oAuthService.refreshToken().finally();
+      if (this.oAuthService.getRefreshToken() != null) {
+        this.oAuthService.refreshToken().finally();
+      }
     });
   }
 }

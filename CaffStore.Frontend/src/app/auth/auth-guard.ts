@@ -18,14 +18,15 @@ export class AuthGuard implements CanActivate {
             let url: string = state.url;
 
             // if not logged in, and tries to access route that is not the login, return falsee
-            if (!this.authService.isLoggedIn() && url !== '/' && url !== '') {
+            if (!this.authService.isLoggedIn() && url !== '/' &&  url !== '') {
+                this.router.navigate(['/']);
                 return false;
             }
 
             if (url === '/users' || (route.queryParams && route.queryParams.userId)) {
                 // TODO: csak adminként lehessen elérni ezeket a route-okat
                 // this.router.navigate(['/error']);
-            } else if (url === '/') {
+            } else if (this.authService.isLoggedIn() && url === '/' || url === '') {
                 // if navigates to login, and logged in, redirect to list
                 this.router.navigate(['/list']);
             }
