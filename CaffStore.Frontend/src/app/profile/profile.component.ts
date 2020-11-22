@@ -90,6 +90,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     /** Delete account */
     onDeleteAccount(): void {
         // TODO: delete account
+        console.log('delete account');
     }
 
     /** Cancel profile data editing */

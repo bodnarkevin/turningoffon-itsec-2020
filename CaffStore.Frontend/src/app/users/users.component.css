@@ -1,4 +1,4 @@
-.container {
+.user-list-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -16,4 +16,20 @@
     line-height: 80px;
     cursor: pointer;
     margin: 10px;
+}
+
+.row {
+    width: 100%;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    font: normal normal 500 20px/25px Roboto;
+    color:  rgba(53, 186, 246, 0.5);
+    cursor: pointer;
+}
+
+a:hover {
+    color: #6b6b6b;
 }
