@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 import { CaffListRoutingModule } from './caff-list-routing.module';
 import { CaffListComponent } from './caff-list.component';
 
@@ -9,7 +10,9 @@ import { CaffListComponent } from './caff-list.component';
   declarations: [CaffListComponent],
   imports: [
     CommonModule,
-    CaffListRoutingModule
+    CaffListRoutingModule,
+    MatCardModule,
+    MatButtonModule
   ]
 })
 export class CaffListModule { }
