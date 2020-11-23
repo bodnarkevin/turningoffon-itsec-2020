@@ -151,29 +151,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\CAFFParserDll\BytesToIntConverter.h" />
-    <ClInclude Include="..\CAFFParserDll\CAFFApi.h" />
-    <ClInclude Include="..\CAFFParserDll\CAFFHandler.h" />
-    <ClInclude Include="..\CAFFParserDll\CIFFHandler.h" />
-    <ClInclude Include="..\CAFFParserDll\Logger.h" />
-    <ClInclude Include="..\CAFFParserDll\ParserExceptions.h" />
+    <ClInclude Include="BytesToIntConverter.h" />
+    <ClInclude Include="CAFFApi.h" />
+    <ClInclude Include="CAFFHandler.h" />
+    <ClInclude Include="CIFFHandler.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="ParserExceptions.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\CAFFParserDll\BytesToIntConverter.cpp" />
-    <ClCompile Include="..\CAFFParserDll\CAFFHandler.cpp" />
-    <ClCompile Include="..\CAFFParserDll\CIFFHandler.cpp" />
-    <ClCompile Include="..\CAFFParserDll\dllmain.cpp" />
-    <ClCompile Include="..\CAFFParserDll\Logger.cpp" />
-    <ClCompile Include="..\CAFFParserDll\ParserExceptions.cpp" />
-    <ClCompile Include="..\CAFFParserDll\pch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="BytesToIntConverter.cpp" />
+    <ClCompile Include="CAFFHandler.cpp" />
+    <ClCompile Include="CIFFHandler.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="ParserExceptions.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
