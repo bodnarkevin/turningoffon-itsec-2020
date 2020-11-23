@@ -15,11 +15,14 @@ export class AuthGuard implements CanActivate {
         state: RouterStateSnapshot): boolean {
             let url: string = state.url;
 
+            // TODO: do uncomment this (temporarily disabled, while developing other modules and pages)
             // if not logged in, and tries to access route that is not the startpage, redirect to startpage
+            /*
             if (!this.authService.isLoggedIn() && url !== '/' &&  url !== '') {
                 this.router.navigate(['/']);
                 return false;
             }
+            */
 
             if (url === '/users' || (route.queryParams && route.queryParams.userId)) {
                 // TODO: only admin can access these routes

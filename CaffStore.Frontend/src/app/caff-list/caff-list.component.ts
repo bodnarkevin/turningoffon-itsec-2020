@@ -77,7 +77,12 @@ fileDto3: FileDto = {
   }
 
   onViewDetails(caffId: number): void {
-    alert('You have clicked the card.' + caffId);
+    //alert('You have clicked the card.' + caffId);
+    this.router.navigate(['/caff'], {
+      queryParams: {
+          caffId
+      }
+  });
   }
 
   getCaffItems(): void {

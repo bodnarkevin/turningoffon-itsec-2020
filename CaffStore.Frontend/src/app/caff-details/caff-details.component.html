@@ -1,1 +1,20 @@
-<p>caff-details works!</p>
+<div class="container">
+    <div class="panels-row">
+        <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
+        <div class="data-panel" [formGroup]="caffDataForm">
+            <p>CAFF data</p>
+            <div class="form-element">
+                <label for="author">Author name</label>
+                <input type="text" id="fullName" formControlName="fullName" />
+            </div>
+            <div class="row">
+                <button class="btn-primary" *ngIf="!editingInProgress" style="background-color: #03a9f4;" (click)="onEditCaffData()">Edit</button>
+                <button class="btn-primary" *ngIf="editingInProgress" style="background-color: #B0B0B0;" (click)="onCancelEditing()">Cancel</button>
+                <button class="btn-primary" *ngIf="editingInProgress" [disabled]="!caffDataForm.valid" style="background-color: #03a9f4;" (click)="onSaveChanges()">Save changes</button>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 20px; padding: 0 15px; width: 100%; box-sizing: border-box;">
+        <button class="btn-primary" style="background-color: red;" >Delete CAFF</button>
+    </div>
+</div>
