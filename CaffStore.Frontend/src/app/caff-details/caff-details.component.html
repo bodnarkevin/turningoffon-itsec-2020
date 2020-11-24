@@ -3,14 +3,34 @@
         <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" >
         <div class="data-panel" [formGroup]="caffDataForm">
             <p>CAFF data</p>
-            <div class="form-element">
-                <label for="author">Author name</label>
-                <input type="text" id="fullName" formControlName="fullName" />
+            <div class="form-row">
+                <mat-form-field class="form-element">
+                    <mat-label for="creator">Creator</mat-label>
+                    <input matInput type="text" id="creator" formControlName="creator"/>
+                </mat-form-field>
+                <mat-form-field class="form-element">
+                    <mat-label for="title">Title</mat-label>
+                    <input matInput type="text" id="title" formControlName="title"/>
+                </mat-form-field>
             </div>
+
+            <div class="form-row">
+                <mat-form-field class="form-element">
+                    <mat-label for="description">Description</mat-label>
+                    <textarea matInput type="text" id="description" formControlName="description"></textarea>
+                </mat-form-field>
+                <mat-form-field class="form-element">
+                    <mat-label for="tags">Tags</mat-label>
+                    <textarea matInput type="text" id="tags" formControlName="tags" ></textarea>
+                </mat-form-field>
+            </div>
+           
+            
+           
             <div class="row">
-                <button class="btn-primary" *ngIf="!editingInProgress" style="background-color: #03a9f4;" (click)="onEditCaffData()">Edit</button>
-                <button class="btn-primary" *ngIf="editingInProgress" style="background-color: #B0B0B0;" (click)="onCancelEditing()">Cancel</button>
-                <button class="btn-primary" *ngIf="editingInProgress" [disabled]="!caffDataForm.valid" style="background-color: #03a9f4;" (click)="onSaveChanges()">Save changes</button>
+                <button mat-button *ngIf="!editingInProgress" style="background-color: #03a9f4;" (click)="onEditCaffData()">Edit</button>
+                <button mat-button *ngIf="editingInProgress" style="background-color: #B0B0B0;" (click)="onCancelEditing()">Cancel</button>
+                <button mat-button *ngIf="editingInProgress" [disabled]="!caffDataForm.valid" style="background-color: #03a9f4;" (click)="onSaveChanges()">Save changes</button>
             </div>
         </div>
     </div>
