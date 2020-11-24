@@ -127,16 +127,22 @@ img {
 .form-element input {
     min-width: 225px;
     font: normal normal 400 13px/14px Roboto, sans-serif;
+    color: black;
+    padding-left: 4px;
 }
 
 .form-element textarea {
     min-width: 225px;
     font: normal normal 400 13px/14px Roboto, sans-serif;
+    color: black;
+    padding-left: 4px;
 }
 
 .form-element-long textarea {
     min-width: 225px;
     font: normal normal 400 13px/14px Roboto, sans-serif;
+    color: black;
+    padding-left: 4px;
 }
 
 .form-element-long{
