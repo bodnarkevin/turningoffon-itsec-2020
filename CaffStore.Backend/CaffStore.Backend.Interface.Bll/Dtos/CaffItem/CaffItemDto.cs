@@ -25,7 +25,7 @@ namespace CaffStore.Backend.Interface.Bll.Dtos.CaffItem
 		[Required]
 		public DateTimeOffset CreatedAt { get; set; }
 
-		// Null if user is deleted
+		// Null if User is deleted
 		public UserDto CreatedBy { get; set; }
 
 		[Required]
