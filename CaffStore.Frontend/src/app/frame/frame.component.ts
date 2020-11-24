@@ -33,7 +33,7 @@ export class FrameComponent implements OnInit, OnChanges {
     }
 
     onLogout(): void {
-        // TODO: maybe revokeToken needed? 
+        // TODO: maybe revokeToken needed? nullreference
         // this.oAuthService.revokeTokenAndLogout();
         this.oAuthService.logOut();
         this.router.navigate(['/']);
