@@ -16,6 +16,9 @@ export class CaffDetailsComponent implements OnInit {
     description: new FormControl('', Validators.required),
     creator: new FormControl('', Validators.required),
     tags: new FormControl('', Validators.required),
+    size: new FormControl('', Validators.required),
+    creationdate: new FormControl('', Validators.required),
+    uploaddate: new FormControl('', Validators.required),
   });
 
   editingInProgress = false;
@@ -62,7 +65,7 @@ export class CaffDetailsComponent implements OnInit {
         }];
         const caffDataDto: CaffDataDto = {
           creator: 'Creator Name',
-          creation: 'Creation?',
+          creation: '2020.01.02',
           animations: animationsDto,
         };
         this.testCaff = {
@@ -84,6 +87,11 @@ export class CaffDetailsComponent implements OnInit {
           });
         });
         this.caffDataForm.controls.tags.setValue(tags);
+        this.caffDataForm.controls.size.setValue(this.testCaff.caffData.animations[0].ciffData.width.toString()
+                                                  + 'x'
+                                                  + this.testCaff.caffData.animations[0].ciffData.height.toString());
+        this.caffDataForm.controls.creationdate.setValue(this.testCaff.caffData.creation);
+        this.caffDataForm.controls.uploaddate.setValue(this.testCaff.caffData.creation);
       }
   });
 
@@ -96,6 +104,9 @@ export class CaffDetailsComponent implements OnInit {
     this.caffDataForm.enable();
     this.caffDataForm.controls.creator.disable();
     this.caffDataForm.controls.tags.disable();
+    this.caffDataForm.controls.size.disable();
+    this.caffDataForm.controls.creationdate.disable();
+    this.caffDataForm.controls.uploaddate.disable();
   }
 
   /** Save user data */

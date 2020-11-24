@@ -14,7 +14,7 @@
 
 img {
     border-radius: 10px;
-    max-width: 450px;
+    max-width: 500px;
 }
 
 .data-panel {
@@ -23,7 +23,6 @@ img {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 24px;
     min-height: 200px;
 }
 
@@ -37,19 +36,28 @@ img {
 
 .form-element {
     align-items: flex-start !important;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     width: 225px;
     margin-right: 1em;
+    padding: 0px !important;
 }
 
 .form-element input {
     min-width: 225px;
+    padding: 0px !important;
+    font: normal normal 400 13px/14px Roboto, sans-serif;
 }
 
-p {
+.form-element textarea {
+    min-width: 225px;
+    padding: 0px !important;
+    font: normal normal 400 13px/14px Roboto, sans-serif;
+}
+
+.form-title {
     margin: 0;
-    margin-bottom: 16px;
-    font: normal normal 500 20px/25px Roboto, sans-serif;
+    margin-bottom: 10px;
+    font: normal normal 500 18px/22px Roboto, sans-serif;
 }
 
 label {
