@@ -207,18 +207,15 @@ export class CaffDetailsComponent implements OnInit {
     );
   }
 
+  /** Write a new comment */
   onSendComment(): void {
     const comment: AddCommentDto = {
       text: this.newCommentForm.controls.commentText.value,
     };
 
-    this.editingInProgress = false;
-    this.caffDataForm.disable();
     if (this.caffId) {
       this.caffService.addCaffItemComment(this.caffId, comment).subscribe(
         (res: CommentDto) => {
-          // this.editingInProgress = false;
-          // this.caffDataForm.disable();
           this.newCommentForm.controls.commentText.setValue('');
         },
         (err) => {
@@ -226,14 +223,13 @@ export class CaffDetailsComponent implements OnInit {
         }
       );
     }
-  }
+  } // TODO: users can only delet their own comments
 
-  onDeleteComment(commentId: number): void {
+  /** Delete a comment */ onDeleteComment(commentId: number): void {
     if (this.caffId) {
       this.commentService.deleteMyComment(commentId).subscribe(
         (res: CommentDto) => {
-          // this.editingInProgress = false;
-          // this.caffDataForm.disable();
+          alert('Successfully deleted comment');
         },
         (err) => {
           alert('Deleting comment failed');
