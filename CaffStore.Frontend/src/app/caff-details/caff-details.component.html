@@ -1,9 +1,6 @@
 <div class="container">
   <div class="panels-row">
-    <img
-      mat-card-image
-      src="{{testCaff.previewFile.fileUri}}"
-    />
+    <img mat-card-image src="{{ testCaff.previewFile.fileUri }}" />
     <div class="data-panel" [formGroup]="caffDataForm">
       <p class="form-title">CAFF data</p>
       <div class="form-row">
@@ -66,7 +63,8 @@
       </div>
 
       <div class="row">
-        <button
+        <div class="edit-download" *ngIf="!editingInProgress">
+          <button
           mat-button
           *ngIf="!editingInProgress"
           style="background-color: #03a9f4"
@@ -75,10 +73,23 @@
         >
           Edit
         </button>
+          <button
+            matTooltip="Download this CAFF file"
+            *ngIf="!editingInProgress"
+            mat-button
+            (click)="onDownloadCaff()"
+            style="background-color: #03a9f4"
+          >
+            Download
+          </button>
+        </div>
+       
+
         <button
           matTooltip="Delete this CAFF file"
           *ngIf="!editingInProgress"
           mat-button
+          (click)="onDeleteCaff()"
           style="background-color: red"
         >
           Delete CAFF
@@ -103,6 +114,7 @@
           Save changes
         </button>
       </div>
+      
     </div>
   </div>
 
@@ -129,7 +141,9 @@
     </div>
     <mat-card *ngFor="let comment of comments" class="comment-row">
       <mat-card-header class="comment-header">
-        <mat-card-title class="comment-label">{{comment.createdBy.fullName}}</mat-card-title>
+        <mat-card-title class="comment-label">{{
+          comment.createdBy.fullName
+        }}</mat-card-title>
         <button
           matTooltip="Delete this comment"
           mat-icon-button
@@ -141,10 +155,9 @@
       </mat-card-header>
       <mat-card-content class="comment-text">
         <p>
-          {{comment.text}}
+          {{ comment.text }}
         </p>
       </mat-card-content>
     </mat-card>
-    
   </div>
 </div>

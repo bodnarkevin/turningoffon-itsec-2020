@@ -207,6 +207,18 @@ export class CaffDetailsComponent implements OnInit {
     );
   }
 
+  /* Get Comments */
+  getComments(): void {
+    this.caffService.getCaffItemComments(this.caffId).subscribe(
+        (res: CommentDto[]) => {
+            this.comments = res;
+        },
+        (err) => {
+            alert('Something went wrong. Please try again later.');
+        }
+    );
+  }
+
   /** Write a new comment */
   onSendComment(): void {
     const comment: AddCommentDto = {
@@ -225,7 +237,8 @@ export class CaffDetailsComponent implements OnInit {
     }
   } // TODO: users can only delet their own comments
 
-  /** Delete a comment */ onDeleteComment(commentId: number): void {
+  /** Delete a comment */
+  onDeleteComment(commentId: number): void {
     if (this.caffId) {
       this.commentService.deleteMyComment(commentId).subscribe(
         (res: CommentDto) => {
@@ -233,6 +246,34 @@ export class CaffDetailsComponent implements OnInit {
         },
         (err) => {
           alert('Deleting comment failed');
+        }
+      );
+    }
+  }
+
+  /** Delete caff file */
+  onDeleteCaff(): void {
+    if (this.caffId) {
+      this.caffService.deleteMyCaffItem(this.caffId).subscribe(
+        () => {
+          alert('Successfully deleted caff');
+        },
+        (err) => {
+          alert('Deleting caff failed');
+        }
+      );
+    }
+  }
+
+  /** Download caff file */
+  onDownloadCaff(): void {
+    if (this.caffId) {
+      this.caffService.downloadCaffItem(this.caffId).subscribe(
+        (res: FileDto) => {
+          alert('Successfully downloaded caff file');
+        },
+        (err) => {
+          alert('Downloading caff failed');
         }
       );
     }
