@@ -107,4 +107,8 @@ fileDto3: FileDto = {
     }
   }
 
+  onAddNewCaff(): void {
+    
+  }
+
 }

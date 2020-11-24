@@ -135,6 +135,7 @@
         mat-icon-button
         (click)="onSendComment()"
         aria-label="Send new comment"
+        [disabled]="!newCommentForm.valid"
       >
         <mat-icon>send</mat-icon>
       </button>

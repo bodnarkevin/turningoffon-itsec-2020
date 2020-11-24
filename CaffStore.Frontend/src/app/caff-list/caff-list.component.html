@@ -10,9 +10,12 @@
                 
             </div>
             <div class="fab-container">
-                <button matTooltip="Add new CAFF" mat-fab color="primary" aria-label="Add new Caff">
+                <button matTooltip="Add new CAFF" mat-fab color="primary" aria-label="Add new Caff" (click)="onAddNewCaff()">
                   <mat-icon>add</mat-icon>
                 </button>
             </div>
+        </div>
+        <div class="row">
+            <a *ngIf="pageCount > page" (click)="onLoadMore()">Load more caffs</a>
         </div>
 </div>
