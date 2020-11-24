@@ -47,6 +47,11 @@
     font-size:20px !important;
 }
 
+::ng-deep .mat-form-field.disabled .mat-form-field-underline {
+    background-color: #69f0ae !important;
+    display: none;
+  }
+
 .delete-icon {
     color: red;
 }

@@ -7,7 +7,7 @@
     <div class="data-panel" [formGroup]="caffDataForm">
       <p class="form-title">CAFF data</p>
       <div class="form-row">
-        <mat-form-field class="form-element">
+        <mat-form-field class="form-element disabled">
           <mat-label for="creator">Creator</mat-label>
           <input matInput type="text" id="creator" formControlName="creator" />
         </mat-form-field>
@@ -18,11 +18,11 @@
       </div>
 
       <div class="form-row">
-        <mat-form-field class="form-element">
+        <mat-form-field class="form-element disabled">
           <mat-label for="size">Size</mat-label>
           <input matInput type="text" id="size" formControlName="size" />
         </mat-form-field>
-        <mat-form-field class="form-element">
+        <mat-form-field class="form-element disabled">
           <mat-label for="tags">Tags</mat-label>
           <textarea
             matInput
@@ -45,7 +45,7 @@
         </mat-form-field>
       </div>
       <div class="form-row">
-        <mat-form-field class="form-element">
+        <mat-form-field class="form-element disabled">
           <mat-label for="creationdate">Created at</mat-label>
           <input
             matInput
@@ -54,7 +54,7 @@
             formControlName="creationdate"
           />
         </mat-form-field>
-        <mat-form-field class="form-element">
+        <mat-form-field class="form-element disabled">
           <mat-label for="uploaddate">Uploaded at</mat-label>
           <input
             matInput
