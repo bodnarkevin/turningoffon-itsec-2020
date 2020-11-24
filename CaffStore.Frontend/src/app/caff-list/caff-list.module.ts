@@ -6,8 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CaffListRoutingModule } from './caff-list-routing.module';
 import { CaffListComponent } from './caff-list.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-
-
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [CaffListComponent],
@@ -17,7 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ]
 })
 export class CaffListModule { }

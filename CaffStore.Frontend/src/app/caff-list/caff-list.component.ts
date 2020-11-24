@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { CaffItemDto, CaffItemDtoPagedResponse, CaffItemService, FileDto, UserDto } from '../api/generated';
+import { CaffItemDetailsDto, CaffItemDto, CaffItemDtoPagedResponse, CaffItemService, FileDto, UserDto } from '../api/generated';
+import { NewCaffDialogComponent } from '../new-caff-dialog/new-caff-dialog.component';
 
 @Component({
   selector: 'app-caff-list',
@@ -69,7 +71,10 @@ fileDto3: FileDto = {
   /** Total page count */
   pageCount = 1;
 
-  constructor(private router: Router, private caffItemService: CaffItemService) { }
+  newCaffTitle: string;
+  newCaffDesc: string;
+
+  constructor(private router: Router, private caffItemService: CaffItemService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     // TODO: test with server on
@@ -108,7 +113,39 @@ fileDto3: FileDto = {
   }
 
   onAddNewCaff(): void {
-    
+    const dialogRef = this.dialog.open(NewCaffDialogComponent, {
+      width: '600px',
+      data: {title: this.newCaffTitle, descripton: this.newCaffDesc}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result && result.controls) {
+        const title = result.controls.title.value;
+        const description = result.controls.description.value;
+        console.log(title + '    ' + description);
+        console.log(result.controls.cafffile.value as Blob);
+
+        // todo
+
+        this.caffItemService.addCaffItem(title, description, result.controls.cafffile.value as Blob).subscribe(
+          (res: CaffItemDetailsDto) => {
+            console.log(res);
+            // todo: navigate to new caff details???
+            /*
+            this.router.navigate(['/caff'], {
+              queryParams: {
+                  caffId: res.id
+              }
+          });
+          */
+          },
+          (err) => {
+            alert('Caff data upload failed');
+          }
+        );
+      }
+    });
   }
 
 }

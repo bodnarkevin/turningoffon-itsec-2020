@@ -5,6 +5,7 @@ const routes: Routes = [
   { path: '', loadChildren: () => import('./startpage/startpage.module').then(m => m.StartpageModule) },
   { path: 'profile', loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule) },
   { path: 'caff', loadChildren: () => import('./caff-details/caff-details.module').then(m => m.CaffDetailsModule) },
+  { path: 'dialog', loadChildren: () => import('./new-caff-dialog/new-caff-dialog.module').then(m => m.NewCaffDialogModule) },
   { path: 'list', loadChildren: () => import('./caff-list/caff-list.module').then(m => m.CaffListModule) },
   { path: 'my-caffs', loadChildren: () => import('./caff-list/caff-list.module').then(m => m.CaffListModule) },
   { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule) },
