@@ -49,7 +49,7 @@ export class CaffDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private caffService: CaffItemService,
-    private commentService: CommentService
+    private commentService: CommentService,
   ) {}
 
   ngOnInit(): void {
