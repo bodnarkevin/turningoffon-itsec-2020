@@ -7,17 +7,20 @@ using CaffStore.Backend.Interface.Bll.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
+using CaffStore.Backend.Dal;
 
 namespace CaffStore.Backend.Bll.Services
 {
 	public class UserService : IUserService
 	{
+		private readonly CaffStoreDbContext _context;
 		private readonly IHttpRequestContext _requestContext;
 		private readonly UserManager<User> _userManager;
 		private readonly IMapper _mapper;
 
-		public UserService(IHttpRequestContext requestContext, UserManager<User> userManager, IMapper mapper)
+		public UserService(CaffStoreDbContext context, IHttpRequestContext requestContext, UserManager<User> userManager, IMapper mapper)
 		{
+			_context = context;
 			_requestContext = requestContext;
 			_userManager = userManager;
 			_mapper = mapper;
@@ -47,6 +50,8 @@ namespace CaffStore.Backend.Bll.Services
 		{
 			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
 
+			ThrowNotFoundIfNull(user);
+
 			var responseUserProfile = _mapper.Map<UserProfileDto>(user);
 
 			responseUserProfile.Roles = _requestContext.CurrentUserRoles;
@@ -58,25 +63,61 @@ namespace CaffStore.Backend.Bll.Services
 		{
 			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
 
+			ThrowNotFoundIfNull(user);
+
 			_mapper.Map(updateUserProfile, user);
 
-			await _userManager.UpdateAsync(user);
+			var result = await _userManager.UpdateAsync(user);
 
-			var responseUserProfile = _mapper.Map<UserProfileDto>(user);
+			if (!result.Succeeded)
+				throw new CaffStoreBusinessException("Updating user failed", result.Errors.Select(e => e.Description));
 
-			responseUserProfile.Roles = _requestContext.CurrentUserRoles;
+			var response = _mapper.Map<UserProfileDto>(user);
 
-			return responseUserProfile;
+			response.Roles = _requestContext.CurrentUserRoles;
+
+			return response;
+		}
+
+		public async Task DeleteMyUserProfileAsync()
+		{
+			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
+
+			ThrowNotFoundIfNull(user);
+
+			// Will result in soft delete
+			var result = await _userManager.DeleteAsync(user);
+
+			if (!result.Succeeded)
+				throw new CaffStoreBusinessException("Deleting user failed", result.Errors.Select(e => e.Description));
+
+			// Delete soft deleted user data
+			user.UserName = null;
+			user.NormalizedUserName = null;
+			user.Email = null;
+			user.NormalizedEmail = null;
+			user.FirstName = null;
+			user.LastName = null;
+
+			await _context.SaveChangesAsync();
 		}
 
 		public async Task ChangeMyPasswordAsync(ChangePasswordDto changePassword)
 		{
 			var user = await _userManager.FindByIdAsync(_requestContext.CurrentUserId.ToString());
 
+			ThrowNotFoundIfNull(user);
+
 			var result = await _userManager.ChangePasswordAsync(user, changePassword.CurrentPassword, changePassword.NewPassword);
 
 			if (!result.Succeeded)
 				throw new CaffStoreBusinessException("Change password failed", result.Errors.Select(e => e.Description));
+		}
+
+		private void ThrowNotFoundIfNull(User user)
+		{
+			if (user == null)
+				throw new CaffStoreNotFoundException();
 		}
 	}
 }

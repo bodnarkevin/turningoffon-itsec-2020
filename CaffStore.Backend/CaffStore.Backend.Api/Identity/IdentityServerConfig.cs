@@ -13,7 +13,7 @@ namespace CaffStore.Backend.Api.Identity
 				new IdentityResources.OpenId(),
 				new IdentityResources.Email(),
 				new IdentityResources.Profile(),
-				new IdentityResource(JwtClaimTypes.Role, new[] {JwtClaimTypes.Role}),
+				new IdentityResource("role", new[] {JwtClaimTypes.Role}),
 			};
 
 		public static IEnumerable<ApiScope> ApiScopes =>

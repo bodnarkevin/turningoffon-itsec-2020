@@ -76,6 +76,7 @@ namespace CaffStore.Backend.Api.Controllers
 		public async Task<IActionResult> DeleteMyCaffItem([FromRoute] long caffItemId)
 		{
 			await _caffItemService.DeleteMyCaffItemAsync(caffItemId);
+
 			return NoContent();
 		}
 
