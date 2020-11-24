@@ -9,13 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using CaffStore.Backend.Interface.Bll.Dtos.AdminUser;
 
 namespace CaffStore.Backend.Api.Controllers
 {
 	[Authorize(CaffStorePolicies.AdminOnly)]
 	[Route("api/admin/users")]
 	[ApiController]
-	public class AdminUserController
+	public class AdminUserController : ControllerBase
 	{
 		private readonly IAdminUserService _adminUserService;
 
@@ -41,6 +42,47 @@ namespace CaffStore.Backend.Api.Controllers
 		public Task<UserProfileDto> GetUserProfile([FromRoute] long userId)
 		{
 			return _adminUserService.GetUserProfileAsync(userId);
+		}
+
+		[Authorize]
+		[HttpPut("{userId}",
+			Name = nameof(UpdateUserProfile))]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public async Task<UserProfileDto> UpdateUserProfile([FromRoute] long userId, [FromBody] UpdateUserProfileDto updateUserProfile)
+		{
+			return await _adminUserService.UpdateUserProfileAsync(userId, updateUserProfile);
+		}
+
+		[Authorize]
+		[HttpDelete("{userId}",
+			Name = nameof(DeleteUserProfile))]
+		[ProducesResponseType((int)HttpStatusCode.NoContent)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public async Task<IActionResult> DeleteUserProfile([FromRoute] long userId)
+		{
+			await _adminUserService.DeleteUserProfileAsync(userId);
+
+			return NoContent();
+		}
+
+		[Authorize]
+		[HttpPost("{userId}/changePassword",
+			Name = nameof(ChangeUserPassword))]
+		[Consumes(MediaTypeNames.Application.Json)]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType((int)HttpStatusCode.NoContent)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public async Task<IActionResult> ChangeUserPassword([FromRoute] long userId, [FromBody] AdminChangePasswordDto adminChangePassword)
+		{
+			await _adminUserService.ChangeUserPasswordAsync(userId, adminChangePassword);
+
+			return NoContent();
 		}
 	}
 }

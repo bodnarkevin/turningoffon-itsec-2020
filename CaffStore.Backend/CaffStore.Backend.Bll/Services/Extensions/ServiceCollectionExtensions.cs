@@ -18,6 +18,8 @@ namespace CaffStore.Backend.Bll.Services.Extensions
 			services.AddScoped<ICaffItemService, CaffItemService>();
 			services.AddScoped<ICommentService, CommentService>();
 			services.AddScoped<IAdminUserService, AdminUserService>();
+			services.AddScoped<IAdminCaffItemService, AdminCaffItemService>();
+			services.AddScoped<IAdminCommentService, AdminCommentService>();
 
 			return services;
 		}

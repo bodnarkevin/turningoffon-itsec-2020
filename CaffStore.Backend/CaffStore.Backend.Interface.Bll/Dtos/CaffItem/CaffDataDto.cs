@@ -9,6 +9,7 @@ namespace CaffStore.Backend.Interface.Bll.Dtos.CaffItem
 		[Required]
 		public string Creator { get; set; }
 
+		[Required]
 		public DateTime Creation { get; set; }
 
 		[Required]

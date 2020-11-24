@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20201117221706_Initial.cs" />
     <Compile Remove="Migrations\20201117221706_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20201123210404_RemoveIsDeletedFromUser.cs" />
+    <Compile Remove="Migrations\20201123210404_RemoveIsDeletedFromUser.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,10 +30,6 @@
     <ProjectReference Include="..\CaffStore.Backend.Bll\CaffStore.Backend.Bll.csproj" />
     <ProjectReference Include="..\CaffStore.Backend.Common\CaffStore.Backend.Common.csproj" />
     <ProjectReference Include="..\CaffStore.Backend.Data\CaffStore.Backend.Dal.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 

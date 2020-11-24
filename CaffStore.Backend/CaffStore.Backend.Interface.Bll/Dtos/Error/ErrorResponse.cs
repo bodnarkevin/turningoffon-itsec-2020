@@ -14,7 +14,6 @@ namespace CaffStore.Backend.Interface.Bll.Dtos.Error
 		[Required]
 		public string Message { get; set; }
 
-		[Required]
 		public IEnumerable<string> Errors { get; set; }
 
 		public string StackTrace { get; set; }
