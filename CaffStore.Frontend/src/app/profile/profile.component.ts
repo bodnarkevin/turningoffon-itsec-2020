@@ -23,8 +23,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         newPassword: new FormControl('', Validators.required)
     });
 
-    editingInProgress: boolean = false;
-    passwordChangeInProgress: boolean = false;
+    editingInProgress = false;
+    passwordChangeInProgress = false;
     queryParamSubscription: Subscription = Subscription.EMPTY;
 
     // if there's a userId, we're looking at the given user's profile
@@ -35,8 +35,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private router: Router,
         private userService: UserService,
         private adminUserService: AdminUserService) { }
-    
-    ngOnInit() {
+
+    ngOnInit(): void {
         this.queryParamSubscription = this.route.queryParams.subscribe((params: Params) => {
             if (params && params.userId) {
                 this.userId = params.userId;
@@ -51,7 +51,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.passwordChangeForm.disable();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.queryParamSubscription.unsubscribe();
     }
 
@@ -65,7 +65,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             },
             (err) => {
                 if (err.status === 404) {
-                    alert('User not found.')
+                    alert('User not found.');
                     this.router.navigate(['/users']);
                 } else {
                     // 401, 403, 500 if unauthorized, redirect to error
@@ -99,7 +99,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const userData = {
             firstName: this.profileDataForm.controls.firstName.value,
             lastName: this.profileDataForm.controls.lastName.value
-        }
+        };
 
         if (this.userId) {
             // TODO: update profile by ID
@@ -133,7 +133,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const changePwData: ChangePasswordDto = {
             currentPassword: this.passwordChangeForm.controls.currentPassword.value,
             newPassword: this.passwordChangeForm.controls.newPassword.value
-        }
+        };
 
         if (this.userId) {
             // TODO: change password by ID
@@ -155,13 +155,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
         }
     }
 
-    
+
     /** Cancel password change */
     onCancelChangePassword(): void {
         this.passwordChangeInProgress = false;
         this.passwordChangeForm.disable();
     }
-    
+
     /** Delete account */
     onDeleteAccount(): void {
         // TODO: delete account

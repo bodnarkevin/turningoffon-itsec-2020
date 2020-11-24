@@ -12,7 +12,7 @@
 import { CaffAnimationDataDto } from './caffAnimationDataDto';
 
 
-export interface CaffDataDto { 
+export interface CaffDataDto {
     creator: string;
     creation?: string;
     animations: Array<CaffAnimationDataDto>;
