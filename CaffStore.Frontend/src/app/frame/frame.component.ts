@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
     selector: 'app-frame',
@@ -13,11 +14,11 @@ export class FrameComponent implements OnInit, OnChanges {
     menuOpened: boolean = false;
     isAdmin: boolean = false;
 
-    constructor(private router: Router, private oAuthService: OAuthService) { }
+    constructor(private router: Router, private authService: AuthService, private oAuthService: OAuthService) { }
 
     ngOnInit() {
-        this.oAuthService.loadUserProfile().then((res) => {
-            if (res && res.role && res.role === 'Admin') {
+        this.authService.isAdmin().then((res) => {
+            if (res) {
                 this.isAdmin = true;
             } else {
                 this.isAdmin = false;

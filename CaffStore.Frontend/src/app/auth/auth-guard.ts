@@ -23,10 +23,15 @@ export class AuthGuard implements CanActivate {
                 return false;
             }
             */
-
+            
+            // only admin can access these routes
             if (url === '/users' || (route.queryParams && route.queryParams.userId)) {
-                // TODO: only admin can access these routes
-                // this.router.navigate(['/error']);
+                this.authService.isAdmin().then(
+                    (res) => {
+                        if (!res) {
+                            this.router.navigate(['/error']);
+                        }
+                    }); 
             } else if (this.authService.isLoggedIn() && url === '/' || url === '') {
                 // if navigates to login, and logged in, redirect to list
                 this.router.navigate(['/list']);

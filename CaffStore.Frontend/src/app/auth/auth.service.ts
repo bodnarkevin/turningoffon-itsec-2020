@@ -14,4 +14,15 @@ export class AuthService {
     public isLoggedIn(): boolean {
         return this.oAuthService.hasValidAccessToken();
     }
+
+    async isAdmin(): Promise<boolean> {
+        return this.oAuthService.loadUserProfile().then(
+            (res) => {
+                if (res && res.role && res.role === 'Admin') {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+    }
 }
