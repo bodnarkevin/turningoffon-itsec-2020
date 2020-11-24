@@ -1,21 +1,18 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using CaffStore.Backend.Dal;
+﻿using CaffStore.Backend.Dal;
 using CaffStore.Backend.Interface.Bll.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CaffStore.Backend.Bll.Services
 {
 	public class AdminCommentService : IAdminCommentService
 	{
 		private readonly CaffStoreDbContext _context;
-		private readonly IMapper _mapper;
 
-		public AdminCommentService(CaffStoreDbContext context, IMapper mapper)
+		public AdminCommentService(CaffStoreDbContext context)
 		{
 			_context = context;
-			_mapper = mapper;
 		}
 
 		public async Task DeleteCommentAsync(long commentId)
