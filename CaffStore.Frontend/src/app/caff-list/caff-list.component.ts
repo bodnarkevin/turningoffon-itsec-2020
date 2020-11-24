@@ -16,14 +16,14 @@ fileDto3: FileDto = {
   id: 'testfileid3',
   fileUri: 'https://material.angular.io/assets/img/examples/shiba2.jpg',
 };
-  userDto: UserDto = { 
+  userDto: UserDto = {
       id: 11,
-      email: "hello@example.com",
-      firstName: "John",
+      email: 'hello@example.com',
+      firstName: 'John',
       lastName: 'Doe',
       fullName: 'John Doe'
   };
-  caffs: CaffItemDto[] = [{ 
+  caffs: CaffItemDto[] = [{
       id: 1,
       title: 'Hello test title',
       description: 'Ez egy nagyon szep kep, es ez a leirasa, ami szinten nagyon szep.',
@@ -31,7 +31,7 @@ fileDto3: FileDto = {
       previewFile: this.fileDto,
       createdBy: this.userDto,
   },
-  { 
+  {
     id: 2,
     title: 'Egy masik kep',
     description: 'Ez egy sokkal rovidebb leiras.',
@@ -39,7 +39,7 @@ fileDto3: FileDto = {
     previewFile: this.fileDto,
     createdBy: this.userDto,
 },
-{ 
+{
   id: 3,
   title: 'Egy harmadik',
   description: 'Egy hosszu leiras...... Nagyon hosszu leiras meg mindig tgart ez a leiras es meg mindig tart mikor lesz mar vege uristen de hosszu jajj jajjajajaj. Na csak kinyogted! Be volt kapcsolva ujujujujujujuj',
@@ -47,7 +47,7 @@ fileDto3: FileDto = {
   previewFile: this.fileDto3,
   createdBy: this.userDto,
 },
-{ 
+{
   id: 4,
   title: 'Egy negyediiiik',
   description: 'kaki leiras',
@@ -55,7 +55,7 @@ fileDto3: FileDto = {
   previewFile: this.fileDto3,
   createdBy: this.userDto,
 },
-{ 
+{
   id: 5,
   title: 'Egy otodik',
   description: 'leiras',
@@ -65,9 +65,9 @@ fileDto3: FileDto = {
 }];
 
   /** Current page */
-  page: number = 1;
+  page = 1;
   /** Total page count */
-  pageCount: number = 1;
+  pageCount = 1;
 
   constructor(private router: Router, private caffItemService: CaffItemService) { }
 
@@ -77,7 +77,6 @@ fileDto3: FileDto = {
   }
 
   onViewDetails(caffId: number): void {
-    //alert('You have clicked the card.' + caffId);
     this.router.navigate(['/caff'], {
       queryParams: {
           caffId
@@ -93,7 +92,7 @@ fileDto3: FileDto = {
                 this.pageCount = res.totalPageCount;
             } else {
                 this.caffs = [...this.caffs, ...res.results];
-            } 
+            }
         },
         (err) => {
             alert('Something went wrong. Please try again later.');
@@ -102,19 +101,10 @@ fileDto3: FileDto = {
   }
 
   onLoadMore(): void {
-    if (this.page !== this.pageCount) {        
+    if (this.page !== this.pageCount) {
         this.page += 1;
         this.getCaffItems();
     }
   }
 
-  /*
-  onSelectCaff(caffId: number): void {
-      this.router.navigate(['/caff'], {
-          queryParams: {
-              userId: caffId
-          }
-      });
-  }
-  */
 }
