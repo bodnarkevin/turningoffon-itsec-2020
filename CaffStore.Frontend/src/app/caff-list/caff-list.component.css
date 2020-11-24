@@ -1,10 +1,16 @@
 .caff-list-container {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-end;
     padding: 32px;
     padding-top: 0px;
+}
+
+.caff-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .row {
@@ -24,9 +30,17 @@ a:hover {
 }
 
 .example-card {
-    max-width: 300px;
+    max-width: 220px;
     background: var(--color-accent);
     margin: 1em;
+}
+
+.example-card-title {
+    font: normal normal 500 16px/18px Roboto, sans-serif;
+}
+
+::ng-deep .mat-card{
+   padding-bottom: 0px !important;
 }
 
 .example-card:hover{
@@ -36,4 +50,12 @@ a:hover {
 .example-header-image {
     background-size: cover;
 }
+
+.fab-container {
+    position: fixed;
+    display: flex;
+    z-index: 10;
+    align-items: flex-end;
+    height: 70%;
+  }
   
