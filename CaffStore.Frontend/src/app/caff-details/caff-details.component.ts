@@ -99,6 +99,8 @@ export class CaffDetailsComponent implements OnInit {
             previewFile: fileDto,
             createdBy: userDto,
             caffData: caffDataDto,
+            createdAt: '2020.11.24',
+            lastModifiedAt: '2020.11.24'
           };
           this.caffDataForm.controls.title.setValue(this.testCaff.title);
           this.caffDataForm.controls.description.setValue(

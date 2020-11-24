@@ -9,14 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserDto } from './userDto';
 
 
-export interface CommentDto { 
-    id: number;
-    text: string;
-    createdAt: string;
-    createdBy?: UserDto;
-    lastModifiedAt: string;
+export interface AdminChangePasswordDto { 
+    newPassword: string;
 }
 

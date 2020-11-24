@@ -15,12 +15,14 @@ import { CaffDataDto } from './caffDataDto';
 
 
 export interface CaffItemDetailsDto { 
-    id?: number;
+    id: number;
     title: string;
     description: string;
-    downloadedTimes?: number;
-    previewFile?: FileDto;
+    downloadedTimes: number;
+    previewFile: FileDto;
+    createdAt: string;
     createdBy?: UserDto;
-    caffData?: CaffDataDto;
+    lastModifiedAt: string;
+    caffData: CaffDataDto;
 }
 

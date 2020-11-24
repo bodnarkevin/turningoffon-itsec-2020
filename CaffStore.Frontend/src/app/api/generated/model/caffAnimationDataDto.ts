@@ -13,8 +13,8 @@ import { CiffDataDto } from './ciffDataDto';
 
 
 export interface CaffAnimationDataDto { 
-    order?: number;
-    duration?: number;
+    order: number;
+    duration: number;
     ciffData: CiffDataDto;
 }
 

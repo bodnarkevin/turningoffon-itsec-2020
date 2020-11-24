@@ -11,10 +11,19 @@ export class FrameComponent implements OnInit, OnChanges {
 
     @Input() title: string = '';
     menuOpened: boolean = false;
+    isAdmin: boolean = false;
 
     constructor(private router: Router, private oAuthService: OAuthService) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.oAuthService.loadUserProfile().then((res) => {
+            if (res && res.role && res.role === 'Admin') {
+                this.isAdmin = true;
+            } else {
+                this.isAdmin = false;
+            }
+        });
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes && changes.title && changes.title.currentValue !== changes.title.previousValue) {
@@ -28,5 +37,4 @@ export class FrameComponent implements OnInit, OnChanges {
         this.oAuthService.logOut();
         this.router.navigate(['/']);
     }
-
 }

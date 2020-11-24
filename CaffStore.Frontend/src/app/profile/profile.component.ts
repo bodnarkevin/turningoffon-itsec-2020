@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs';
 
 import { AdminUserService, ChangePasswordDto, UserProfileDto, UserService } from '../api/generated';
@@ -33,6 +34,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
+        private oAuthService: OAuthService,
         private userService: UserService,
         private adminUserService: AdminUserService) { }
 
@@ -102,7 +104,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
         };
 
         if (this.userId) {
-            // TODO: update profile by ID
+            this.adminUserService.updateUserProfile(this.userId, userData).subscribe(
+                (res) => {
+                    this.editingInProgress = false;
+                    this.profileDataForm.disable();
+                },
+                (err) => {
+                    alert('Personal data change failed');
+                }
+            )
         } else {
             this.userService.updateMyUserProfile(userData).subscribe(
                 (res: UserProfileDto) => {
@@ -124,7 +134,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     /** Start change password (enable form) */
     onChangePasswordClicked(): void {
         this.passwordChangeInProgress = true;
-        this.passwordChangeForm.controls.currentPassword.enable();
+        // admin does not have to know the current password
+        if (!this.userId) {
+            this.passwordChangeForm.controls.currentPassword.enable();
+        }
+
         this.passwordChangeForm.controls.newPassword.enable();
     }
 
@@ -136,7 +150,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
         };
 
         if (this.userId) {
-            // TODO: change password by ID
+            this.adminUserService.changeUserPassword(this.userId, { newPassword: this.passwordChangeForm.controls.newPassword.value }).subscribe(
+                (res) => {
+                    this.passwordChangeInProgress = false;
+                    this.passwordChangeForm.disable();
+                    this.passwordChangeForm.controls.currentPassword.setValue('');
+                    this.passwordChangeForm.controls.newPassword.setValue('');
+                },
+                (err) => {
+                    if (err.error.title) {
+                        alert(err.error.title);
+                    } else {
+                        alert('Password change failed');
+                    }
+                });
         } else {
             this.userService.changeMyPassword(changePwData).subscribe(
                 (res) => {
@@ -147,7 +174,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 },
                 (err) => {
                     if (err.error.title) {
-                        alert (err.error.title);
+                        alert(err.error.title);
                     } else {
                         alert('Password change failed');
                     }
@@ -164,7 +191,28 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     /** Delete account */
     onDeleteAccount(): void {
-        // TODO: delete account
-        console.log('delete account');
+        if (this.userId) {
+            this.adminUserService.deleteUserProfile(this.userId).subscribe(
+                (res) => {
+                    this.router.navigate(['/users']);
+                },
+                (err) => {
+                    alert('Profile deletion failed!');
+                }
+            )
+        } else {
+            this.userService.deleteMyUserProfile().subscribe(
+                (res) => {
+                    this.oAuthService.revokeTokenAndLogout().then(
+                        () => {
+                            this.router.navigate(['/']);
+                        }
+                    )
+                },
+                (err) => {
+                    alert('Profile deletion failed!');
+                }
+            )
+        }
     }
 }

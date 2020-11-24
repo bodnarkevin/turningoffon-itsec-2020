@@ -14,8 +14,7 @@
     <div class="menu">
         <a routerLink="/profile">Profile</a>
     </div>
-    <!--TODO: just for admin -->
-    <div class="menu">
+    <div class="menu" *ngIf="isAdmin">
         <a routerLink="/users">Users</a>
     </div>
     <div class="menu">

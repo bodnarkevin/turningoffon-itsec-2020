@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
         password: new FormControl('', Validators.required)
     });
 
-    constructor(private oAuthService: OAuthService, private router: Router) { }
+    constructor(private oAuthService: OAuthService, private router: Router, private authService: AuthService) { }
 
     ngOnInit() { }
 
@@ -23,7 +24,6 @@ export class LoginComponent implements OnInit {
         this.oAuthService.fetchTokenUsingPasswordFlowAndLoadUserProfile(
             this.loginForm.controls.email.value, this.loginForm.controls.password.value)
             .then((tokenInfo) => {
-                // TODO: tokenInfo role --> admin
                 this.router.navigate(['/list']);
             })
             .catch(() => {

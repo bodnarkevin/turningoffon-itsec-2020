@@ -14,11 +14,13 @@ import { UserDto } from './userDto';
 
 
 export interface CaffItemDto { 
-    id?: number;
+    id: number;
     title: string;
     description: string;
-    downloadedTimes?: number;
-    previewFile?: FileDto;
+    downloadedTimes: number;
+    previewFile: FileDto;
+    createdAt: string;
     createdBy?: UserDto;
+    lastModifiedAt: string;
 }
 

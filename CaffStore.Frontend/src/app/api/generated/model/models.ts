@@ -1,4 +1,5 @@
 export * from './addCommentDto';
+export * from './adminChangePasswordDto';
 export * from './caffAnimationDataDto';
 export * from './caffDataDto';
 export * from './caffItemDetailsDto';

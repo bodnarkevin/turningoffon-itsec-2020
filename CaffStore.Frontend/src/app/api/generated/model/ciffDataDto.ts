@@ -12,8 +12,8 @@
 
 
 export interface CiffDataDto { 
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
     caption: string;
     tags: Array<string>;
 }

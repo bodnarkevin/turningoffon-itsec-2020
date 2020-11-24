@@ -32,6 +32,8 @@ fileDto3: FileDto = {
       downloadedTimes: 0,
       previewFile: this.fileDto,
       createdBy: this.userDto,
+      createdAt: '2020.11.24',
+      lastModifiedAt: '2020.11.24'
   },
   {
     id: 2,
@@ -40,6 +42,8 @@ fileDto3: FileDto = {
     downloadedTimes: 0,
     previewFile: this.fileDto,
     createdBy: this.userDto,
+    createdAt: '2020.11.24',
+    lastModifiedAt: '2020.11.24'
 },
 {
   id: 3,
@@ -48,6 +52,8 @@ fileDto3: FileDto = {
   downloadedTimes: 0,
   previewFile: this.fileDto3,
   createdBy: this.userDto,
+  createdAt: '2020.11.24',
+  lastModifiedAt: '2020.11.24'
 },
 {
   id: 4,
@@ -56,6 +62,8 @@ fileDto3: FileDto = {
   downloadedTimes: 0,
   previewFile: this.fileDto3,
   createdBy: this.userDto,
+  createdAt: '2020.11.24',
+  lastModifiedAt: '2020.11.24'
 },
 {
   id: 5,
@@ -64,6 +72,8 @@ fileDto3: FileDto = {
   downloadedTimes: 0,
   previewFile: this.fileDto,
   createdBy: this.userDto,
+  createdAt: '2020.11.24',
+  lastModifiedAt: '2020.11.24'
 }];
 
   /** Current page */
