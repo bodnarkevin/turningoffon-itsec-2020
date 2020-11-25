@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="caff-list-container">
+        <div class="caff-list">
+            <mat-card *ngFor="let caff of caffs" class="example-card" (click)="onViewDetails(caff.id)">
+                <mat-card-header color="primary">
+                  <mat-card-title class="example-card-title">{{caff.title}}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="{{caff.previewFile.fileUri}}" alt="Photo of a Shiba Inu">
+            </mat-card>
+            
+        </div>
+        <div class="fab-container">
+            <button matTooltip="Add new CAFF" mat-fab color="primary" aria-label="Add new Caff" (click)="onAddNewCaff()">
+              <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <a *ngIf="pageCount > page" (click)="onLoadMore()">Load more caffs</a>
+    </div>
+</div>

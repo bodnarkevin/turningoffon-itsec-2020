@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewCaffDialogComponent } from './new-caff-dialog.component';
 
+import { MyCaffsComponent } from './my-caffs.component';
 
-describe('NewCaffDialogComponent', () => {
-  let component: NewCaffDialogComponent;
-  let fixture: ComponentFixture<NewCaffDialogComponent>;
+describe('MyCaffsComponent', () => {
+  let component: MyCaffsComponent;
+  let fixture: ComponentFixture<MyCaffsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewCaffDialogComponent ]
+      declarations: [ MyCaffsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewCaffDialogComponent);
+    fixture = TestBed.createComponent(MyCaffsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
