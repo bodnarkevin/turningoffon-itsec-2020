@@ -15,6 +15,7 @@ import {
   UpdateCaffItemDto,
   UserDto,
 } from '../api/generated';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-caff-details',
@@ -30,6 +31,8 @@ export class CaffDetailsComponent implements OnInit {
     size: new FormControl('', Validators.required),
     creationdate: new FormControl('', Validators.required),
     uploaddate: new FormControl('', Validators.required),
+    uploadername: new FormControl('', Validators.required),
+    uploaderemail: new FormControl('', Validators.required),
   });
   newCommentForm = new FormGroup({
     commenttext: new FormControl('', Validators.required),
@@ -44,12 +47,16 @@ export class CaffDetailsComponent implements OnInit {
   caffId: number = null;
 
   testCaff: CaffItemDetailsDto = null;
+  isAdmin = false;
+  isOwnerOfCaff = false;
+  userEmail: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private caffService: CaffItemService,
     private commentService: CommentService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -68,10 +75,17 @@ export class CaffDetailsComponent implements OnInit {
           };
           const userDto: UserDto = {
             id: 11,
-            email: 'hello@example.com',
-            firstName: 'John',
-            lastName: 'Doe',
-            fullName: 'John Doe',
+            email: 'gogota97@gmail.com',
+            firstName: 'Agota',
+            lastName: 'Kozak',
+            fullName: 'Agota Kozak',
+          };
+          const otherUserDto: UserDto = {
+            id: 11,
+            email: 'valaki@example.com',
+            firstName: 'Valaki',
+            lastName: 'Mas',
+            fullName: 'Valaki Mas',
           };
           const ciffDataDto: CiffDataDto = {
             width: 200,
@@ -100,14 +114,14 @@ export class CaffDetailsComponent implements OnInit {
             createdBy: userDto,
             caffData: caffDataDto,
             createdAt: '2020.11.24',
-            lastModifiedAt: '2020.11.24'
+            lastModifiedAt: '2020.11.24',
           };
           this.caffDataForm.controls.title.setValue(this.testCaff.title);
           this.caffDataForm.controls.description.setValue(
             this.testCaff.description
           );
           this.caffDataForm.controls.creator.setValue(
-            this.testCaff.createdBy.fullName
+            this.testCaff.caffData.creator
           );
           const tags: string[] = [];
           this.testCaff.caffData.animations.forEach((anim) => {
@@ -128,6 +142,14 @@ export class CaffDetailsComponent implements OnInit {
             this.testCaff.caffData.creation
           );
 
+          this.caffDataForm.controls.uploaderemail.setValue(
+            this.testCaff.createdBy.email
+          );
+
+          this.caffDataForm.controls.uploadername.setValue(
+            this.testCaff.createdBy.fullName
+          );
+
           this.comments = [
             {
               id: 1,
@@ -144,12 +166,38 @@ export class CaffDetailsComponent implements OnInit {
               createdBy: userDto,
               lastModifiedAt: '2020.01.02',
             },
+            {
+              id: 3,
+              text:
+                'U cannot delete dis haha',
+              createdAt: '2020.01.02',
+              createdBy: otherUserDto,
+              lastModifiedAt: '2020.01.02',
+            },
           ];
         }
       }
     );
 
     this.caffDataForm.disable();
+    this.authService.isAdmin().then((res) => {
+      if (res) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+    });
+    this.authService.getCurrentUserEmail().then((res) => {
+      if (res) {
+        // Check if the currently logged in user's email is equal to the creator's email of the viewed caff
+        // to see if it's one of the caff files owned by the user.
+        // Users can only edit/delete their own files.
+        this.userEmail = res;
+        if (this.testCaff.createdBy.email === res) {
+          this.isOwnerOfCaff = true;
+        }
+      }
+    });
   }
 
   /** Start caff data editing (enable form) */
@@ -161,6 +209,8 @@ export class CaffDetailsComponent implements OnInit {
     this.caffDataForm.controls.size.disable();
     this.caffDataForm.controls.creationdate.disable();
     this.caffDataForm.controls.uploaddate.disable();
+    this.caffDataForm.controls.uploaderemail.disable();
+    this.caffDataForm.controls.uploadername.disable();
   }
 
   /** Cancel caff data editing */
@@ -194,6 +244,7 @@ export class CaffDetailsComponent implements OnInit {
   getCaffItemDetailsById(): void {
     this.caffService.getCaffItem(this.caffId).subscribe(
       (res: CaffItemDetailsDto) => {
+        this.testCaff = res;
         this.caffDataForm.controls.title.setValue(res.title);
         this.caffDataForm.controls.description.setValue(res.description);
       },
@@ -212,12 +263,12 @@ export class CaffDetailsComponent implements OnInit {
   /* Get Comments */
   getComments(): void {
     this.caffService.getCaffItemComments(this.caffId).subscribe(
-        (res: CommentDto[]) => {
-            this.comments = res;
-        },
-        (err) => {
-            alert('Something went wrong. Please try again later.');
-        }
+      (res: CommentDto[]) => {
+        this.comments = res;
+      },
+      (err) => {
+        alert('Something went wrong. Please try again later.');
+      }
     );
   }
 
