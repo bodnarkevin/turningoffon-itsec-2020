@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
         password: new FormControl('', Validators.required)
     });
 
-    constructor(private oAuthService: OAuthService, private router: Router, private authService: AuthService) { }
+    constructor(private oAuthService: OAuthService, private router: Router, private _snackBar: MatSnackBar) { }
 
     ngOnInit() { }
 
@@ -27,7 +27,9 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/list']);
             })
             .catch(() => {
-                alert('Invalid username or password');
+                this._snackBar.open('Invalid username or password', null, {
+                    duration: 2000,
+                });
             });
     }
 }

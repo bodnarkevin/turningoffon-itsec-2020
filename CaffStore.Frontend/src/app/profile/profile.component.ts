@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Subscription } from 'rxjs';
 
@@ -36,7 +37,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         private router: Router,
         private oAuthService: OAuthService,
         private userService: UserService,
-        private adminUserService: AdminUserService) { }
+        private adminUserService: AdminUserService,
+        private _snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
         this.queryParamSubscription = this.route.queryParams.subscribe((params: Params) => {
@@ -67,7 +69,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
             },
             (err) => {
                 if (err.status === 404) {
-                    alert('User not found.');
+                    this._snackBar.open('User not found.', null, {
+                        duration: 2000,
+                    });
                     this.router.navigate(['/users']);
                 } else {
                     // 401, 403, 500 if unauthorized, redirect to error
@@ -110,7 +114,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.profileDataForm.disable();
                 },
                 (err) => {
-                    alert('Personal data change failed');
+                    this._snackBar.open('Personal data change failed', null, {
+                        duration: 2000,
+                    });
                 }
             )
         } else {
@@ -120,7 +126,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.profileDataForm.disable();
                 },
                 (err) => {
-                    alert('Personal data change failed');
+                    this._snackBar.open('Personal data change failed', null, {
+                        duration: 2000,
+                    });
                 });
         }
     }
@@ -159,9 +167,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 },
                 (err) => {
                     if (err.error.title) {
-                        alert(err.error.title);
+                        this._snackBar.open(err.error.title, null, {
+                            duration: 2000,
+                        });
                     } else {
-                        alert('Password change failed');
+                        this._snackBar.open('Password change failed', null, {
+                            duration: 2000,
+                        });
                     }
                 });
         } else {
@@ -174,9 +186,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 },
                 (err) => {
                     if (err.error.title) {
-                        alert(err.error.title);
+                        this._snackBar.open(err.error.title, null, {
+                            duration: 2000,
+                        });
                     } else {
-                        alert('Password change failed');
+                        this._snackBar.open('Password change failed', null, {
+                            duration: 2000,
+                        });
                     }
                 });
         }
@@ -197,7 +213,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/users']);
                 },
                 (err) => {
-                    alert('Profile deletion failed!');
+                    this._snackBar.open('Profile deletion failed!', null, {
+                        duration: 2000,
+                    });
                 }
             )
         } else {
@@ -210,7 +228,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     )
                 },
                 (err) => {
-                    alert('Profile deletion failed!');
+                    this._snackBar.open('Profile deletion failed!', null, {
+                        duration: 2000,
+                    });
                 }
             )
         }

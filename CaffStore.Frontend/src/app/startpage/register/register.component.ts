@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import Util from '../../shared/utils';
 import { samePasswordValidator } from '../../shared/validators/samePasswordValidator';
@@ -20,7 +21,7 @@ export class RegisterComponent implements OnInit {
         passwordAgain: new FormControl('', Validators.required)
     }, { validators: samePasswordValidator });
 
-    constructor(private userService: UserService) { }
+    constructor(private userService: UserService, private _snackBar: MatSnackBar) { }
 
     ngOnInit() { }
 
@@ -36,18 +37,23 @@ export class RegisterComponent implements OnInit {
             .then(() => {
                 // Clear form
                 this.registerForm.reset();
-                alert('Successful registration');
+                this._snackBar.open('Successful registration', null, {
+                    duration: 2000,
+                });
             })
             .catch((response) => {
-                // Conflict
                 if (response.status === 409) {
-                    alert(response.error.message);
-                }
-                // Bad request
-                if (response.status === 400) {
-                    alert('Registration failed');
+                    this._snackBar.open(response.error.message, null, {
+                        duration: 2000,
+                    });
+                } else if (response.status === 400) {
+                    this._snackBar.open('Registration failed', null, {
+                        duration: 2000,
+                    });
                 } else {
-                    alert('Something went wrong. Please try again later.');
+                    this._snackBar.open('Something went wrong. Please try again later.', null, {
+                        duration: 2000,
+                    });
                 }
             });
     }

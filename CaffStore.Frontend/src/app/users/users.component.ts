@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AdminUserService, UserDtoPagedResponse } from '../api/generated';
 import { UserDto } from '../api/generated/model/userDto';
@@ -17,7 +18,7 @@ export class UsersComponent implements OnInit {
     /** Total page count */
     pageCount: number = 1;
 
-    constructor(private router: Router, private adminUserService: AdminUserService) { }
+    constructor(private router: Router, private adminUserService: AdminUserService, private _snackBar: MatSnackBar) { }
 
     ngOnInit() {
         this.getUsers();
@@ -34,7 +35,9 @@ export class UsersComponent implements OnInit {
                 } 
             },
             (err) => {
-                alert('Something went wrong. Please try again later.');
+                this._snackBar.open('Something went wrong. Please try again later.', null, {
+                    duration: 2000,
+                });
             }
         );
     }
