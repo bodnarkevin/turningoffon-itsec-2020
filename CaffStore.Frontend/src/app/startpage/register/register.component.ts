@@ -23,7 +23,7 @@ export class RegisterComponent implements OnInit {
 
     constructor(private userService: UserService, private _snackBar: MatSnackBar) { }
 
-    ngOnInit() { }
+    ngOnInit(): void { }
 
     onRegister(): void {
         const registerUserDto: RegisterUserDto = {
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
             lastName: this.registerForm.controls.lastName.value,
             password: this.registerForm.controls.password.value
         };
-    
+
         this.userService.registerUser(registerUserDto).toPromise()
             .then(() => {
                 // Clear form
