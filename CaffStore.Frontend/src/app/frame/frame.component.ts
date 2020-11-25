@@ -10,13 +10,13 @@ import { AuthService } from '../auth/auth.service';
 })
 export class FrameComponent implements OnInit, OnChanges {
 
-    @Input() title: string = '';
-    menuOpened: boolean = false;
-    isAdmin: boolean = false;
+    @Input() title = '';
+    menuOpened = false;
+    isAdmin = false;
 
     constructor(private router: Router, private authService: AuthService, private oAuthService: OAuthService) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.authService.isAdmin().then((res) => {
             if (res) {
                 this.isAdmin = true;
@@ -26,7 +26,7 @@ export class FrameComponent implements OnInit, OnChanges {
         });
     }
 
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: SimpleChanges): void {
         if (changes && changes.title && changes.title.currentValue !== changes.title.previousValue) {
             this.menuOpened  = false;
         }
