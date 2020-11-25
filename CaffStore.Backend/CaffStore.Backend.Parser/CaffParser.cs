@@ -2,9 +2,11 @@
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json;
+using System.Drawing.Imaging;
 
 namespace CaffStore.Backend.Parser
 {
@@ -161,18 +163,20 @@ namespace CaffStore.Backend.Parser
 
 				byte[] previewArray = new byte[preSize];
 				Marshal.Copy(preview, previewArray, 0, preSize);
-				Bitmap previewBitmap;
-				using (var ms = new MemoryStream(previewArray))
-				{
-					previewBitmap = new Bitmap(ms);
-				}
+
+				Bitmap bmp = new Bitmap(caffDataFromParser.Animations.ToList()[0].CiffData.Width, caffDataFromParser.Animations.ToList()[0].CiffData.Height, PixelFormat.Format24bppRgb);
+				BitmapData bmData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
+				IntPtr pNative = bmData.Scan0;
+				Marshal.Copy(previewArray, 0, pNative, caffDataFromParser.Animations.ToList()[0].CiffData.Width * caffDataFromParser.Animations.ToList()[0].CiffData.Height * 3);
+				bmp.UnlockBits(bmData);
+
 				Marshal.FreeHGlobal(pnt);
 
 				return new CaffParseResult
 				{
 					Succeeded = true,
 					Message = "Success",
-					Preview = previewBitmap,
+					Preview = bmp,
 					Result = caffDataFromParser
 				};
             }
