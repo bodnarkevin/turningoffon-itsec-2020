@@ -1,4 +1,4 @@
-﻿namespace CaffStore.Backend.Api.Identity
+﻿namespace CaffStore.Backend.Interface.Bll.Roles
 {
 	public static class CaffStoreRoles
 	{

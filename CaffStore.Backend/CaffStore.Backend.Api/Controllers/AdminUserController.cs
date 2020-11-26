@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using CaffStore.Backend.Api.Queries;
 using CaffStore.Backend.Interface.Bll.Dtos.AdminUser;
 
 namespace CaffStore.Backend.Api.Controllers
@@ -29,9 +30,9 @@ namespace CaffStore.Backend.Api.Controllers
 			Name = nameof(GetPagedUsers))]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(PagedResponse<UserDto>), (int)HttpStatusCode.OK)]
-		public Task<PagedResponse<UserDto>> GetPagedUsers([FromQuery] PagedQuery pagedQuery)
+		public Task<PagedResponse<UserDto>> GetPagedUsers([FromQuery] UserPagedQuery userPagedQuery)
 		{
-			return _adminUserService.GetPagedUsersAsync(pagedQuery);
+			return _adminUserService.GetPagedUsersAsync(userPagedQuery);
 		}
 
 		[HttpGet("{userId}",
@@ -44,7 +45,6 @@ namespace CaffStore.Backend.Api.Controllers
 			return _adminUserService.GetUserProfileAsync(userId);
 		}
 
-		[Authorize]
 		[HttpPut("{userId}",
 			Name = nameof(UpdateUserProfile))]
 		[Consumes(MediaTypeNames.Application.Json)]
@@ -57,7 +57,6 @@ namespace CaffStore.Backend.Api.Controllers
 			return await _adminUserService.UpdateUserProfileAsync(userId, updateUserProfile);
 		}
 
-		[Authorize]
 		[HttpDelete("{userId}",
 			Name = nameof(DeleteUserProfile))]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
@@ -70,7 +69,17 @@ namespace CaffStore.Backend.Api.Controllers
 			return NoContent();
 		}
 
-		[Authorize]
+		[HttpGet("{userId}/grantAdmin",
+			Name = nameof(GrantUserAdminRole))]
+		[Produces(MediaTypeNames.Application.Json)]
+		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public Task<UserProfileDto> GrantUserAdminRole([FromRoute] long userId)
+		{
+			return _adminUserService.GrantUserAdminRoleAsync(userId);
+		}
+
 		[HttpPost("{userId}/changePassword",
 			Name = nameof(ChangeUserPassword))]
 		[Consumes(MediaTypeNames.Application.Json)]
