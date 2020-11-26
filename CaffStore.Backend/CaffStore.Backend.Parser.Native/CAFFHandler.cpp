@@ -349,12 +349,12 @@ namespace CAFF {
                 addToJson(str, "order", std::to_string(count), FALSE);
                 addToJson(str, "duration", std::to_string(caffFile.blocks[i].animation_data.duration), FALSE);
                 count++;
-                str.append("\"ciffdata:\":");
+                str.append("\"ciffData\":");
                 str.append("{");
                 addToJson(str, "width", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.width), FALSE);
                 addToJson(str, "height", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.height), FALSE);
                 addToJson(str, "caption", "\"" + caffFile.blocks[i].animation_data.ciff_file.header.caption + "\"", FALSE);
-                str.append("\"tags:\": [");
+                str.append("\"tags\": [");
                 for (auto element : caffFile.blocks[i].animation_data.ciff_file.header.tags) {
                     str.append("\"" + element + "\",");
                 }

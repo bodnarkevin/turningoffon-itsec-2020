@@ -84,7 +84,7 @@ namespace CaffStore.Backend.Parser
 	public static class CaffParser
 	{
 
-		[DllImport("C:/Users/cloud/source/repos/turningoffon-itsec-2020/CaffStore.Backend/Debug/CaffStore.Backend.Parser.Native.dll", CharSet=CharSet.Ansi, CallingConvention=CallingConvention.StdCall)]
+		[DllImport("C:/Users/Pista/source/repos/turningoffon-itsec-2020/CaffStore.Backend/x64/Debug/CaffStore.Backend.Parser.Native.dll", CharSet=CharSet.Ansi, CallingConvention=CallingConvention.StdCall)]
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		public static extern string parseToJson(IntPtr pArray, int nSize, out IntPtr preview, out int size, out bool isError);
 
@@ -107,7 +107,14 @@ namespace CaffStore.Backend.Parser
 		public static async Task<CaffParseResult> ParseCaffFileAsync(Stream fileStream)
 		{
 			// TODO fill with real data
-			byte[] buffer = ReadBytes(fileStream);
+			byte[] buffer;
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				fileStream.CopyTo(ms);
+				buffer = ms.ToArray();
+			}
+
 			int size = Marshal.SizeOf(buffer[0]) * buffer.Length;
 			IntPtr pnt = Marshal.AllocHGlobal(size);
 
@@ -159,16 +166,35 @@ namespace CaffStore.Backend.Parser
 				};
 			} else
             {
+				
 				CaffDataDto caffDataFromParser = JsonConvert.DeserializeObject<CaffDataDto>(parsedJson);
 
 				byte[] previewArray = new byte[preSize];
 				Marshal.Copy(preview, previewArray, 0, preSize);
 
-				Bitmap bmp = new Bitmap(caffDataFromParser.Animations.ToList()[0].CiffData.Width, caffDataFromParser.Animations.ToList()[0].CiffData.Height, PixelFormat.Format24bppRgb);
-				BitmapData bmData = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, bmp.PixelFormat);
-				IntPtr pNative = bmData.Scan0;
-				Marshal.Copy(previewArray, 0, pNative, caffDataFromParser.Animations.ToList()[0].CiffData.Width * caffDataFromParser.Animations.ToList()[0].CiffData.Height * 3);
-				bmp.UnlockBits(bmData);
+				int ciffWidth = caffDataFromParser.Animations.ToList()[0].CiffData.Width;
+				int ciffHeight = caffDataFromParser.Animations.ToList()[0].CiffData.Height;
+
+				Bitmap bmp = new Bitmap(ciffWidth, ciffHeight);
+				int x = 0;
+				int y = 0;
+
+				for (int i = 0; i < previewArray.Length; i += 3)
+				{
+					byte r = previewArray[i];
+					byte g = previewArray[i + 1];
+					byte b = previewArray[i + 2];
+					bmp.SetPixel(x, y, Color.FromArgb(r, g, b));
+
+					if (x < ciffWidth - 1)
+					{
+						x++;
+					} else
+					{
+						x = 0;
+						y++;
+					}
+				}
 
 				Marshal.FreeHGlobal(pnt);
 
