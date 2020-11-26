@@ -5,8 +5,9 @@ using CaffStore.Backend.Dal;
 using CaffStore.Backend.Dal.Entities;
 using CaffStore.Backend.Interface.Bll.Dtos.AdminUser;
 using CaffStore.Backend.Interface.Bll.Dtos.User;
-using CaffStore.Backend.Interface.Bll.Pagination.Queries;
 using CaffStore.Backend.Interface.Bll.Pagination.Responses;
+using CaffStore.Backend.Interface.Bll.Queries;
+using CaffStore.Backend.Interface.Bll.Roles;
 using CaffStore.Backend.Interface.Bll.Services;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -27,11 +28,17 @@ namespace CaffStore.Backend.Bll.Services
 			_mapper = mapper;
 		}
 
-		public async Task<PagedResponse<UserDto>> GetPagedUsersAsync(IPagedQuery pagedQuery)
+		public async Task<PagedResponse<UserDto>> GetPagedUsersAsync(IUserPagedQuery userPagedQuery)
 		{
+			var admins = Enumerable.Empty<User>();
+			if (!userPagedQuery.IncludeAdmins)
+				admins = await _userManager.GetUsersInRoleAsync(CaffStoreRoles.Admin);
+
 			return await _userManager
 				.Users
-				.ToPagedAsync<User, UserDto>(pagedQuery, _mapper);
+				.Where(u => string.IsNullOrEmpty(userPagedQuery.Email) || u.Email.Contains(userPagedQuery.Email))
+				.Where(u => userPagedQuery.IncludeAdmins || !admins.Contains(u))
+				.ToPagedAsync<User, UserDto>(userPagedQuery, _mapper);
 		}
 
 		public async Task<UserProfileDto> GetUserProfileAsync(long userId)
@@ -84,6 +91,20 @@ namespace CaffStore.Backend.Bll.Services
 			user.LastName = null;
 
 			await _context.SaveChangesAsync();
+		}
+
+		public async Task<UserProfileDto> GrantUserAdminRoleAsync(long userId)
+		{
+			var user = await _userManager.FindByIdAsync(userId.ToString());
+
+			ThrowNotFoundIfNull(user);
+
+			var result = await _userManager.AddToRoleAsync(user, CaffStoreRoles.Admin);
+
+			if (!result.Succeeded)
+				throw new CaffStoreBusinessException("Add user to Admin role failed", result.Errors.Select(e => e.Description));
+
+			return await GetUserProfileAsync(userId);
 		}
 
 		public async Task ChangeUserPasswordAsync(long userId, AdminChangePasswordDto changePassword)

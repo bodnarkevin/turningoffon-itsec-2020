@@ -37,10 +37,10 @@ namespace CaffStore.Backend.Dal
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
+			base.OnModelCreating(builder);
+
 			builder.Entity<CaffFile>();
 			builder.Entity<PreviewFile>();
-
-			base.OnModelCreating(builder);
 
 			builder.RegisterSoftDeleteQueryFilter();
 		}
