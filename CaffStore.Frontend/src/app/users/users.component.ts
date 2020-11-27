@@ -26,7 +26,6 @@ export class UsersComponent implements OnInit {
 
     getUsers(): void {
         // email: null, includeAdmins: false
-        // todo Anetta: check if this is right
         this.adminUserService.getPagedUsers(null, false, this.page, 10).subscribe(
             (res: UserDtoPagedResponse) => {
                 if (this.page === 1) {
