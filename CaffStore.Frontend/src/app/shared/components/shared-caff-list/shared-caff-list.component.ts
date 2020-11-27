@@ -12,6 +12,7 @@ import { NewCaffDialogComponent } from '../new-caff-dialog/new-caff-dialog.compo
 import { AuthService } from 'src/app/auth/auth.service';
 import { FilterCaffsDialogComponent } from '../filter-caffs-dialog/filter-caffs-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Option {
   value: OrderOption;
@@ -27,7 +28,7 @@ enum OrderOption {
   TitleAscending = 'TitleAscending',
   TitleDescending = 'TitleDescending',
   DateAscending = 'DateAscending',
-  DateDescending = 'DateDescending'
+  DateDescending = 'DateDescending',
 }
 
 @Component({
@@ -60,7 +61,6 @@ export class SharedCaffListComponent implements OnInit {
     { value: OrderOption.DateDescending, name: 'Upload date - Descending' },
     { value: OrderOption.TitleAscending, name: 'Title - Ascending' },
     { value: OrderOption.TitleDescending, name: 'Title - Descending' },
-
   ];
 
   orderForm = new FormGroup({
@@ -71,12 +71,12 @@ export class SharedCaffListComponent implements OnInit {
     private router: Router,
     private caffItemService: CaffItemService,
     public dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
     this.getCaffItems();
-    console.log('page type onInit: ' + this.type);
     this.authService.getCurrentUserEmail().then((res) => {
       if (res) {
         this.loggedInUserEmail = res;
@@ -109,7 +109,23 @@ export class SharedCaffListComponent implements OnInit {
         }
       },
       (err) => {
-        alert('Something went wrong. Please try again later.');
+        if (err.status === 401 || err.status === 403) {
+          this._snackBar.open(
+            'You are not authorized to access this page!',
+            null,
+            {
+              duration: 2000,
+            }
+          );
+        } else {
+          this._snackBar.open(
+            'Something went wrong. Please try again later!',
+            null,
+            {
+              duration: 2000,
+            }
+          );
+        }
       }
     );
   }
@@ -128,7 +144,6 @@ export class SharedCaffListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
       if (result && result.controls) {
         const title = result.controls.title.value;
         const description = result.controls.description.value;
@@ -144,7 +159,13 @@ export class SharedCaffListComponent implements OnInit {
               this.getCaffItems();
             },
             (err) => {
-              alert('Caff data upload failed');
+              this._snackBar.open(
+                'Something went wrong during the upload. Please try again later!',
+                null,
+                {
+                  duration: 3000,
+                }
+              );
             }
           );
       }
@@ -156,8 +177,9 @@ export class SharedCaffListComponent implements OnInit {
     this.getCaffItems();
   }
 
-  onSelectionChange(): void{
-    const selectedValue: OrderOption = OrderOption[this.orderForm.controls.order.value];
+  onSelectionChange(): void {
+    const selectedValue: OrderOption =
+      OrderOption[this.orderForm.controls.order.value];
     switch (selectedValue) {
       case OrderOption.DateAscending:
         this.orderDateAscending();
@@ -177,7 +199,7 @@ export class SharedCaffListComponent implements OnInit {
     }
   }
 
-  orderTitleDescending(): void{
+  orderTitleDescending(): void {
     this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
       if (b.title.toLowerCase() > a.title.toLowerCase()) {
         return 1;
@@ -189,7 +211,7 @@ export class SharedCaffListComponent implements OnInit {
     });
   }
 
-  orderTitleAscending(): void{
+  orderTitleAscending(): void {
     this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
       if (b.title.toLowerCase() > a.title.toLowerCase()) {
         return -1;
@@ -201,7 +223,7 @@ export class SharedCaffListComponent implements OnInit {
     });
   }
 
-  orderDateAscending(): void{
+  orderDateAscending(): void {
     this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
       if (b.lastModifiedAt.toLowerCase() > a.lastModifiedAt.toLowerCase()) {
         return -1;
@@ -213,7 +235,7 @@ export class SharedCaffListComponent implements OnInit {
     });
   }
 
-  orderDateDescending(): void{
+  orderDateDescending(): void {
     this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
       if (b.lastModifiedAt.toLowerCase() > a.lastModifiedAt.toLowerCase()) {
         return 1;

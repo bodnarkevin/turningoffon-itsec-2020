@@ -17,6 +17,7 @@ import { SharedCaffListComponent } from './components/shared-caff-list/shared-ca
 import { NewCaffDialogComponent } from './components/new-caff-dialog/new-caff-dialog.component';
 import { FilterCaffsDialogComponent } from './components/filter-caffs-dialog/filter-caffs-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     ReactiveFormsModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
   exports: [
     SharedCaffListComponent

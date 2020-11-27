@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import {
@@ -52,7 +53,8 @@ export class CaffDetailsComponent implements OnInit {
     private router: Router,
     private caffService: CaffItemService,
     private commentService: CommentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -109,7 +111,13 @@ export class CaffDetailsComponent implements OnInit {
           this.caffDataForm.disable();
         },
         (err) => {
-          alert('Caff data change failed');
+          this._snackBar.open(
+            'Something went wrong during the update operation. Please try again later!',
+            null,
+            {
+              duration: 3000,
+            }
+          );
         }
       );
     }
@@ -129,7 +137,10 @@ export class CaffDetailsComponent implements OnInit {
             // to see if it's one of the caff files owned by the user.
             // Users can only edit/delete their own files.
             this.userEmail = res2;
-            if (this.caffDto.createdBy != null && this.caffDto.createdBy.email === res2) {
+            if (
+              this.caffDto.createdBy != null &&
+              this.caffDto.createdBy.email === res2
+            ) {
               this.isOwnerOfCaff = true;
             }
           }
@@ -137,11 +148,26 @@ export class CaffDetailsComponent implements OnInit {
       },
       (err) => {
         if (err.status === 404) {
-          alert('CAFF not found.');
           this.router.navigate(['/list']);
+          this._snackBar.open('Caff file not found!', null, {
+            duration: 2000,
+          });
+        } else if (err.status === 401 || err.status === 403) {
+          this._snackBar.open(
+            'You are not authorized to access this page!',
+            null,
+            {
+              duration: 2000,
+            }
+          );
         } else {
-          // 401, 403, 500 if unauthorized, redirect to error
-          this.router.navigate(['/error']);
+          this._snackBar.open(
+            'Something went wrong. Please try again later!',
+            null,
+            {
+              duration: 2000,
+            }
+          );
         }
       }
     );
@@ -154,7 +180,13 @@ export class CaffDetailsComponent implements OnInit {
         this.comments = res;
       },
       (err) => {
-        alert('Something went wrong. Please try again later.');
+        this._snackBar.open(
+          'Something went wrong. Please try again later!',
+          null,
+          {
+            duration: 3000,
+          }
+        );
       }
     );
   }
@@ -172,7 +204,13 @@ export class CaffDetailsComponent implements OnInit {
           this.getComments();
         },
         (err) => {
-          alert('Adding new comment failed');
+          this._snackBar.open(
+            'Something went wrong during adding the new comment. Please try again later!',
+            null,
+            {
+              duration: 3000,
+            }
+          );
         }
       );
     }
@@ -186,7 +224,13 @@ export class CaffDetailsComponent implements OnInit {
           this.getComments();
         },
         (err) => {
-          alert('Deleting comment failed');
+          this._snackBar.open(
+            'Something went wrong during the delete operation. Please try again later!',
+            null,
+            {
+              duration: 3000,
+            }
+          );
         }
       );
     }
@@ -200,7 +244,13 @@ export class CaffDetailsComponent implements OnInit {
           this.router.navigate(['/list']);
         },
         (err) => {
-          alert('Deleting caff failed');
+          this._snackBar.open(
+            'Something went wrong during the delete operation. Please try again later!',
+            null,
+            {
+              duration: 3000,
+            }
+          );
         }
       );
     }
@@ -225,9 +275,7 @@ export class CaffDetailsComponent implements OnInit {
     this.caffDataForm.controls.creationdate.setValue(
       this.caffDto.caffData.creation
     );
-    this.caffDataForm.controls.uploaddate.setValue(
-      this.caffDto.lastModifiedAt
-    );
+    this.caffDataForm.controls.uploaddate.setValue(this.caffDto.lastModifiedAt);
 
     // check if the created by field is null
     if (this.caffDto.createdBy == null) {
@@ -253,7 +301,13 @@ export class CaffDetailsComponent implements OnInit {
           this.downloadFile(res);
         },
         (err) => {
-          alert('Downloading caff failed');
+          this._snackBar.open(
+            'Something went wrong during the download. Please try again later!',
+            null,
+            {
+              duration: 2000,
+            }
+          );
         }
       );
     }
