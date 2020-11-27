@@ -11,15 +11,23 @@ import {
 import { NewCaffDialogComponent } from '../new-caff-dialog/new-caff-dialog.component';
 import { AuthService } from 'src/app/auth/auth.service';
 import { FilterCaffsDialogComponent } from '../filter-caffs-dialog/filter-caffs-dialog.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 interface Option {
-  value: string;
-  viewValue: string;
+  value: OrderOption;
+  name: string;
 }
 
 interface Filter {
   value: string;
   name: string;
+}
+
+enum OrderOption {
+  TitleAscending = 'TitleAscending',
+  TitleDescending = 'TitleDescending',
+  DateAscending = 'DateAscending',
+  DateDescending = 'DateDescending'
 }
 
 @Component({
@@ -48,10 +56,16 @@ export class SharedCaffListComponent implements OnInit {
   newCaffDesc: string;
   loggedInUserEmail: string;
   options: Option[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
+    { value: OrderOption.DateAscending, name: 'Upload date - Ascending' },
+    { value: OrderOption.DateDescending, name: 'Upload date - Descending' },
+    { value: OrderOption.TitleAscending, name: 'Title - Ascending' },
+    { value: OrderOption.TitleDescending, name: 'Title - Descending' },
+
   ];
+
+  orderForm = new FormGroup({
+    order: new FormControl(''),
+  });
 
   constructor(
     private router: Router,
@@ -140,6 +154,75 @@ export class SharedCaffListComponent implements OnInit {
   onClearFilters(): void {
     this.filters = [];
     this.getCaffItems();
+  }
+
+  onSelectionChange(): void{
+    const selectedValue: OrderOption = OrderOption[this.orderForm.controls.order.value];
+    switch (selectedValue) {
+      case OrderOption.DateAscending:
+        this.orderDateAscending();
+        break;
+
+      case OrderOption.DateDescending:
+        this.orderDateDescending();
+        break;
+
+      case OrderOption.TitleAscending:
+        this.orderTitleAscending();
+        break;
+
+      case OrderOption.TitleDescending:
+        this.orderTitleDescending();
+        break;
+    }
+  }
+
+  orderTitleDescending(): void{
+    this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
+      if (b.title.toLowerCase() > a.title.toLowerCase()) {
+        return 1;
+      }
+      if (b.title.toLowerCase() === a.title.toLowerCase()) {
+        return 0;
+      }
+      return -1;
+    });
+  }
+
+  orderTitleAscending(): void{
+    this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
+      if (b.title.toLowerCase() > a.title.toLowerCase()) {
+        return -1;
+      }
+      if (b.title.toLowerCase() === a.title.toLowerCase()) {
+        return 0;
+      }
+      return 1;
+    });
+  }
+
+  orderDateAscending(): void{
+    this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
+      if (b.lastModifiedAt.toLowerCase() > a.lastModifiedAt.toLowerCase()) {
+        return -1;
+      }
+      if (b.lastModifiedAt.toLowerCase() === a.lastModifiedAt.toLowerCase()) {
+        return 0;
+      }
+      return 1;
+    });
+  }
+
+  orderDateDescending(): void{
+    this.caffs.sort((a: CaffItemDto, b: CaffItemDto) => {
+      if (b.lastModifiedAt.toLowerCase() > a.lastModifiedAt.toLowerCase()) {
+        return 1;
+      }
+      if (b.lastModifiedAt.toLowerCase() === a.lastModifiedAt.toLowerCase()) {
+        return 0;
+      }
+      return -1;
+    });
   }
 
   onFilterCaffs(): void {

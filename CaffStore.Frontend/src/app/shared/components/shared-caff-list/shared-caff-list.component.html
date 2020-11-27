@@ -1,10 +1,10 @@
 <div class="container">
-  <div class="filer-row">
+  <div class="filer-row" [formGroup]="orderForm">
     <mat-form-field class="order-select" appearance="fill">
       <mat-label>Order by</mat-label>
-      <mat-select>
+      <mat-select formControlName="order" (selectionChange)="onSelectionChange()">
         <mat-option *ngFor="let option of options" [value]="option.value">
-          {{ option.viewValue }}
+          {{ option.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
