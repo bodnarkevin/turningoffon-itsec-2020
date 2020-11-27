@@ -8,6 +8,7 @@
 #include <math.h>
 #include "BytesToIntConverter.h"
 #include "ParserExceptions.h"
+#include <cstring>
 
 using namespace ParserExceptions;
 

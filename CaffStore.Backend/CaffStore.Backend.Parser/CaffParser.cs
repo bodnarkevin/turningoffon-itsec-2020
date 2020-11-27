@@ -88,25 +88,8 @@ namespace CaffStore.Backend.Parser
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		public static extern string parseToJson(IntPtr pArray, int nSize, out IntPtr preview, out int size, out bool isError);
 
-		private static byte[] ReadBytes(Stream input)
-        {
-			byte[] buffer = new byte[16 * 1024];
-			using (MemoryStream ms = new MemoryStream())
-			{
-				int read;
-				while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
-				{
-					ms.Write(buffer, 0, read);
-				}
-
-				return ms.ToArray();
-			}
-		}
-
-
 		public static async Task<CaffParseResult> ParseCaffFileAsync(Stream fileStream)
 		{
-			// TODO fill with real data
 			byte[] buffer;
 
 			using (MemoryStream ms = new MemoryStream())
@@ -130,44 +113,21 @@ namespace CaffStore.Backend.Parser
 			int preSize;
 			IntPtr preview;
 
-			string parsedJson = parseToJson(pnt, buffer.Length, out preview, out preSize, out error);
+			string resultJson = parseToJson(pnt, buffer.Length, out preview, out preSize, out error);
 
 			if (error)
 			{
-				var tags = new[] { "tag1", "tag2", "tag3" };
-				var ciffData = new CiffDataDto
-				{
-					Caption = "ciff1",
-					Height = 100,
-					Width = 200,
-					Tags = tags,
-				};
-				var animation = new CaffAnimationDataDto
-				{
-					Order = 1,
-					Duration = 500,
-					CiffData = ciffData,
-				};
-				var caffData = new CaffDataDto
-				{
-					Creator = "creator1",
-					Creation = DateTime.Now,
-					Animations = new[] { animation },
-				};
-				var previewDummy = new Bitmap(100, 200);
-				previewDummy.SetPixel(1, 1, Color.Red);
-
 				return new CaffParseResult
 				{
 					Succeeded = false,
-					Message = "Failure",
-					Preview = previewDummy,
-					Result = caffData,
+					Message = resultJson,
+					Preview = null,
+					Result = null,
 				};
 			} else
             {
 				
-				CaffDataDto caffDataFromParser = JsonConvert.DeserializeObject<CaffDataDto>(parsedJson);
+				CaffDataDto caffDataFromParser = JsonConvert.DeserializeObject<CaffDataDto>(resultJson);
 
 				byte[] previewArray = new byte[preSize];
 				Marshal.Copy(preview, previewArray, 0, preSize);
