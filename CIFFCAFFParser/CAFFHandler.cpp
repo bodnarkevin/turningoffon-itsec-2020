@@ -348,5 +348,7 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
     // to the memory pointed to by pszReturn.
     strcpy(pszReturn, array);
     // Return pszReturn.
+
+    delete[] caffFile.blocks;
     return pszReturn;
 }

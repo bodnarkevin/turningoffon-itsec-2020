@@ -44,8 +44,15 @@ int main() {
         char* json = parseToJson(array, buffer.size(), &prev, &prevSize, &error);
 
         delete[] caffFile.blocks;
-        delete[] json;
-        delete[] prev;
+
+        auto jsonSize = strlen(json);
+        for (int i = 0; i < jsonSize; i++) {
+            free(&json[i]);
+        }
+
+        for (int i = 0; i < prevSize; i++) {
+            free(&prev[i]);
+        }
     }
 
     catch(const ParserException e)
