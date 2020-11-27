@@ -46,14 +46,8 @@ int main() {
 
         delete[] caffFile.blocks;
 
-        auto jsonSize = strlen(json) + sizeof(char);
-        for (int i = 0; i < jsonSize; i++) {
-            free(&json[i]);
-        }
-
-        for (int i = 0; i < prevSize * sizeof(uint8_t); i++) {
-            free(&prev[i]);
-        }
+        delete[] json;
+        delete[] prev;
     }
 
     catch(const ParserException e)

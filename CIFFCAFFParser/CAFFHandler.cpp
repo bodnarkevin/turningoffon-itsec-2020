@@ -337,13 +337,13 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
     //Interop prew data
     auto sizePrev = ciff.pixels.size() * sizeof(uint8_t);
     *size = ciff.pixels.size();
-    *data = static_cast<uint8_t*>(malloc(sizePrev));
+    *data = new uint8_t[sizePrev];
     memcpy(*data, ciff.pixels.data(), sizePrev);
 
     const char* array = str.c_str();
     unsigned long ulSize = strlen(array) + sizeof(char);
     char* pszReturn = NULL;
-    pszReturn = (char*)malloc(ulSize);
+    pszReturn = new char[ulSize];
     // Copy the contents of szSampleString
     // to the memory pointed to by pszReturn.
     strcpy(pszReturn, array);
