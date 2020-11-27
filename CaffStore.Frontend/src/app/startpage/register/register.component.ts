@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import Util from '../../shared/utils';
+import Utils from '../../shared/utils';
 import { samePasswordValidator } from '../../shared/validators/samePasswordValidator';
 import { RegisterUserDto, UserService } from '../../api/generated';
 
@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
         firstName: new FormControl('', Validators.required),
         lastName: new FormControl('', Validators.required),
         email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.pattern(Util.passwordRegex)]),
+        password: new FormControl('', [Validators.required, Validators.pattern(Utils.passwordRegex)]),
         passwordAgain: new FormControl('', Validators.required)
     }, { validators: samePasswordValidator });
 
