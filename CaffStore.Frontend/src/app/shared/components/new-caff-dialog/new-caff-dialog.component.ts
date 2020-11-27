@@ -17,7 +17,7 @@ export class NewCaffDialogComponent {
     newCaffForm = new FormGroup({
         title: new FormControl('', Validators.required),
         description: new FormControl('', Validators.required),
-        cafffile: new FormControl('', Validators.required),
+        cafffile: new FormControl(new Blob(), Validators.required),
     });
 
     caffFileName: string;
@@ -30,11 +30,9 @@ export class NewCaffDialogComponent {
 
     onCancelClick(): void {
         this.dialogRef.close();
-        console.log(this.newCaffForm.controls.title.value);
     }
 
-    csvInputChange(fileInputEvent: any): void {
-        console.log(typeof fileInputEvent.target.files[0]);
+    fileInputChange(fileInputEvent: any): void {
         this.caffFileName = fileInputEvent.target.files[0].name;
     }
 }

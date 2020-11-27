@@ -8,13 +8,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatChipsModule } from '@angular/material/chips';
+
 
 import { SharedCaffListComponent } from './components/shared-caff-list/shared-caff-list.component';
 import { NewCaffDialogComponent } from './components/new-caff-dialog/new-caff-dialog.component';
+import { FilterCaffsDialogComponent } from './components/filter-caffs-dialog/filter-caffs-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
-  declarations: [SharedCaffListComponent, NewCaffDialogComponent],
+  declarations: [SharedCaffListComponent, NewCaffDialogComponent, FilterCaffsDialogComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -24,8 +30,12 @@ import { NewCaffDialogComponent } from './components/new-caff-dialog/new-caff-di
     MatCardModule,
     MatIconModule,
     MatTooltipModule,
+    MatChipsModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     SharedCaffListComponent

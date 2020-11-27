@@ -10,6 +10,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    width: 100%;
     justify-content: center;
 }
 
@@ -58,4 +59,31 @@ a:hover {
     align-items: flex-end;
     height: 70%;
   }
+
+.filer-row {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: -30px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.active-filters-row {
+    display: flex;
+    flex-direction: row;
+    width: 70%;
+    height: 24px;
+    margin-left: 32px;
+    margin-right: 32px;
+    margin-top: 2px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.order-select {
+    margin-right: 40px;
+}
   

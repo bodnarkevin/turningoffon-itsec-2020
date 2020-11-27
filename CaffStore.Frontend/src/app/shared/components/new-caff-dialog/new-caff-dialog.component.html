@@ -12,9 +12,9 @@
                     formControlName="description"></textarea>
             </mat-form-field>
             <div class="file-row">
-                <input #csvInput hidden="true" type="file" id="cafffile" formControlName="cafffile"
-                    onclick="this.value=null" (change)="csvInputChange($event)" accept=".CAFF" />
-                <button mat-flat-button color="primary" (click)="csvInput.click()">
+                <input #fileInput hidden="true" type="file" id="cafffile" formControlName="cafffile"
+                    onclick="this.value=null" (change)="fileInputChange($event)" accept=".CAFF" />
+                <button mat-flat-button color="primary" (click)="fileInput.click()">
                     Choose CAFF File
                 </button>
                 <div class="file-name">

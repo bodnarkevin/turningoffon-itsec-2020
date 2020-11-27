@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Filter CAFF files</h2>
+<div mat-dialog-content>
+  <div class="dialog-container">
+    <div class="caff-data" [formGroup]="filterCaffForm">
+      <div class="form-row">
+        <mat-form-field class="short-form-field">
+          <mat-label>CAFF title</mat-label>
+          <input matInput type="text" id="title" formControlName="title" />
+        </mat-form-field>
+        <mat-form-field class="short-form-field">
+            <mat-label>Uploader name</mat-label>
+            <input
+              matInput
+              type="text"
+              id="uploader"
+              formControlName="uploader"
+            />
+          </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field appearance="fill">
+          <mat-label>Creation date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            id="date"
+            formControlName="date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dialog-actions">
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="filterCaffForm" [disabled]="disabled">
+    Go
+  </button>
+</div>
