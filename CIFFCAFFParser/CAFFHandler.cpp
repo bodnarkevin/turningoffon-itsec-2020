@@ -201,7 +201,7 @@ bool CAFFHandler::verifyNumAnim(const CAFFFile& caffFile) {
 
 } // namespace CAFF
 
-static void addToJson(std::string& str, const std::string& attr, const std::string& value, bool last) {
+static void addToJson(std::string& str, std::string attr = "", std::string value = "", bool last = false) {
     str.append("\"" + attr + "\": ");
     if (!last) {
         str.append(value + ",");
