@@ -224,7 +224,6 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
 
         while (buffer.size() > 0) {
             int identifier = static_cast<int>(buffer[0]);
-            const char* str;
             Log::Logger::logMessage("Parsed block identifier: " + std::to_string(identifier));
             // Remove the processed 1 byte from the buffer
             Log::Logger::logBytesProcessed(1);
@@ -232,8 +231,6 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
 
             std::cout << std::endl << "Handling block ..." << std::endl;
             int length = bytesToIntConverter.convert8BytesToInteger(buffer);
-            CAFF::InteropHeader interHeader;
-            CAFF::InteropCredits interCredits;
             CAFF::Block block;
             block.id = identifier;
             block.length = length;
@@ -280,8 +277,8 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
 
     //To JSON
     std::string str_magic = "";
-    std::string str;
-    std::string creator;
+    std::string str = "";
+    std::string creator = "";
     int count = 0;
     CAFF::CaffDate date;
     bool hasPrew = false;
@@ -342,8 +339,7 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
 
     const char* array = str.c_str();
     unsigned long ulSize = strlen(array) + sizeof(char);
-    char* pszReturn = NULL;
-    pszReturn = new char[ulSize];
+    char* pszReturn = new char[ulSize];
     // Copy the contents of szSampleString
     // to the memory pointed to by pszReturn.
     strcpy(pszReturn, array);
