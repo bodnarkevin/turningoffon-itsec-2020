@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using IdentityServer4;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -7,33 +8,39 @@ namespace CaffStore.Backend.Api.Identity
 	public static class IdentityServerConfig
 	{
 		public static IEnumerable<IdentityResource> IdentityResources =>
-			new IdentityResource[]
+			new[]
 			{
 				new IdentityResources.OpenId(),
 				new IdentityResources.Email(),
 				new IdentityResources.Profile(),
+				new IdentityResource("role", new[] {JwtClaimTypes.Role}),
 			};
 
 		public static IEnumerable<ApiScope> ApiScopes =>
-			new ApiScope[]
+			new[]
 			{
 				new ApiScope("api")
 				{
-					UserClaims = new string[] {
+					UserClaims = new[] {
 						JwtClaimTypes.Id,
 						JwtClaimTypes.Role,
 					}
 				}
 			};
 		public static IEnumerable<Client> Clients =>
-			new Client[]
+			new[]
 			{
 				new Client
 				{
 					ClientId = "swagger",
 					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 					RequireClientSecret = false,
-					AllowedScopes = { "openid", "profile", "api" },
+					AllowedScopes = {
+						IdentityServerConstants.StandardScopes.OpenId,
+						IdentityServerConstants.StandardScopes.Profile,
+						"role",
+						"api"
+					},
 				},
 				new Client
 				{
@@ -41,7 +48,13 @@ namespace CaffStore.Backend.Api.Identity
 					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 					RequireClientSecret = false,
 					AllowOfflineAccess = true,
-					AllowedScopes = { "openid", "profile", "api", "offline_access" },
+					AllowedScopes = {
+						IdentityServerConstants.StandardScopes.OpenId,
+						IdentityServerConstants.StandardScopes.Profile,
+						IdentityServerConstants.StandardScopes.OfflineAccess,
+						"role",
+						"api"
+					},
 				},
 				new Client
 				{
@@ -49,8 +62,14 @@ namespace CaffStore.Backend.Api.Identity
 					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
 					RequireClientSecret = false,
 					AllowOfflineAccess = true,
-					AllowedScopes = { "openid", "profile", "api", "offline_access" },
-					AccessTokenLifetime = 300 // 5 minutes
+					AccessTokenLifetime = 300, // 5 minutes
+					AllowedScopes = {
+						IdentityServerConstants.StandardScopes.OpenId,
+						IdentityServerConstants.StandardScopes.Profile,
+						IdentityServerConstants.StandardScopes.OfflineAccess,
+						"role",
+						"api"
+					},
 				}
 			};
 	}

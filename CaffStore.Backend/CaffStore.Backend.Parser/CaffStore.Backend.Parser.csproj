@@ -13,4 +13,10 @@
     <ProjectReference Include="..\CaffStore.Backend.Interface.Bll\CaffStore.Backend.Interface.Bll.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Library\CaffParser.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

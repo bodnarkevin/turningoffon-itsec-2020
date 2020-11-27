@@ -119,7 +119,8 @@ namespace CaffStore.Backend.Bll.Services
 				Description = caffItem.Description,
 				CaffFileId = caffFileId,
 				PreviewFileId = previewFileId,
-				CaffData = caffData
+				CaffData = caffData,
+				DownloadedTimes = 0,
 			};
 
 			_context.CaffItems.Add(caffItemEntity);
@@ -133,6 +134,13 @@ namespace CaffStore.Backend.Bll.Services
 		{
 			var caffItemEntity = await _context
 				.CaffItems
+				.Include(ci => ci.CaffData)
+					.ThenInclude(cd => cd.Animations)
+					.ThenInclude(a => a.CiffData)
+					.ThenInclude(cd => cd.Tags)
+					.ThenInclude(t => t.Tag)
+				.Include(ci => ci.PreviewFile)
+				.Include(ci => ci.CreatedBy)
 				.Where(ci => ci.Id == caffItemId)
 				.SingleOrDefaultAsync();
 
@@ -143,7 +151,11 @@ namespace CaffStore.Backend.Bll.Services
 
 			await _context.SaveChangesAsync();
 
-			return await GetCaffItemAsync(caffItemId);
+			var response = _mapper.Map<CaffItemDetailsDto>(caffItemEntity);
+
+			await _fileService.SetPreviewFileUri(response.PreviewFile);
+
+			return response;
 		}
 
 		public async Task DeleteMyCaffItemAsync(long caffItemId)

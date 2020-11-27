@@ -3,6 +3,7 @@ using CaffStore.Backend.Bll.Options.JwtBearerToken;
 using CaffStore.Backend.Common.Helpers;
 using CaffStore.Backend.Dal;
 using CaffStore.Backend.Dal.Entities;
+using CaffStore.Backend.Interface.Bll.Roles;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
