@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     // if there's a userId, we're looking at the given user's profile
     userId: number = null;
+    isViewedUserAdmin: boolean = null;
 
     constructor(
         private route: ActivatedRoute,
@@ -66,6 +67,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 this.profileDataForm.controls.firstName.setValue(res.firstName);
                 this.profileDataForm.controls.lastName.setValue(res.lastName);
                 this.passwordChangeForm.controls.email.setValue(res.email);
+                this.isViewedUserAdmin = res.roles.includes('Admin');
             },
             (err) => {
                 if (err.status === 404) {
@@ -234,5 +236,43 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 }
             )
         }
+    }
+
+    /** Grant admin role */
+    onGrantAdminRole(): void {
+        this.adminUserService.grantUserAdminRole(this.userId).subscribe(
+            (res) => {
+                this.profileDataForm.controls.firstName.setValue(res.firstName);
+                this.profileDataForm.controls.lastName.setValue(res.lastName);
+                this.passwordChangeForm.controls.email.setValue(res.email);
+                this.isViewedUserAdmin = res.roles.includes('Admin');
+                
+                if (this.isViewedUserAdmin) {
+                    this._snackBar.open('Role changed to admin.', null, {
+                        duration: 2000,
+                    });
+                } else {
+                    this._snackBar.open('Couldn\'t change role. Please try again later!', null, {
+                        duration: 2000,
+                    });
+                }
+            },
+            (err) => {
+                if (err.status === 404 || err.status === 400) {
+                    this._snackBar.open(err.error.message, null, {
+                        duration: 2000,
+                    });
+                } else if (err.status === 401 || err.status === 403) {
+                    this._snackBar.open('You are not authorized to execute this operation!', null, {
+                        duration: 2000,
+                    });
+                } else {
+                    this._snackBar.open('Something went wrong, please try again later!', null, {
+                        duration: 2000,
+                    });
+                }
+                
+            }
+        )
     }
 }

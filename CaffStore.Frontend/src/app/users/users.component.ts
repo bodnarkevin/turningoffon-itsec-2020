@@ -14,9 +14,9 @@ export class UsersComponent implements OnInit {
 
     users: UserDto[] = [];
     /** Current page */
-    page = 1;
+    page: number = 1;
     /** Total page count */
-    pageCount = 1;
+    pageCount: number = 1;
 
     constructor(private router: Router, private adminUserService: AdminUserService, private _snackBar: MatSnackBar) { }
 

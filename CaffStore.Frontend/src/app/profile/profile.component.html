@@ -37,7 +37,8 @@
             </div>
         </div>
     </div>
-    <div class="row" style="margin-top: 20px; padding: 0 15px; width: 100%; box-sizing: border-box;">
-        <button class="btn-primary" *ngIf="!editingInProgress && !passwordChangeInProgress" style="background-color: red;" (click)="onDeleteAccount()">Delete account</button>
+    <div class="row" style="margin-top: 20px; justify-content: space-between; padding: 0 15px; width: 100%; box-sizing: border-box;">
+        <button class="btn-primary" *ngIf="!editingInProgress && !passwordChangeInProgress" style="background-color: #bf0000;" (click)="onDeleteAccount()">Delete account</button>
+        <button class="btn-primary" *ngIf="!editingInProgress && !passwordChangeInProgress && userId && isViewedUserAdmin === false" style="background-color: #04af70;" (click)="onGrantAdminRole()">Grant admin role</button>
     </div>
 </div>
