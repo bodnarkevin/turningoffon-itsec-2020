@@ -39,11 +39,12 @@ int main() {
         // send to C# backend ...
         unsigned char* array = &buffer[0];
         unsigned char* prev = nullptr;
-        int prevSize;
-        bool error;
+        int prevSize = 0;
+        bool error = true;
         char* json = parseToJson(array, buffer.size(), &prev, &prevSize, &error);
 
         delete[] caffFile.blocks;
+        delete[] json;
     }
 
     catch(const ParserException e)
