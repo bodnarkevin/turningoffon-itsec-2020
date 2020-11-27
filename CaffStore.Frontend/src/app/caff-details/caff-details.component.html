@@ -1,6 +1,6 @@
 <div class="container">
   <div class="panels-row">
-    <img *ngIf="caffDto!=null" mat-card-image src="{{ caffDto.previewFile.fileUri }}" />
+    <img *ngIf="caffDto!=null" alt="CAFF preview image" mat-card-image src="{{ caffDto.previewFile.fileUri }}" />
     <div class="data-panel" [formGroup]="caffDataForm">
       <p class="form-title">CAFF data</p>
       <div class="form-row">
