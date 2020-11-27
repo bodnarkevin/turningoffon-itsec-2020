@@ -1,4 +1,15 @@
 <div class="container">
+    <div [formGroup]="searchForm" class="form">
+        <div class="form-element" style="width: 50%;">
+            <label for="email">E-mail</label>
+            <input type="text" id="email" formControlName="email" />
+        </div>
+        <div class="form-element">
+            <label for="showAdmins">Show admins</label>
+            <input type="checkbox" id="showAdmins" formControlName="showAdmins" />
+        </div>
+        <button class="btn-primary" (click)="onFilter()" style="padding: 5px !important; min-width: 100px !important; height: 40px;">Filter</button>
+    </div>
     <div class="user-list-container">
         <div class="user-container" *ngFor="let user of users" (click)="onSelectUser(user.id)">
             {{ user.fullName }}

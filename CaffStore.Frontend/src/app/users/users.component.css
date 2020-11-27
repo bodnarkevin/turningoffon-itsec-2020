@@ -1,12 +1,30 @@
+.form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    width: 60%;
+    margin: 0 auto;
+}
+
+input {
+    border: 2px solid  rgba(53, 186, 246, 0.5);
+    width: 100%;
+    box-sizing: border-box;
+}
+
 .user-list-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
+    margin-top: 20px;
 }
 
 .user-container {
-    width: 15%;
+    width: fit-content;
+    min-width: 200px;
     height: 80px;
     text-align: center;
     border-radius: 10px;

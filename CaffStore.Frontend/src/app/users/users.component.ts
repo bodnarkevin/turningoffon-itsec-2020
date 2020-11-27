@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AdminUserService, UserDtoPagedResponse } from '../api/generated';
@@ -18,15 +19,25 @@ export class UsersComponent implements OnInit {
     /** Total page count */
     pageCount: number = 1;
 
+    searchForm = new FormGroup({
+        email: new FormControl(''),
+        showAdmins: new FormControl(false)
+    });
+
     constructor(private router: Router, private adminUserService: AdminUserService, private _snackBar: MatSnackBar) { }
 
     ngOnInit(): void {
         this.getUsers();
     }
 
+    /** Get user list */
     getUsers(): void {
-        // email: null, includeAdmins: false
-        this.adminUserService.getPagedUsers(null, false, this.page, 10).subscribe(
+        let email = null;
+        if (this.searchForm.controls.email.value.length > 0) {
+            email = this.searchForm.controls.email.value;
+        }
+
+        this.adminUserService.getPagedUsers(email, this.searchForm.controls.showAdmins.value, this.page, 10).subscribe(
             (res: UserDtoPagedResponse) => {
                 if (this.page === 1) {
                     this.users = res.results;
@@ -43,6 +54,7 @@ export class UsersComponent implements OnInit {
         );
     }
 
+    /** Pagination */
     onLoadMore(): void {
         if (this.page !== this.pageCount) {
             this.page += 1;
@@ -50,11 +62,18 @@ export class UsersComponent implements OnInit {
         }
     }
 
+    /** On user selection */
     onSelectUser(userId: number): void {
         this.router.navigate(['/profile'], {
             queryParams: {
                 userId
             }
         });
+    }
+
+    /** On filter */
+    onFilter(): void {
+        this.page = 1;
+        this.getUsers();
     }
 }
