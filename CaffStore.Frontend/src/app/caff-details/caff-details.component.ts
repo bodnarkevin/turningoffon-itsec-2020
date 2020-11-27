@@ -176,7 +176,7 @@ export class CaffDetailsComponent implements OnInit {
         }
       );
     }
-  } // TODO: users can only delet their own comments
+  }
 
   /** Delete a comment */
   onDeleteComment(commentId: number): void {
@@ -250,12 +250,16 @@ export class CaffDetailsComponent implements OnInit {
     if (this.caffId) {
       this.caffService.downloadCaffItem(this.caffId).subscribe(
         (res: FileDto) => {
-          alert('Successfully downloaded caff file');
+          this.downloadFile(res);
         },
         (err) => {
           alert('Downloading caff failed');
         }
       );
     }
+  }
+
+  downloadFile(data: FileDto): void {
+    window.open(data.fileUri);
   }
 }
