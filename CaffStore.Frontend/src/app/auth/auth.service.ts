@@ -35,7 +35,6 @@ export class AuthService {
         return await this.oAuthService.loadUserProfile().then((res) => {
             if (res && res.name) {
                 const email = res.name;
-                console.log(email);
                 return email;
             } else {
                 console.log('email not found');

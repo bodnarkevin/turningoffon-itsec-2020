@@ -6,9 +6,9 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./caff-list.component.css']
 })
 export class CaffListComponent implements OnInit {
-    
+
     constructor() { }
 
-    ngOnInit() {
+    ngOnInit(): void {
     }
 }

@@ -30,11 +30,9 @@ export class NewCaffDialogComponent {
 
     onCancelClick(): void {
         this.dialogRef.close();
-        console.log(this.newCaffForm.controls.title.value);
     }
 
     csvInputChange(fileInputEvent: any): void {
-        console.log(typeof fileInputEvent.target.files[0]);
         this.caffFileName = fileInputEvent.target.files[0].name;
     }
 }
