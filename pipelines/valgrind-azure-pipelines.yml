@@ -28,10 +28,6 @@ stages:
               sudo apt-get install valgrind
             displayName: Install dependencies
           - script: |
-              make
-            workingDirectory: $(workingDirectory)
-            displayName: Build
-          - script: |
               make check
             workingDirectory: $(workingDirectory)
             displayName: Valgrind
@@ -55,7 +51,7 @@ stages:
               unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
               export PATH=$HOME/.sonar/build-wrapper-linux-x86:$PATH
 
-              build-wrapper-linux-x86-64 --out-dir $(buildWrapperOutput) make
+              build-wrapper-linux-x86-64 --out-dir $(buildWrapperOutput) make Main.exe
             workingDirectory: $(workingDirectory)
             displayName: Build
           - task: SonarCloudAnalyze@1
