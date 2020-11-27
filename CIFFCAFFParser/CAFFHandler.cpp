@@ -5,6 +5,7 @@
 #include "BytesToIntConverter.h"
 #include "ParserExceptions.h"
 #include <fstream>
+#include <cstring>
 
 using namespace ParserExceptions;
 
@@ -124,9 +125,9 @@ Header CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block
     return header;
 }
 
-CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
-    CAFF:CAFFFile caffFile;
-    std::vector<CAFF::Block> blocks;
+CAFFFile* CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
+    CAFFFile* caffFile = new CAFFFile();
+    std::vector<Block> blocks;
     Converter::BytesToIntConverter bytesToIntConverter;
 
     while (buffer.size() > 0) {
@@ -163,14 +164,14 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
         blocks.push_back(block);
     }
 
-    caffFile.blocks = new CAFF::Block[blocks.size()];
-    caffFile.count = blocks.size();
+    caffFile->blocks = new CAFF::Block[blocks.size()];
+    caffFile->count = blocks.size();
 
-    for (int i = 0; i < caffFile.count; i++) { // fill up blocks from vector
-        caffFile.blocks[i] = blocks[i];
+    for (int i = 0; i < caffFile->count; i++) { // fill up blocks from vector
+        caffFile->blocks[i] = blocks[i];
     }
 
-    if (!verifyNumAnim(caffFile)) {
+    if (!verifyNumAnim(*caffFile)) {
         throw ParserException("ERROR: Animation count missmatch.", "CAFFHandler", 150, "processCAFF");
     }
 
@@ -210,7 +211,7 @@ static void addToJson(std::string& str, std::string attr, std::string value, boo
     }
 }
 
-char* parseToJson(BYTE* pArray, int nSize, unsigned char** data, int* size, bool* isError) {
+char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* size, bool* isError) {
     CAFF::CAFFFile caffFile;
     try {
         std::vector<unsigned char> buffer;
@@ -298,28 +299,28 @@ char* parseToJson(BYTE* pArray, int nSize, unsigned char** data, int* size, bool
     }
 
     str.append("{");
-    addToJson(str, "creator", "\"" + creator + "\"", FALSE);
+    addToJson(str, "creator", "\"" + creator + "\"", false);
     addToJson(str, "creation", "\"" +
         std::to_string(date.year) +
         "-" +
         (date.month < 10 ? "0" + std::to_string(date.month) : std::to_string(date.month)) +
         "-" +
         (date.day < 10 ? "0" + std::to_string(date.day) : std::to_string(date.day)) +
-        "T" + std::to_string(date.hour) + ":" + std::to_string(date.minute) + ":00" + "\"", FALSE);
+        "T" + std::to_string(date.hour) + ":" + std::to_string(date.minute) + ":00" + "\"", false);
 
     str.append("\"animations\": [");
 
     for (int i = 0; i < caffFile.count; i++) {
         if (caffFile.blocks[i].id == 3) {
             str.append("{");
-            addToJson(str, "order", std::to_string(count), FALSE);
-            addToJson(str, "duration", std::to_string(caffFile.blocks[i].animation_data.duration), FALSE);
+            addToJson(str, "order", std::to_string(count), false);
+            addToJson(str, "duration", std::to_string(caffFile.blocks[i].animation_data.duration), false);
             count++;
             str.append("\"ciffData\":");
             str.append("{");
-            addToJson(str, "width", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.width), FALSE);
-            addToJson(str, "height", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.height), FALSE);
-            addToJson(str, "caption", "\"" + caffFile.blocks[i].animation_data.ciff_file.header.caption + "\"", FALSE);
+            addToJson(str, "width", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.width), false);
+            addToJson(str, "height", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.height), false);
+            addToJson(str, "caption", "\"" + caffFile.blocks[i].animation_data.ciff_file.header.caption + "\"", false);
             str.append("\"tags\": [");
             for (auto element : caffFile.blocks[i].animation_data.ciff_file.header.tags) {
                 str.append("\"" + element + "\",");
@@ -340,7 +341,7 @@ char* parseToJson(BYTE* pArray, int nSize, unsigned char** data, int* size, bool
     memcpy(*data, ciff.pixels.data(), sizePrev);
 
     const char* array = str.c_str();
-    ULONG ulSize = strlen(array) + sizeof(char);
+    unsigned long ulSize = strlen(array) + sizeof(char);
     char* pszReturn = NULL;
     pszReturn = (char*)malloc(ulSize);
     // Copy the contents of szSampleString

@@ -3,6 +3,9 @@ CFLAGS = -shared -fPIC
 WINFLAG = -DBUILD_DLL
 SOURCE = CAFFHandler.cpp Logger.cpp CIFFHandler.cpp BytesToIntConverter.cpp ParserExceptions.cpp lodepng.cpp
 
+check: Main.exe
+		valgrind --leak-check=full --error-exitcode=1 ./Main.exe
+
 build-dll:
 	mkdir Library
 	$(CC) $(WINFLAG) $(CFLAGS) $(SOURCE) -o Library\CaffParser.dll
@@ -23,3 +26,9 @@ build-test:
 
 clean-test:
 	rm -f Library/LibCaff.so
+
+Main.exe:
+	g++ $(SOURCE) Main.cpp -o Main.exe
+
+clean:
+	rm Main.exe
