@@ -27,7 +27,6 @@ export class AuthService {
                     }
                 })
                 .catch((err) => {
-                    // TODO
                     this.router.navigate([this.router.url]);
                     return false;
                 });
