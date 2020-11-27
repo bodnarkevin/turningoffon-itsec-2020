@@ -45,6 +45,7 @@ int main() {
 
         delete[] caffFile.blocks;
         delete[] json;
+        delete[] prev;
     }
 
     catch(const ParserException e)
