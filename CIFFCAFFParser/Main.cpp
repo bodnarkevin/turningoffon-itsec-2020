@@ -46,7 +46,7 @@ int main() {
 
         delete[] caffFile.blocks;
 
-        auto jsonSize = strlen(json);
+        auto jsonSize = strlen(json) + sizeof(char);
         for (int i = 0; i < jsonSize; i++) {
             free(&json[i]);
         }
