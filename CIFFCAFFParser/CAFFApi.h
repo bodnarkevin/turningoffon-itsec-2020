@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef __linux__
-extern "C" 
+extern "C"
 {
 	char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* size, bool* isError);
 }
@@ -9,10 +9,10 @@ extern "C"
 
 #ifdef BUILD_DLL
 #define CAFFPARSER_API __declspec(dllexport)
-#else 
+#else
 #define CAFFPARSER_API __declspec(dllimport)
 #endif
-extern "C" 
+extern "C"
 {
 	CAFFPARSER_API char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* size, bool* isError);
 }

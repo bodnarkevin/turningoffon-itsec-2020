@@ -1,6 +1,7 @@
 #include "CAFFHandler.h"
 #include "CIFFHandler.h"
 #include "Logger.h"
+#include "CAFFApi.h"
 
 #include <iostream>
 #include <fstream>
@@ -36,6 +37,11 @@ int main() {
         }
 
         // send to C# backend ...
+        unsigned char* array = &buffer[0];
+        unsigned char* prev = nullptr;
+        int prevSize;
+        bool error;
+        char* json = parseToJson(array, buffer.size(), &prev, &prevSize, &error);
 
         delete[] caffFile.blocks;
     }
