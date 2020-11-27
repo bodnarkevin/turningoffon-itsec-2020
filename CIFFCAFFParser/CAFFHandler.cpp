@@ -248,40 +248,40 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
         }
     }
 
-    str.append("{");
-    addToJson(str, "creator", "\"" + creator + "\"", false);
-    addToJson(str, "creation", "\"" +
-        std::to_string(date.year) +
-        "-" +
-        (date.month < 10 ? "0" + std::to_string(date.month) : std::to_string(date.month)) +
-        "-" +
-        (date.day < 10 ? "0" + std::to_string(date.day) : std::to_string(date.day)) +
-        "T" + std::to_string(date.hour) + ":" + std::to_string(date.minute) + ":00" + "\"", false);
+    // str.append("{");
+    // addToJson(str, "creator", "\"" + creator + "\"", false);
+    // addToJson(str, "creation", "\"" +
+    //     std::to_string(date.year) +
+    //     "-" +
+    //     (date.month < 10 ? "0" + std::to_string(date.month) : std::to_string(date.month)) +
+    //     "-" +
+    //     (date.day < 10 ? "0" + std::to_string(date.day) : std::to_string(date.day)) +
+    //     "T" + std::to_string(date.hour) + ":" + std::to_string(date.minute) + ":00" + "\"", false);
 
-    str.append("\"animations\": [");
+    // str.append("\"animations\": [");
 
-    for (int i = 0; i < caffFile.count; i++) {
-        if (caffFile.blocks[i].id == 3) {
-            str.append("{");
-            addToJson(str, "order", std::to_string(count), false);
-            addToJson(str, "duration", std::to_string(caffFile.blocks[i].animation_data.duration), false);
-            count++;
-            str.append("\"ciffData\":");
-            str.append("{");
-            addToJson(str, "width", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.width), false);
-            addToJson(str, "height", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.height), false);
-            addToJson(str, "caption", "\"" + caffFile.blocks[i].animation_data.ciff_file.header.caption + "\"", false);
-            str.append("\"tags\": [");
-            for (auto element : caffFile.blocks[i].animation_data.ciff_file.header.tags) {
-                str.append("\"" + element + "\",");
-            }
-            str.append("]");
-            str.append("},");
-            str.append("},");
-        }
-    }
-    str.append("]");
-    str.append("}");
+    // for (int i = 0; i < caffFile.count; i++) {
+    //     if (caffFile.blocks[i].id == 3) {
+    //         str.append("{");
+    //         addToJson(str, "order", std::to_string(count), false);
+    //         addToJson(str, "duration", std::to_string(caffFile.blocks[i].animation_data.duration), false);
+    //         count++;
+    //         str.append("\"ciffData\":");
+    //         str.append("{");
+    //         addToJson(str, "width", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.width), false);
+    //         addToJson(str, "height", std::to_string(caffFile.blocks[i].animation_data.ciff_file.header.height), false);
+    //         addToJson(str, "caption", "\"" + caffFile.blocks[i].animation_data.ciff_file.header.caption + "\"", false);
+    //         str.append("\"tags\": [");
+    //         for (auto element : caffFile.blocks[i].animation_data.ciff_file.header.tags) {
+    //             str.append("\"" + element + "\",");
+    //         }
+    //         str.append("]");
+    //         str.append("},");
+    //         str.append("},");
+    //     }
+    // }
+    // str.append("]");
+    // str.append("}");
 
 
     //Interop prew data
