@@ -201,7 +201,7 @@ bool CAFFHandler::verifyNumAnim(const CAFFFile& caffFile) {
 
 } // namespace CAFF
 
-static void addToJson(std::string& str, std::string attr = "", std::string value = "", bool last = false) {
+static void addToJson(std::string& str, const std::string& attr, const std::string& value, bool last) {
     str.append("\"" + attr + "\": ");
     if (!last) {
         str.append(value + ",");
@@ -222,7 +222,7 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
 
         Converter::BytesToIntConverter bytesToIntConverter;
 
-        while (buffer.size() > 0) {
+        while (!buffer.empty()) {
             int identifier = static_cast<int>(buffer[0]);
             Log::Logger::logMessage("Parsed block identifier: " + std::to_string(identifier));
             // Remove the processed 1 byte from the buffer
@@ -268,7 +268,7 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
         Log::Logger::logSuccess();
         Log::Logger::logMessage("Block count: " + std::to_string(blocks.size()));
     }
-    catch (const ParserException e) {
+    catch (const ParserException& e) {
         *isError = true;
         char* errorMessage = new char[strlen(e.what())];
         return errorMessage;
@@ -343,7 +343,7 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
     char* pszReturn = new char[ulSize];
     // Copy the contents of szSampleString
     // to the memory pointed to by pszReturn.
-    strcpy(pszReturn, array);
+    memcpy(pszReturn, array, ulSize);
     // Return pszReturn.
 
     delete[] caffFile.blocks;

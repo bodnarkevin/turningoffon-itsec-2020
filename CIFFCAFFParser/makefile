@@ -7,11 +7,11 @@ check: Main.exe
 	valgrind --leak-check=full --error-exitcode=1 ./Main.exe
 
 build-dll:
-	mkdir Library
+	mkdir -p Library
 	$(CC) $(WINFLAG) $(CFLAGS) $(SOURCE) -o Library\CaffParser.dll
 
 clean-dll:
-	del Library\CaffParser.dll
+	rm -f Library/CaffParser.dll
 
 build-so:
 	mkdir -p  Library
@@ -19,13 +19,6 @@ build-so:
 
 clean-so:
 	rm -f Library/CaffParser.so
-
-build-test:
-	mkdir -p  Library
-	$(CC) $(CFLAGS) $(SOURCE) -o Library/LibCaff.so
-
-clean-test:
-	rm -f Library/LibCaff.so
 
 Main.exe:
 	g++ $(SOURCE) Main.cpp -o Main.exe
