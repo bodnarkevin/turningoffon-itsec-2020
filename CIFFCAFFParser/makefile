@@ -3,8 +3,9 @@ CFLAGS = -shared -fPIC
 WINFLAG = -DBUILD_DLL
 SOURCE = CAFFHandler.cpp Logger.cpp CIFFHandler.cpp BytesToIntConverter.cpp ParserExceptions.cpp lodepng.cpp
 
-check: Main.exe
-		valgrind --leak-check=full --error-exitcode=1 ./Main.exe
+check:
+	Main.exe
+	valgrind --leak-check=full --error-exitcode=1 ./Main.exe
 
 build-dll:
 	mkdir Library
