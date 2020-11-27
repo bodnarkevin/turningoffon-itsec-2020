@@ -1,6 +1,7 @@
 ﻿using CaffStore.Backend.Dal.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using CaffStore.Backend.Interface.Bll.Roles;
 
 namespace CaffStore.Backend.Api.Identity
 {

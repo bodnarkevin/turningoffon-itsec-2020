@@ -8,6 +8,7 @@ namespace CaffStore.Backend.Interface.Bll.Services
 		Task RegisterUserAsync(RegisterUserDto registerUser);
 		Task<UserProfileDto> GetMyUserProfileAsync();
 		Task<UserProfileDto> UpdateMyUserProfileAsync(UpdateUserProfileDto updateUserProfile);
+		Task DeleteMyUserProfileAsync();
 		Task ChangeMyPasswordAsync(ChangePasswordDto changePassword);
 	}
 }

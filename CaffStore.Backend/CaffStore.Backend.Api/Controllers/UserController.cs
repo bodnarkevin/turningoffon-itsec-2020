@@ -38,6 +38,7 @@ namespace CaffStore.Backend.Api.Controllers
 			Name = nameof(GetMyUserProfile))]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
 		public async Task<UserProfileDto> GetMyUserProfile()
 		{
 			return await _userService.GetMyUserProfileAsync();
@@ -49,9 +50,24 @@ namespace CaffStore.Backend.Api.Controllers
 		[Consumes(MediaTypeNames.Application.Json)]
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType(typeof(UserProfileDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
 		public async Task<UserProfileDto> UpdateMyUserProfile([FromBody] UpdateUserProfileDto updateUserProfile)
 		{
 			return await _userService.UpdateMyUserProfileAsync(updateUserProfile);
+		}
+
+		[Authorize]
+		[HttpDelete("me",
+			Name = nameof(DeleteMyUserProfile))]
+		[ProducesResponseType((int)HttpStatusCode.NoContent)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
+		public async Task<IActionResult> DeleteMyUserProfile()
+		{
+			await _userService.DeleteMyUserProfileAsync();
+
+			return NoContent();
 		}
 
 		[Authorize]
@@ -61,6 +77,7 @@ namespace CaffStore.Backend.Api.Controllers
 		[Produces(MediaTypeNames.Application.Json)]
 		[ProducesResponseType((int)HttpStatusCode.NoContent)]
 		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.NotFound)]
 		public async Task<IActionResult> ChangeMyPassword([FromBody] ChangePasswordDto changePassword)
 		{
 			await _userService.ChangeMyPasswordAsync(changePassword);
