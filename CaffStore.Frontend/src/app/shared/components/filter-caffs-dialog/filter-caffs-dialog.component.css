@@ -1,0 +1,54 @@
+.dialog-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dialog-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 8px;
+  }
+  
+  .caff-data {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 90%;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 16px;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .form-field {
+    width: 100%;
+  }
+
+  .short-form-field {
+    width: 45%;
+  }
+
+  .form-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  p {
+    padding: 0px;
+    margin: 0px;
+    margin-top: 4px;
+  }
+  
+  

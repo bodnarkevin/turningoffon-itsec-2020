@@ -1,30 +1,29 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {OAuthModule, OAuthService} from 'angular-oauth2-oidc';
-import {HttpClientModule} from '@angular/common/http';
-import {ApiModule, Configuration} from './api/generated';
-import {environment} from '../environments/environment';
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
-import {ProfileComponent} from './profile/profile.component';
-import {AuthService} from './auth/auth.service';
+import { OAuthModule, OAuthService } from 'angular-oauth2-oidc';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import { ApiModule, Configuration } from './api/generated';
+import { environment } from '../environments/environment';
+import { AuthService } from './auth/auth.service';
+import { FrameComponent } from './frame/frame.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    ProfileComponent
+    FrameComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     OAuthModule.forRoot(),
-    ApiModule
+    ApiModule,
+    NoopAnimationsModule
   ],
   providers: [
     {

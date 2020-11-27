@@ -1,0 +1,186 @@
+<div class="container">
+  <div class="panels-row">
+    <img *ngIf="caffDto!=null" alt="CAFF preview image" mat-card-image src="{{ caffDto.previewFile.fileUri }}" />
+    <div class="data-panel" [formGroup]="caffDataForm">
+      <p class="form-title">CAFF data</p>
+      <div class="form-row">
+        <mat-form-field class="form-element disabled">
+          <mat-label for="creator">Creator</mat-label>
+          <input matInput type="text" id="creator" formControlName="creator" />
+        </mat-form-field>
+        <mat-form-field class="form-element">
+          <mat-label for="title">Title</mat-label>
+          <input matInput type="text" id="title" formControlName="title" />
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field class="form-element disabled">
+          <mat-label for="size">Size</mat-label>
+          <input matInput type="text" id="size" formControlName="size" />
+        </mat-form-field>
+        <mat-form-field class="form-element disabled">
+          <mat-label for="tags">Tags</mat-label>
+          <textarea
+            matInput
+            type="text"
+            id="tags"
+            formControlName="tags"
+          ></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field class="form-element-long">
+          <mat-label for="description">Description</mat-label>
+          <textarea
+            matInput
+            type="text"
+            id="description"
+            formControlName="description"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="form-row">
+        <mat-form-field class="form-element disabled">
+          <mat-label for="creationdate">Created at</mat-label>
+          <input
+            matInput
+            type="text"
+            id="creationdate"
+            formControlName="creationdate"
+          />
+        </mat-form-field>
+        <mat-form-field class="form-element disabled">
+          <mat-label for="uploaddate">Uploaded at</mat-label>
+          <input
+            matInput
+            type="text"
+            id="uploaddate"
+            formControlName="uploaddate"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field class="form-element disabled">
+          <mat-label for="uploadername">Uploader name</mat-label>
+          <input
+            matInput
+            type="text"
+            id="uploadername"
+            formControlName="uploadername"
+          />
+        </mat-form-field>
+        <mat-form-field class="form-element disabled">
+          <mat-label for="uploaderemail">Uploader email</mat-label>
+          <input
+            matInput
+            type="text"
+            id="uploaderemail"
+            formControlName="uploaderemail"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <div class="edit-download" *ngIf="!editingInProgress">
+          <button
+          mat-button
+          *ngIf="!editingInProgress && (isAdmin || isOwnerOfCaff)"
+          style="background-color: #03a9f4"
+          (click)="onEditCaffData()"
+          matTooltip="Edit CAFF file data"
+        >
+          Edit
+        </button>
+          <button
+            matTooltip="Download this CAFF file"
+            *ngIf="!editingInProgress"
+            mat-button
+            (click)="onDownloadCaff()"
+            style="background-color: #03a9f4"
+          >
+            Download
+          </button>
+        </div>
+       
+
+        <button
+          matTooltip="Delete this CAFF file"
+          *ngIf="!editingInProgress && (isAdmin || isOwnerOfCaff)"
+          mat-button
+          (click)="onDeleteCaff()"
+          style="background-color: red"
+        >
+          Delete CAFF
+        </button>
+        <button
+          mat-button
+          *ngIf="editingInProgress"
+          style="background-color: #b0b0b0"
+          (click)="onCancelEditing()"
+          matTooltip="Cancel"
+        >
+          Cancel
+        </button>
+        <button
+          mat-button
+          *ngIf="editingInProgress"
+          [disabled]="!caffDataForm.valid"
+          style="background-color: #03a9f4"
+          (click)="onSaveChanges()"
+          matTooltip="Save changes"
+        >
+          Save changes
+        </button>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="comment-section">
+    <div class="new-comment-panel" [formGroup]="newCommentForm">
+      <mat-form-field class="form-element-long">
+        <mat-label for="commenttext">Write a comment</mat-label>
+        <textarea
+          matInput
+          type="text"
+          id="commenttext"
+          placeholder="Your thoughts here"
+          formControlName="commenttext"
+        ></textarea>
+      </mat-form-field>
+      <button
+        matTooltip="Send new comment"
+        mat-icon-button
+        (click)="onSendComment()"
+        aria-label="Send new comment"
+        [disabled]="!newCommentForm.valid"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </div>
+    <mat-card *ngFor="let comment of comments" class="comment-row">
+      <mat-card-header class="comment-header">
+        <mat-card-title class="comment-label">{{
+          comment.createdBy.fullName
+        }}</mat-card-title>
+        <button
+          matTooltip="Delete this comment"
+          mat-icon-button
+          (click)="onDeleteComment(comment.id)"
+          aria-label="Delete comment button"
+          *ngIf="comment.createdBy.email===userEmail"
+        >
+          <mat-icon class="delete-icon">clear</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content class="comment-text">
+        <p>
+          {{ comment.text }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
