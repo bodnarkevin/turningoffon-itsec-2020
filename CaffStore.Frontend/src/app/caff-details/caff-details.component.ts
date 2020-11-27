@@ -168,7 +168,7 @@ export class CaffDetailsComponent implements OnInit {
     if (this.caffId) {
       this.caffService.addCaffItemComment(this.caffId, comment).subscribe(
         (res: CommentDto) => {
-          this.newCommentForm.controls.commenttext.setValue(null);
+          this.newCommentForm.controls.commenttext.setValue(' ');
           this.getComments();
         },
         (err) => {
@@ -197,7 +197,7 @@ export class CaffDetailsComponent implements OnInit {
     if (this.caffId) {
       this.caffService.deleteMyCaffItem(this.caffId).subscribe(
         () => {
-          alert('Successfully deleted caff');
+          this.router.navigate(['/list']);
         },
         (err) => {
           alert('Deleting caff failed');
@@ -207,7 +207,6 @@ export class CaffDetailsComponent implements OnInit {
   }
 
   setFormData(): void {
-    console.log(this.caffDto);
     this.caffDataForm.controls.title.setValue(this.caffDto.title);
     this.caffDataForm.controls.description.setValue(this.caffDto.description);
     this.caffDataForm.controls.creator.setValue(this.caffDto.caffData.creator);
@@ -227,7 +226,7 @@ export class CaffDetailsComponent implements OnInit {
       this.caffDto.caffData.creation
     );
     this.caffDataForm.controls.uploaddate.setValue(
-      this.caffDto.caffData.creation
+      this.caffDto.lastModifiedAt
     );
 
     // check if the created by field is null

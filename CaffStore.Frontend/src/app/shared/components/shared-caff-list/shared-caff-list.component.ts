@@ -7,11 +7,20 @@ import {
   CaffItemDto,
   CaffItemDtoPagedResponse,
   CaffItemService,
-  FileDto,
-  UserDto,
 } from '../../../api/generated';
 import { NewCaffDialogComponent } from '../new-caff-dialog/new-caff-dialog.component';
 import { AuthService } from 'src/app/auth/auth.service';
+import { FilterCaffsDialogComponent } from '../filter-caffs-dialog/filter-caffs-dialog.component';
+
+interface Option {
+  value: string;
+  viewValue: string;
+}
+
+interface Filter {
+  value: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-shared-caff-list',
@@ -28,10 +37,21 @@ export class SharedCaffListComponent implements OnInit {
   page = 1;
   /** Total page count */
   pageCount = 1;
+  filters: Filter[] = [];
+  visible = true;
+
+  selectable = false;
+  removable = false;
+  addOnBlur = true;
 
   newCaffTitle: string;
   newCaffDesc: string;
   loggedInUserEmail: string;
+  options: Option[] = [
+    { value: 'steak-0', viewValue: 'Steak' },
+    { value: 'pizza-1', viewValue: 'Pizza' },
+    { value: 'tacos-2', viewValue: 'Tacos' },
+  ];
 
   constructor(
     private router: Router,
@@ -44,10 +64,10 @@ export class SharedCaffListComponent implements OnInit {
     this.getCaffItems();
     console.log('page type onInit: ' + this.type);
     this.authService.getCurrentUserEmail().then((res) => {
-        if (res) {
-          this.loggedInUserEmail = res;
-        }
-      });
+      if (res) {
+        this.loggedInUserEmail = res;
+      }
+    });
   }
 
   onViewDetails(caffId: number): void {
@@ -73,7 +93,6 @@ export class SharedCaffListComponent implements OnInit {
         } else {
           this.caffs = [...this.caffs, ...res.results];
         }
-        console.log(res);
       },
       (err) => {
         alert('Something went wrong. Please try again later.');
@@ -108,12 +127,62 @@ export class SharedCaffListComponent implements OnInit {
           )
           .subscribe(
             (res: CaffItemDetailsDto) => {
-                this.getCaffItems();
+              this.getCaffItems();
             },
             (err) => {
               alert('Caff data upload failed');
             }
           );
+      }
+    });
+  }
+
+  onClearFilters(): void {
+    this.filters = [];
+    this.getCaffItems();
+  }
+
+  onFilterCaffs(): void {
+    const dialogRef = this.dialog.open(FilterCaffsDialogComponent, {
+      width: '600px',
+      data: { title: this.newCaffTitle, descripton: this.newCaffDesc },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.controls) {
+        const title: string = result.controls.title.value;
+        const uploader: string = result.controls.uploader.value;
+        const date: Date = result.controls.date.value;
+
+        if (title && title !== '') {
+          this.caffs = this.caffs.filter((caff) => caff.title === title);
+          this.filters.push({ name: 'title', value: title });
+        }
+
+        if (uploader && uploader !== '') {
+          this.caffs = this.caffs.filter(
+            (caff) => caff.createdBy.fullName === uploader
+          );
+          this.filters.push({ name: 'uploader', value: uploader });
+        }
+
+        if (date) {
+          const months = date.getMonth() + 1;
+          const monthsString =
+            months < 10
+              ? months.toString().padStart(2, '0')
+              : months.toString();
+          const days = date.getDate();
+          const daysString =
+            days < 10 ? days.toString().padStart(2, '0') : days.toString();
+          const datestring =
+            date.getFullYear() + '-' + monthsString + '-' + daysString;
+
+          this.filters.push({ name: 'date', value: datestring });
+          this.caffs = this.caffs.filter((caff) =>
+            caff.lastModifiedAt.startsWith(datestring)
+          );
+        }
       }
     });
   }
