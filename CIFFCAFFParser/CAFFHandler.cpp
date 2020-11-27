@@ -125,8 +125,8 @@ Header CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block
     return header;
 }
 
-CAFFFile* CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
-    CAFFFile* caffFile = new CAFFFile();
+CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
+    CAFFFile caffFile;
     std::vector<Block> blocks;
     Converter::BytesToIntConverter bytesToIntConverter;
 
@@ -164,14 +164,14 @@ CAFFFile* CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
         blocks.push_back(block);
     }
 
-    caffFile->blocks = new CAFF::Block[blocks.size()];
-    caffFile->count = blocks.size();
+    caffFile.blocks = new CAFF::Block[blocks.size()];
+    caffFile.count = blocks.size();
 
-    for (int i = 0; i < caffFile->count; i++) { // fill up blocks from vector
-        caffFile->blocks[i] = blocks[i];
+    for (int i = 0; i < caffFile.count; i++) { // fill up blocks from vector
+        caffFile.blocks[i] = blocks[i];
     }
 
-    if (!verifyNumAnim(*caffFile)) {
+    if (!verifyNumAnim(caffFile)) {
         throw ParserException("ERROR: Animation count missmatch.", "CAFFHandler", 150, "processCAFF");
     }
 
