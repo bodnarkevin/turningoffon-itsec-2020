@@ -207,17 +207,27 @@ export class AdminUserService {
     }
 
     /**
+     * @param email 
+     * @param includeAdmins 
      * @param page 
      * @param pageSize 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPagedUsers(page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<UserDtoPagedResponse>;
-    public getPagedUsers(page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<UserDtoPagedResponse>>;
-    public getPagedUsers(page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<UserDtoPagedResponse>>;
-    public getPagedUsers(page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getPagedUsers(email?: string, includeAdmins?: boolean, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<UserDtoPagedResponse>;
+    public getPagedUsers(email?: string, includeAdmins?: boolean, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<UserDtoPagedResponse>>;
+    public getPagedUsers(email?: string, includeAdmins?: boolean, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<UserDtoPagedResponse>>;
+    public getPagedUsers(email?: string, includeAdmins?: boolean, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
+        if (email !== undefined && email !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>email, 'email');
+        }
+        if (includeAdmins !== undefined && includeAdmins !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>includeAdmins, 'includeAdmins');
+        }
         if (page !== undefined && page !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>page, 'page');
@@ -309,6 +319,58 @@ export class AdminUserService {
         }
 
         return this.httpClient.get<UserProfileDto>(`${this.configuration.basePath}/api/admin/users/${encodeURIComponent(String(userId))}`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param userId 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public grantUserAdminRole(userId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<UserProfileDto>;
+    public grantUserAdminRole(userId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<UserProfileDto>>;
+    public grantUserAdminRole(userId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<UserProfileDto>>;
+    public grantUserAdminRole(userId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (userId === null || userId === undefined) {
+            throw new Error('Required parameter userId was null or undefined when calling grantUserAdminRole.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (caffStoreAuth) required
+        if (this.configuration.accessToken) {
+            const accessToken = typeof this.configuration.accessToken === 'function'
+                ? this.configuration.accessToken()
+                : this.configuration.accessToken;
+            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<UserProfileDto>(`${this.configuration.basePath}/api/admin/users/${encodeURIComponent(String(userId))}/grantAdmin`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

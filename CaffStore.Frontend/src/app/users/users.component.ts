@@ -14,25 +14,27 @@ export class UsersComponent implements OnInit {
 
     users: UserDto[] = [];
     /** Current page */
-    page: number = 1;
+    page = 1;
     /** Total page count */
-    pageCount: number = 1;
+    pageCount = 1;
 
     constructor(private router: Router, private adminUserService: AdminUserService, private _snackBar: MatSnackBar) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.getUsers();
     }
 
     getUsers(): void {
-        this.adminUserService.getPagedUsers(this.page, 10).subscribe(
+        // email: null, includeAdmins: false
+        // todo Anetta: check if this is right
+        this.adminUserService.getPagedUsers(null, false, this.page, 10).subscribe(
             (res: UserDtoPagedResponse) => {
                 if (this.page === 1) {
                     this.users = res.results;
                     this.pageCount = res.totalPageCount;
                 } else {
                     this.users = [...this.users, ...res.results];
-                } 
+                }
             },
             (err) => {
                 this._snackBar.open('Something went wrong. Please try again later.', null, {
@@ -43,7 +45,7 @@ export class UsersComponent implements OnInit {
     }
 
     onLoadMore(): void {
-        if (this.page !== this.pageCount) {        
+        if (this.page !== this.pageCount) {
             this.page += 1;
             this.getUsers();
         }
@@ -52,7 +54,7 @@ export class UsersComponent implements OnInit {
     onSelectUser(userId: number): void {
         this.router.navigate(['/profile'], {
             queryParams: {
-                userId: userId
+                userId
             }
         });
     }
