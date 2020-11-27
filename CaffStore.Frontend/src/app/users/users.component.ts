@@ -47,9 +47,15 @@ export class UsersComponent implements OnInit {
                 }
             },
             (err) => {
-                this._snackBar.open('Something went wrong. Please try again later.', null, {
-                    duration: 2000,
-                });
+                if (err.status === 401 || err.status === 403) {
+                    this._snackBar.open('You are not authorized to access this page!', null, {
+                        duration: 2000,
+                    });
+                } else {
+                    this._snackBar.open('Something went wrong. Please try again later.', null, {
+                        duration: 2000,
+                    });
+                }
             }
         );
     }

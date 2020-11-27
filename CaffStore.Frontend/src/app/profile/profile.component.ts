@@ -25,8 +25,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         newPassword: new FormControl('', Validators.required)
     });
 
-    editingInProgress = false;
-    passwordChangeInProgress = false;
+    editingInProgress: boolean = false;
+    passwordChangeInProgress: boolean = false;
     queryParamSubscription: Subscription = Subscription.EMPTY;
 
     // if there's a userId, we're looking at the given user's profile
@@ -75,9 +75,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         duration: 2000,
                     });
                     this.router.navigate(['/users']);
+                } else if (err.status === 401 || err.status === 403) {
+                    this._snackBar.open('You are not authorized to access this profile!', null, {
+                        duration: 2000,
+                    });
                 } else {
-                    // 401, 403, 500 if unauthorized, redirect to error
-                    this.router.navigate(['/error']);
+                    this._snackBar.open('Something went wrong. Please try again later!', null, {
+                        duration: 2000,
+                    });
                 }
             });
     }
@@ -91,8 +96,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
                 this.passwordChangeForm.controls.email.setValue(res.email);
             },
             (err) => {
-                // 401, 403, 500 if unauthorized, redirect to error
-                this.router.navigate(['/error']);
+                if (err.status === 401 || err.status === 403) {
+                    this._snackBar.open('You are not authorized to access this profile!', null, {
+                        duration: 2000,
+                    });
+                } else {
+                    this._snackBar.open('Something went wrong. Please try again later!', null, {
+                        duration: 2000,
+                    });
+                }
             });
     }
 
@@ -116,9 +128,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.profileDataForm.disable();
                 },
                 (err) => {
-                    this._snackBar.open('Personal data change failed', null, {
-                        duration: 2000,
-                    });
+                    if (err.status === 400 || err.status === 404) {
+                        this._snackBar.open(err.error.message, null, {
+                            duration: 2000,
+                        });
+                    } else if (err.status === 403 || err.status === 401) {
+                        this._snackBar.open('You are not authorized to execute this operation!', null, {
+                            duration: 2000,
+                        });
+                    } else {
+                        this._snackBar.open('Something went wrong. Please try again later!', null, {
+                            duration: 2000,
+                        });
+                    }
                 }
             )
         } else {
@@ -128,9 +150,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.profileDataForm.disable();
                 },
                 (err) => {
-                    this._snackBar.open('Personal data change failed', null, {
-                        duration: 2000,
-                    });
+                    if (err.status === 400 || err.status === 404) {
+                        this._snackBar.open(err.error.message, null, {
+                            duration: 2000,
+                        });
+                    } else if (err.status === 403 || err.status === 401) {
+                        this._snackBar.open('You are not authorized to execute this operation!', null, {
+                            duration: 2000,
+                        });
+                    } else {
+                        this._snackBar.open('Something went wrong. Please try again later!', null, {
+                            duration: 2000,
+                        });
+                    }
                 });
         }
     }
@@ -168,12 +200,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.passwordChangeForm.controls.newPassword.setValue('');
                 },
                 (err) => {
-                    if (err.error.title) {
-                        this._snackBar.open(err.error.title, null, {
+                    if (err.status === 404 || err.status === 400) {
+                        this._snackBar.open(err.error.message, null, {
+                            duration: 2000,
+                        });
+                    } else if (err.status === 401 || err.status === 403) {
+                        this._snackBar.open('You are not authorized to execute this operation!', null, {
                             duration: 2000,
                         });
                     } else {
-                        this._snackBar.open('Password change failed', null, {
+                        this._snackBar.open('Something went wrong, please try again later!', null, {
                             duration: 2000,
                         });
                     }
@@ -187,12 +223,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.passwordChangeForm.controls.newPassword.setValue('');
                 },
                 (err) => {
-                    if (err.error.title) {
-                        this._snackBar.open(err.error.title, null, {
+                    if (err.status === 400 || err.status === 404) {
+                        this._snackBar.open(err.error.message, null, {
+                            duration: 2000,
+                        });
+                    } else if (err.status === 403 || err.status === 401) {
+                        this._snackBar.open('You are not authorized to execute this operation!', null, {
                             duration: 2000,
                         });
                     } else {
-                        this._snackBar.open('Password change failed', null, {
+                        this._snackBar.open('Something went wrong. Please try again later!', null, {
                             duration: 2000,
                         });
                     }
@@ -215,9 +255,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     this.router.navigate(['/users']);
                 },
                 (err) => {
-                    this._snackBar.open('Profile deletion failed!', null, {
-                        duration: 2000,
-                    });
+                    if (err.status === 404 || err.status === 400) {
+                        this._snackBar.open(err.error.message, null, {
+                            duration: 2000,
+                        });
+                    } else if (err.status === 401 || err.status === 403) {
+                        this._snackBar.open('You are not authorized to execute this operation!', null, {
+                            duration: 2000,
+                        });
+                    } else {
+                        this._snackBar.open('Something went wrong, please try again later!', null, {
+                            duration: 2000,
+                        });
+                    }
                 }
             )
         } else {
@@ -230,9 +280,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
                     )
                 },
                 (err) => {
-                    this._snackBar.open('Profile deletion failed!', null, {
-                        duration: 2000,
-                    });
+                    if (err.status === 400 || err.status === 404) {
+                        this._snackBar.open(err.error.message, null, {
+                            duration: 2000,
+                        });
+                    } else if (err.status === 403 || err.status === 401) {
+                        this._snackBar.open('You are not authorized to execute this operation!', null, {
+                            duration: 2000,
+                        });
+                    } else {
+                        this._snackBar.open('Something went wrong. Please try again later!', null, {
+                            duration: 2000,
+                        });
+                    }
                 }
             )
         }
@@ -271,7 +331,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
                         duration: 2000,
                     });
                 }
-                
             }
         )
     }

@@ -91,7 +91,7 @@
             ],
             "styles": [
               "src/styles.css",
-              "src/assets/fonts/font-file.css"
+              "src/app/shared/fonts.css"
             ],
             "scripts": []
           }
