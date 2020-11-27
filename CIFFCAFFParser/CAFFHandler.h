@@ -9,25 +9,6 @@ namespace CAFF {
 
 enum BlockType { HEADER = 1, CREDITS = 2, ANIMATION = 3};
 
-struct InteropHeader {
-    uint8_t id;
-    uint64_t length;
-    const char* magic;
-    uint64_t header_size;
-    uint64_t num_anim;
-};
-
-struct InteropCredits {
-    uint8_t id;
-    uint64_t length;
-    const char* creator;
-    uint16_t year;
-    uint8_t month;
-    uint8_t day;
-    uint8_t hour;
-    uint8_t minute;
-};
-
 struct Header {
     char magic[4];
     uint64_t header_size;
