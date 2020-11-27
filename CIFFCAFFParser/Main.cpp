@@ -51,7 +51,7 @@ int main() {
             free(&json[i]);
         }
 
-        for (int i = 0; i < prevSize; i++) {
+        for (int i = 0; i < prevSize * sizeof(uint8_t); i++) {
             free(&prev[i]);
         }
     }
