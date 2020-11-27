@@ -130,7 +130,7 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
     std::vector<Block> blocks;
     Converter::BytesToIntConverter bytesToIntConverter;
 
-    while (buffer.size() > 0) {
+    while (!buffer.empty()) {
         int identifier = static_cast<int>(buffer[0]);
 
         Log::Logger::logMessage("Parsed block identifier: " + std::to_string(identifier));
@@ -218,55 +218,7 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
         for (int i = 0; i < nSize; i++) buffer.push_back(pArray[i]);
 
         CAFF::CAFFHandler caffHandler;
-        std::vector<CAFF::Block> blocks;
-
-        Converter::BytesToIntConverter bytesToIntConverter;
-
-        while (!buffer.empty()) {
-            int identifier = static_cast<int>(buffer[0]);
-            Log::Logger::logMessage("Parsed block identifier: " + std::to_string(identifier));
-            // Remove the processed 1 byte from the buffer
-            Log::Logger::logBytesProcessed(1);
-            std::vector<unsigned char>(buffer.begin() + 1, buffer.end()).swap(buffer);
-
-            std::cout << std::endl << "Handling block ..." << std::endl;
-            int length = bytesToIntConverter.convert8BytesToInteger(buffer);
-            CAFF::Block block;
-            block.id = identifier;
-            block.length = length;
-
-            switch (identifier) {
-            case CAFF::BlockType::HEADER:
-                block.header_data = caffHandler.handleHeader(buffer, block);
-                break;
-            case CAFF::BlockType::CREDITS:
-                block.credits_data = caffHandler.handleCredits(buffer, block);
-                break;
-            case CAFF::BlockType::ANIMATION:
-                Log::Logger::logMessage("  Length of animation block: " + std::to_string(block.length));
-                block.animation_data = caffHandler.handleAnimation(buffer);
-                break;
-            default:
-                std::string message = "ERROR while parsing integer: Unkown identifier." + std::to_string(identifier);
-                throw ParserException(message.c_str(), "CAFFHandler", 68, "processCAFF");
-            }
-
-            blocks.push_back(block);
-        }
-
-        caffFile.blocks = new CAFF::Block[blocks.size()];
-        caffFile.count = blocks.size();
-
-        for (int i = 0; i < caffFile.count; i++) { // fill up blocks from vector
-            caffFile.blocks[i] = blocks[i];
-        }
-
-        if (!caffHandler.verifyNumAnim(caffFile)) {
-            throw ParserException("ERROR: Animation count missmatch.", "CAFFHandler", 150, "processCAFF");
-        }
-
-        Log::Logger::logSuccess();
-        Log::Logger::logMessage("Block count: " + std::to_string(blocks.size()));
+        caffFile = caffHandler.processCAFF(buffer);
     }
     catch (const ParserException& e) {
         *isError = true;
