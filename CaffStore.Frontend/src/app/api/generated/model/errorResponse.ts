@@ -15,7 +15,7 @@ export interface ErrorResponse {
     statusCode: number;
     type: string;
     message: string;
-    errors: Array<string>;
+    errors?: Array<string> | null;
     stackTrace?: string | null;
 }
 

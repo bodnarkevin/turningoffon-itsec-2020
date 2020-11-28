@@ -1,0 +1,23 @@
+<div class="header">
+    <div class="content row">
+        <button (click)="menuOpened = !menuOpened;"></button>
+        <h1>CAFFly {{ title.length > 0 ? '- ' : '' }}{{ title }}</h1>
+    </div>
+</div>
+<div *ngIf="menuOpened" class="menu-container">
+    <div class="menu">
+        <a routerLink="/list">Home</a>
+    </div>
+    <div class="menu">
+        <a routerLink="/my-caffs">My images</a>
+    </div>
+    <div class="menu">
+        <a routerLink="/profile">Profile</a>
+    </div>
+    <div class="menu" *ngIf="isAdmin">
+        <a routerLink="/users">Users</a>
+    </div>
+    <div class="menu">
+        <a (click)="onLogout()">Logout</a>
+    </div>
+</div>

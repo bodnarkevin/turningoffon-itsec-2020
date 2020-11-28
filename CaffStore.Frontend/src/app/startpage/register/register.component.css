@@ -1,0 +1,24 @@
+.form-element {
+    margin-bottom: 40px;
+    width: 80%;
+}
+
+.form-element label {
+    font: normal normal 600 18px/20px Roboto, sans-serif;
+    color: #787878;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    margin-bottom: 25px;
+    margin-top: 10px;
+}
+
+.form-element input {
+    width: 70%;
+}
+
+.row .form-element input {
+    width: 60%;
+}
+

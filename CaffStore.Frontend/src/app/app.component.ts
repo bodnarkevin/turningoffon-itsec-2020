@@ -1,6 +1,9 @@
-import {Component} from '@angular/core';
-import {OAuthService} from 'angular-oauth2-oidc';
-import {environment} from '../environments/environment';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { filter } from 'rxjs/operators';
+
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +12,44 @@ import {environment} from '../environments/environment';
 })
 export class AppComponent {
 
-  constructor(private oAuthService: OAuthService) {
+  showFrame: boolean = false;
+  title: string = '';
+
+  constructor(private oAuthService: OAuthService, private router: Router) {
+
+    // keret komponenst a keződoldalon ne jelenítsük meg
+    this.router.events.pipe(filter((event: any) => event instanceof NavigationEnd)).subscribe(event => {
+        if (event.url == '/') {
+          this.showFrame = false;
+        } else {
+            this.showFrame = true;
+            
+            switch(event.url) {
+                case '/profile':
+                    this.title = 'User profile';
+                    break;
+                case '/users':
+                    this.title = 'Users';
+                    break;
+                case '/list':
+                    this.title = 'CAFFs';
+                    break;
+                case '/my-caffs':
+                    this.title = 'My images';
+                    break;
+                case '/caff':
+                    this.title = 'CAFF details';
+                    break;
+                default:
+                    this.title = '';
+                    break;
+            }
+
+            if (event.url.includes('userId')) {
+                this.title = 'User profile'
+            }
+        }
+      });
 
     // Required for password flow
     this.oAuthService.oidc = false;
@@ -40,7 +80,9 @@ export class AppComponent {
     // Load Discovery Document and then try to login the user
     this.oAuthService.loadDiscoveryDocument(environment.auth.discoveryDocument).then(() => {
       // Try to refresh access token
-      this.oAuthService.refreshToken().finally();
+      if (this.oAuthService.getRefreshToken() != null) {
+        this.oAuthService.refreshToken().finally();
+      }
     });
   }
 }

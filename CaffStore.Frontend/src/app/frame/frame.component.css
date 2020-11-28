@@ -1,0 +1,56 @@
+.header {
+    height: 80px;
+    width: 100%;
+    background-color: var(--color-primary);
+    margin-bottom: 40px;
+}
+
+.content {
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 30px;
+}
+
+h1 {
+    color: #FFFFFF;
+    font: normal normal 600 35px/40px Roboto, sans-serif;
+}
+
+button {
+    background-color: #FFFFFF;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.menu-container {
+    height: calc(100vh - 80px);
+    width: 250px;
+    background-color: var(--color-primary);
+    z-index: 150;
+    position: absolute;
+    top: 80px;
+}
+
+.menu {
+    height: 60px;
+    width: 100%;
+    background-color: var(--color-primary-dark);
+    cursor: pointer;
+    margin-bottom: 2px;
+}
+
+.menu a {
+    height: 60px;
+    width: 100%;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    font: normal normal bold 18px/20px Roboto, sans-serif;
+    line-height: 60px;
+    color: #FFFFFF;
+}

@@ -1,0 +1,159 @@
+.panels-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    margin-top: 0px;
+}
+.edit-download {
+    display: flex;
+    align-self: start;
+    flex-direction: row;
+    width: 30%;
+    min-width: 180px;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.comment-section {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 16px;
+    padding: 1em;
+}
+
+.new-comment-panel {
+    display: flex;
+    flex-direction: row;
+    width: 98%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+::ng-deep .mat-icon-button {
+    height: 26px !important;
+    width: 26px !important;
+    line-height:26px !important;
+}
+
+::ng-deep .mat-icon{
+    height: 20px !important;
+    width: 20px !important;
+    font-size:20px !important;
+}
+
+::ng-deep .mat-form-field.disabled .mat-form-field-underline {
+    background-color: #69f0ae !important;
+    display: none;
+  }
+
+.delete-icon {
+    color: red;
+}
+
+.comment-row {
+    display: flex;
+    flex-direction: column;
+    width: 98%;
+    background-color: white;
+    justify-content: space-evenly;
+    margin: 8px;
+    border-radius: 10px;
+    padding: 4px !important;
+}
+
+.mat-card-title {
+    font: normal normal 400 14px/18px Roboto, sans-serif;
+    margin: 4px !important;
+    margin-left: 0px !important;
+}
+
+.comment-text {
+    font: normal normal 400 11px/12px Roboto, sans-serif;
+    padding: 8px;
+    padding-left: 16px;
+}
+
+img {
+    margin-left: 16px;
+    max-width: 600px;
+    min-width: 400px;
+    width: 50%;
+    margin-right: 16px;
+}
+
+.data-panel {
+    border-radius: 10px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 200px;
+    margin-right: 16px;
+}
+
+.form-row {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.form-element {
+    align-items: flex-start !important;
+    margin-bottom: 0px;
+    width: 225px;
+    margin-right: 1em;
+}
+
+.form-element input {
+    min-width: 225px;
+    font: normal normal 400 13px/14px Roboto, sans-serif;
+    color: black;
+    padding-left: 4px;
+}
+
+.form-element textarea {
+    min-width: 225px;
+    font: normal normal 400 13px/14px Roboto, sans-serif;
+    color: black;
+    padding-left: 4px;
+}
+
+.form-element-long textarea {
+    min-width: 225px;
+    font: normal normal 400 13px/14px Roboto, sans-serif;
+    color: black;
+    padding-left: 4px;
+}
+
+.form-element-long{
+    align-items: flex-start !important;
+    margin-bottom: 8px;
+    width: 100%;
+    margin-right: 1em;
+}
+
+.form-title {
+    margin: 0;
+    margin-bottom: 10px;
+    font: normal normal 500 18px/22px Roboto, sans-serif;
+}

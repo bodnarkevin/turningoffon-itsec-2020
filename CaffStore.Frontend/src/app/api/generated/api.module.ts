@@ -3,6 +3,11 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
+import { AdminCaffItemService } from './api/adminCaffItem.service';
+import { AdminCommentService } from './api/adminComment.service';
+import { AdminUserService } from './api/adminUser.service';
+import { CaffItemService } from './api/caffItem.service';
+import { CommentService } from './api/comment.service';
 import { UserService } from './api/user.service';
 
 @NgModule({

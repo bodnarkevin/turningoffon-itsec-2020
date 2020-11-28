@@ -1,0 +1,82 @@
+<div class="container">
+  <div class="filer-row" [formGroup]="orderForm">
+    <mat-form-field class="order-select" appearance="fill">
+      <mat-label>Order by</mat-label>
+      <mat-select formControlName="order" (selectionChange)="onSelectionChange()">
+        <mat-option *ngFor="let option of options" [value]="option.value">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="active-filters-row">
+        <mat-chip-list #chipList>
+            <mat-chip
+            *ngFor="let filter of filters"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(filter)"
+          >
+            {{ filter.value }}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+        </mat-chip-list>
+      
+    </div>
+
+    <button
+      matTooltip="Filter results"
+      mat-icon-button
+      color="primary"
+      aria-label="Filter results"
+      (click)="onFilterCaffs()"
+    >
+      <mat-icon>filter_alt</mat-icon>
+    </button>
+    <button
+      *ngIf="filters.length > 0"
+      matTooltip="Clear filters"
+      mat-icon-button
+      color="primary"
+      aria-label="Clear filters"
+      (click)="onClearFilters()"
+    >
+      <mat-icon>clear</mat-icon>
+    </button>
+  </div>
+
+  <div class="caff-list-container">
+    <div class="caff-list">
+      <mat-card
+        *ngFor="let caff of caffs"
+        class="example-card"
+        (click)="onViewDetails(caff.id)"
+      >
+        <mat-card-header color="primary">
+          <mat-card-title class="example-card-title">{{
+            caff.title
+          }}</mat-card-title>
+        </mat-card-header>
+        <img
+          mat-card-image
+          src="{{ caff.previewFile.fileUri }}"
+          alt="Photo of a Shiba Inu"
+        />
+      </mat-card>
+    </div>
+    <div class="fab-container">
+      <button
+        matTooltip="Add new CAFF"
+        mat-fab
+        color="primary"
+        aria-label="Add new Caff"
+        (click)="onAddNewCaff()"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <a *ngIf="pageCount > page" (click)="onLoadMore()">Load more caffs</a>
+  </div>
+</div>
