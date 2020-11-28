@@ -67,7 +67,7 @@ stages:
             displayName: Install dependencies
           - script: |
               make build-so
-            workingDirectory: 
+            workingDirectory: $(workingDirectory)
             displayName: Make build-so
           - task: PublishPipelineArtifact@1
             inputs:
