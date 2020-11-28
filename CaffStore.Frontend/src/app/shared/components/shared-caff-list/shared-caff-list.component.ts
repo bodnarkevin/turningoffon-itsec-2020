@@ -136,36 +136,12 @@ export class SharedCaffListComponent implements OnInit {
   onAddNewCaff(): void {
     const dialogRef = this.dialog.open(NewCaffDialogComponent, {
       width: '600px',
+      disableClose: true,
       data: { title: this.newCaffTitle, descripton: this.newCaffDesc },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result && result.controls) {
-        const title = result.controls.title.value;
-        const description = result.controls.description.value;
-        console.log(result.controls.cafffile.value as Blob);
-
-        this.caffItemService
-          .addCaffItem(
-            title,
-            description,
-            result.controls.cafffile.value as Blob
-          )
-          .subscribe(
-            (res: CaffItemDetailsDto) => {
-              this.getCaffItems();
-            },
-            (err) => {
-              this._snackBar.open(
-                'Something went wrong during the upload. Please try again later!',
-                null,
-                {
-                  duration: 3000,
-                }
-              );
-            }
-          );
-      }
+        this.getCaffItems();
     });
   }
 

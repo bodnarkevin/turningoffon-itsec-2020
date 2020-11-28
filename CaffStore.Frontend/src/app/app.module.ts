@@ -10,7 +10,7 @@ import { ApiModule, Configuration } from './api/generated';
 import { environment } from '../environments/environment';
 import { AuthService } from './auth/auth.service';
 import { FrameComponent } from './frame/frame.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     OAuthModule.forRoot(),
     ApiModule,
-    NoopAnimationsModule
+    BrowserAnimationsModule 
   ],
   providers: [
     {
