@@ -10,7 +10,7 @@ namespace CaffStore.Backend.Bll.RequestContext
 	{
 		public ClaimsPrincipal CurrentUser { get; }
 
-		public int? CurrentUserId { get; }
+		public long? CurrentUserId { get; }
 
 		public IEnumerable<string> CurrentUserRoles { get; }
 
