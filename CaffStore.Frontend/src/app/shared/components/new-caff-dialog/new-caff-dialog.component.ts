@@ -18,7 +18,6 @@ export class NewCaffDialogComponent {
   newCaffForm = new FormGroup({
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    cafffile: new FormControl(new Blob(), Validators.required),
   });
 
   caffFileName: string;

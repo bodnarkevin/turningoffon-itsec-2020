@@ -21,10 +21,6 @@ int main() {
     {
         CAFF::CAFFFile caffFile = caffHandler.processCAFF(buffer);
 
-        if(buffer.size() > 0){
-             throw ParserException("ERROR: All data parsed, but buffer not empty", "Main", __LINE__, __FUNCTION__);
-        }
-
         unsigned char* array = &buffer[0];
         unsigned char* prev = nullptr;
         int prevSize = 0;
@@ -37,7 +33,7 @@ int main() {
         delete[] prev;
     }
 
-    catch(const ParserException e)
+    catch(const ParserException& e)
     {
         std::cerr << e.what() << '\n';
         std::cerr << "In file:" << e.get_file() << '\n';

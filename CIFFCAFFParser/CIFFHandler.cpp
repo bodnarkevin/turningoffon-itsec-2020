@@ -2,13 +2,10 @@
 #include <iostream>
 #include "BytesToIntConverter.h"
 #include "ParserExceptions.h"
-#include "lodepng.h"
 
 #include "Logger.h"
 
 using namespace ParserExceptions;
-
-int count = 0;
 
 namespace CIFF {
 
@@ -83,9 +80,6 @@ namespace CIFF {
         ciff.pixels = pixels;
 
         std::cout << "Handled CIFF content" << std::endl << std::endl;
-
-        printPixels(ciff, count);
-        count++;
 
         return ciff;
     }
@@ -184,12 +178,4 @@ namespace CIFF {
 
         return result;
     }
-
-void CIFFHandler::printPixels(const CIFFFile& ciffFile, int id) {
-    std::vector<unsigned char> ImageBuffer;
-
-    lodepng::encode(ImageBuffer, ciffFile.pixels, ciffFile.header.width, ciffFile.header.height, LCT_RGB, 8U);
-    lodepng::save_file(ImageBuffer, "C:/Users/Admin/Desktop/BME MSC/computersec/turningoffon-itsec-2020/CIFFCAFFParser/preview/test" + std::to_string(id) +".png");
-}
-
 } // namespace CIFF
