@@ -33,7 +33,7 @@ int main() {
         delete[] prev;
     }
 
-    catch(const ParserException e)
+    catch(const ParserException& e)
     {
         std::cerr << e.what() << '\n';
         std::cerr << "In file:" << e.get_file() << '\n';
