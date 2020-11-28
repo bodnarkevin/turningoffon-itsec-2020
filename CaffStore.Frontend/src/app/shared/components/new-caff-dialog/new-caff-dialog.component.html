@@ -16,7 +16,7 @@
                     formControlName="description"></textarea>
             </mat-form-field>
             <div class="file-row">
-                <input #fileInput hidden="true" type="file" id="cafffile" formControlName="cafffile"
+                <input #fileInput hidden="true" type="file" id="cafffile"
                     onclick="this.value=null" (change)="fileInputChange($event)" accept=".CAFF" />
                 <button [disabled]="loading" mat-flat-button color="primary" (click)="fileInput.click()">
                     Choose CAFF File
