@@ -1,8 +1,8 @@
 <div class="container">
-  <div class="filer-row" [formGroup]="orderForm">
+  <div class="filer-row" >
     <mat-form-field class="order-select" appearance="fill">
       <mat-label>Order by</mat-label>
-      <mat-select formControlName="order" (selectionChange)="onSelectionChange()">
+      <mat-select (selectionChange)="onSelectionChange($event)">
         <mat-option *ngFor="let option of options" [value]="option.value">
           {{ option.name }}
         </mat-option>
