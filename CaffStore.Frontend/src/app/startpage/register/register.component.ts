@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
                 });
             })
             .catch((response) => {
-                if (response.status === 400 ||response.status === 409) {
+                if (response.status === 400 || response.status === 409) {
                     this._snackBar.open(response.error.message, null, {
                         duration: 2000,
                     });

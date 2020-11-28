@@ -15,10 +15,12 @@ export class FrameComponent implements OnInit, OnChanges {
 
     menuOpened: boolean = false;
     isAdmin: boolean = false;
+    isloggedin = false;
 
     constructor(private router: Router, private authService: AuthService, private oAuthService: OAuthService) { }
 
     ngOnInit(): void {
+        this.isloggedin = this.authService.isLoggedIn();
         this.authService.isAdmin()
         .then((res) => {
             if (res) {
