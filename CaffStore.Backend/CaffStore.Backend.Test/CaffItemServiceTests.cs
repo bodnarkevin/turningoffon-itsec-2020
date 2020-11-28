@@ -25,7 +25,8 @@ namespace CaffStore.Backend.Test
 
 		[Fact]
 		public async void TestUpdateCaffItem()
-		{
+		{ _testFixture.RequestContextFixture.CurrentUserId = 1;
+
 			const string newTitle = "New Title";
 			const string newDescription = "New Description";
 
