@@ -129,6 +129,8 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
     CAFFFile caffFile;
     std::vector<Block> blocks;
     Converter::BytesToIntConverter bytesToIntConverter;
+    bool headerBlockParsed = false;
+    bool creditsBlockParsed = false;
 
     while (!buffer.empty()) {
         int identifier = static_cast<int>(buffer[0]);
@@ -147,18 +149,30 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
 
         switch (identifier) {
             case CAFF::BlockType::HEADER:
-                block.header_data = handleHeader(buffer, block);
-                break;
+                if (!headerBlockParsed) {
+                    block.header_data = handleHeader(buffer, block);
+                    headerBlockParsed = true;
+                    break;
+                } else {
+                    std::string message = "ERROR while parsing HEADER: HEADER already parsed.";
+                    throw ParserException(message.c_str(), "CAFFHandler", __LINE__, __FUNCTION__);
+                }
             case CAFF::BlockType::CREDITS:
-                block.credits_data = handleCredits(buffer, block);
-                break;
+                if (!creditsBlockParsed) {
+                    block.credits_data = handleCredits(buffer, block);
+                    creditsBlockParsed = true;
+                    break;
+                } else {
+                    std::string message = "ERROR while parsing CREDITS: CREDITS already parsed.";
+                    throw ParserException(message.c_str(), "CAFFHandler", __LINE__, __FUNCTION__);
+                }
             case CAFF::BlockType::ANIMATION:
                 Log::Logger::logMessage("  Length of animation block: " + std::to_string(block.length));
                 block.animation_data = handleAnimation(buffer);
                 break;
             default:
                 std::string message = "ERROR while parsing integer: Unkown identifier." + std::to_string(identifier);
-                throw ParserException(message.c_str(), "CAFFHandler", 68, "processCAFF");
+                throw ParserException(message.c_str(), "CAFFHandler", __LINE__, __FUNCTION__);
         }
 
         blocks.push_back(block);
@@ -173,6 +187,10 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
 
     if (!verifyNumAnim(caffFile)) {
         throw ParserException("ERROR: Animation count missmatch.", "CAFFHandler", 150, "processCAFF");
+    }
+
+    if (!buffer.empty()){
+        throw ParserException("ERROR: All data parsed, but buffer not empty", "Main", __LINE__, __FUNCTION__);
     }
 
     Log::Logger::logSuccess();
