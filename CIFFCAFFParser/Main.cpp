@@ -1,32 +1,21 @@
 #include "CAFFHandler.h"
 #include "CIFFHandler.h"
 #include "Logger.h"
+#include "CAFFApi.h"
 
 #include <iostream>
 #include <fstream>
 #include <math.h>
 #include "BytesToIntConverter.h"
 #include "ParserExceptions.h"
+#include <cstring>
 
 using namespace ParserExceptions;
 
 int main() {
-    std::ifstream source("3.caff", std::ios_base::binary);
+    std::ifstream source("1.caff", std::ios_base::binary);
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(source), {});
 
-    //Ez csak debug?
-    //int count = 0;
-    /*
-    for (auto element : buffer) {
-        std::cout << "Index: " << count << " " << static_cast<int>(element) << std::endl;
-        if (count > 280) {
-            break;
-        }
-        count++;
-    }
-    std::cout << std::endl;*/
-
-    
     CAFF::CAFFHandler caffHandler;
     try
     {
@@ -36,9 +25,16 @@ int main() {
              throw ParserException("ERROR: All data parsed, but buffer not empty", "Main", __LINE__, __FUNCTION__);
         }
 
-        // send to C# backend ...
+        unsigned char* array = &buffer[0];
+        unsigned char* prev = nullptr;
+        int prevSize = 0;
+        bool error = true;
+        char* json = parseToJson(array, buffer.size(), &prev, &prevSize, &error);
 
         delete[] caffFile.blocks;
+
+        delete[] json;
+        delete[] prev;
     }
 
     catch(const ParserException e)

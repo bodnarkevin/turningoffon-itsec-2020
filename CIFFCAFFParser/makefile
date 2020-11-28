@@ -1,31 +1,27 @@
-all: Main.exe
+CC = g++ -std=c++11
+CFLAGS = -shared -fPIC
+WINFLAG = -DBUILD_DLL
+SOURCE = CAFFHandler.cpp Logger.cpp CIFFHandler.cpp BytesToIntConverter.cpp ParserExceptions.cpp lodepng.cpp
 
 check: Main.exe
-		valgrind --leak-check=full --error-exitcode=1 ./Main.exe
+	valgrind --leak-check=full --error-exitcode=1 ./Main.exe
 
-lodepng.o: lodepng.cpp
-		g++ -c lodepng.cpp
+build-dll:
+	mkdir -p Library
+	$(CC) $(WINFLAG) $(CFLAGS) $(SOURCE) -o Library\CaffParser.dll
 
-Logger.o: Logger.cpp
-		g++ -c Logger.cpp
+clean-dll:
+	rm -f Library/CaffParser.dll
 
-CIFFHandler.o: CIFFHandler.cpp
-		g++ -c CIFFHandler.cpp
+build-so:
+	mkdir -p  Library
+	$(CC) $(CFLAGS) $(SOURCE) -o Library/CaffParser.so
 
-CAFFHandler.o: CAFFHandler.cpp
-		g++ -c CAFFHandler.cpp
+clean-so:
+	rm -f Library/CaffParser.so
 
-BytesToIntConverter.o: BytesToIntConverter.cpp
-		g++ -c BytesToIntConverter.cpp
-
-ParserExceptions.o: ParserExceptions.cpp
-		g++ -c ParserExceptions.cpp
-
-Main.exe: Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o lodepng.o
-		g++ -o Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o lodepng.o
-
-Main.o: Main.cpp
-		g++ -c Main.cpp
+Main.exe:
+	g++ $(SOURCE) Main.cpp -o Main.exe
 
 clean:
-		rm Main.exe Main.o Logger.o CIFFHandler.o CAFFHandler.o BytesToIntConverter.o ParserExceptions.o lodepng.o
+	rm Main.exe

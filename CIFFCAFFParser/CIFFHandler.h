@@ -8,11 +8,11 @@ namespace CIFF {
 
 struct Header {
     char magic[4];
-    uint64_t header_size;
-    uint64_t content_size;
-    uint64_t width;
-    uint64_t height;
-    std::string caption;
+    uint64_t header_size = 0;
+    uint64_t content_size = 0;
+    uint64_t width = 0;
+    uint64_t height = 0;
+    std::string caption = "";
     std::vector<std::string> tags;
 };
 
