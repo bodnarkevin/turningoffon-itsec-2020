@@ -241,6 +241,10 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
     catch (const ParserException& e) {
         *isError = true;
         char* errorMessage = new char[strlen(e.what())];
+        memcpy(errorMessage, e.what(), strlen(e.what()));
+        data = nullptr;
+        size = 0;
+
         return errorMessage;
     }
 
