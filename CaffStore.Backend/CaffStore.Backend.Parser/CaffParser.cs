@@ -12,7 +12,7 @@ namespace CaffStore.Backend.Parser
 	public static class CaffParser
 	{
 
-		[DllImport("Library/CaffParser.so", CharSet=CharSet.Ansi, CallingConvention=CallingConvention.StdCall)]
+		[DllImport("./Library/CaffParser.so", CharSet=CharSet.Ansi, CallingConvention=CallingConvention.StdCall)]
 		[return: MarshalAs(UnmanagedType.LPStr)]
 		private static extern string parseToJson(IntPtr pArray, int nSize, out IntPtr preview, out int size, out bool isError);
 
