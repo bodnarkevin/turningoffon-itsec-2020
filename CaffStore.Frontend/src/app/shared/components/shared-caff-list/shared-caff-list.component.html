@@ -30,6 +30,7 @@
       color="primary"
       aria-label="Filter results"
       (click)="onFilterCaffs()"
+      id="filter"
     >
       <mat-icon>filter_alt</mat-icon>
     </button>
@@ -68,7 +69,9 @@
       <button
         matTooltip="Add new CAFF"
         mat-fab
+        *ngIf="type==='own'"
         color="primary"
+        id="addFAB"
         aria-label="Add new Caff"
         (click)="onAddNewCaff()"
       >

@@ -47,8 +47,8 @@ export class SharedCaffListComponent implements OnInit {
   /** Total page count */
   pageCount = 1;
   filters: Filter[] = [];
-  visible = true;
 
+  visible = true;
   selectable = false;
   removable = false;
   addOnBlur = true;
@@ -71,15 +71,16 @@ export class SharedCaffListComponent implements OnInit {
     private router: Router,
     private caffItemService: CaffItemService,
     public dialog: MatDialog,
+    public filterDialog: MatDialog,
     private authService: AuthService,
     private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.getCaffItems();
     this.authService.getCurrentUserEmail().then((res) => {
       if (res) {
         this.loggedInUserEmail = res;
+        this.getCaffItems();
       }
     });
   }
@@ -248,7 +249,7 @@ export class SharedCaffListComponent implements OnInit {
   }
 
   onFilterCaffs(): void {
-    const dialogRef = this.dialog.open(FilterCaffsDialogComponent, {
+    const dialogRef = this.filterDialog.open(FilterCaffsDialogComponent, {
       width: '600px',
       data: { title: this.newCaffTitle, descripton: this.newCaffDesc },
     });
