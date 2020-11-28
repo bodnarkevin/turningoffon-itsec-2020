@@ -84,9 +84,8 @@
       </div>
 
       <div class="row">
-        <div class="edit-download"  *ngIf="!editingInProgress">
+        <div class="edit-download" *ngIf="!editingInProgress">
           <button
-          id="deleteButton" 
           mat-button
           *ngIf="!editingInProgress && (isAdmin || isOwnerOfCaff)"
           style="background-color: #03a9f4"
@@ -96,7 +95,6 @@
           Edit
         </button>
           <button
-          id="downloadButton" 
             matTooltip="Download this CAFF file"
             *ngIf="!editingInProgress"
             mat-button
@@ -109,7 +107,6 @@
        
 
         <button
-        id="deleteButton" 
           matTooltip="Delete this CAFF file"
           *ngIf="!editingInProgress && (isAdmin || isOwnerOfCaff)"
           mat-button
