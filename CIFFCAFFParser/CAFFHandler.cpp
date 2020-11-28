@@ -249,14 +249,14 @@ char* parseToJson(unsigned char* pArray, int nSize, unsigned char** data, int* s
     }
 
     str.append("{");
-    addToJson(str, "creator", "\"" + creator + "\"", false);
-    addToJson(str, "creation", "\"" +
-        std::to_string(date.year) +
-        "-" +
-        (date.month < 10 ? "0" + std::to_string(date.month) : std::to_string(date.month)) +
-        "-" +
-        (date.day < 10 ? "0" + std::to_string(date.day) : std::to_string(date.day)) +
-        "T" + std::to_string(date.hour) + ":" + std::to_string(date.minute) + ":00" + "\"", false);
+    // addToJson(str, "creator", "\"" + creator + "\"", false);
+    // addToJson(str, "creation", "\"" +
+    //     std::to_string(date.year) +
+    //     "-" +
+    //     (date.month < 10 ? "0" + std::to_string(date.month) : std::to_string(date.month)) +
+    //     "-" +
+    //     (date.day < 10 ? "0" + std::to_string(date.day) : std::to_string(date.day)) +
+    //     "T" + std::to_string(date.hour) + ":" + std::to_string(date.minute) + ":00" + "\"", false);
 
     str.append("\"animations\": [");
 
