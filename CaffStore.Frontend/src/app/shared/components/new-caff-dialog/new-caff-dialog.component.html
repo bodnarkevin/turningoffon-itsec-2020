@@ -1,5 +1,9 @@
+<div *ngIf="loading" class="overlay">
+    <mat-spinner></mat-spinner>
+</div>
 <h1 mat-dialog-title>Upload new CAFF file</h1>
 <div mat-dialog-content>
+   
     <div class="dialog-container">
         <div class="caff-data" [formGroup]="newCaffForm">
             <mat-form-field class="form-field">
@@ -12,9 +16,9 @@
                     formControlName="description"></textarea>
             </mat-form-field>
             <div class="file-row">
-                <input #fileInput hidden="true" type="file" id="cafffile" formControlName="cafffile"
+                <input #fileInput hidden="true" type="file" id="cafffile"
                     onclick="this.value=null" (change)="fileInputChange($event)" accept=".CAFF" />
-                <button mat-flat-button color="primary" (click)="fileInput.click()">
+                <button [disabled]="loading" mat-flat-button color="primary" (click)="fileInput.click()">
                     Choose CAFF File
                 </button>
                 <div class="file-name">
@@ -27,8 +31,8 @@
     </div>
 </div>
 <div class="dialog-actions">
-    <button mat-button (click)="onCancelClick()">Cancel</button>
-    <button mat-button [mat-dialog-close]="newCaffForm" [disabled]="!newCaffForm.valid">
+    <button mat-button (click)="onCancelClick()" [disabled]="loading">Cancel</button>
+    <button mat-button (click)="onAddClick()" [disabled]="!newCaffForm.valid || !caffFileName || loading">
         Add
     </button>
 </div>

@@ -18,6 +18,8 @@ import { NewCaffDialogComponent } from './components/new-caff-dialog/new-caff-di
 import { FilterCaffsDialogComponent } from './components/filter-caffs-dialog/filter-caffs-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 @NgModule({
@@ -37,7 +39,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     SharedCaffListComponent
