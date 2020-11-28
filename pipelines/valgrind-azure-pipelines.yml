@@ -58,3 +58,19 @@ stages:
           - task: SonarCloudPublish@1
             inputs:
               pollingTimeoutSec: '300'
+  - stage: Publish
+    jobs:
+      - job: Publish
+        steps:
+          - script: |
+              sudo apt-get install build-essential
+            displayName: Install dependencies
+          - script: |
+              make build-so
+            workingDirectory: 
+            displayName: Make build-so
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(workingDirectory)/Library'
+              artifact: 'CaffParserLibrary'
+              publishLocation: 'pipeline'
