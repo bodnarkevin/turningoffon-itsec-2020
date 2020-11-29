@@ -47,10 +47,6 @@ describe('SharedCaffListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should be on the first page', () => {
-    expect(component.page).toBe(1);
-  });
-
   it('should not have filters', () => {
     expect(component.filters).toEqual([]);
   });
@@ -67,5 +63,4 @@ describe('SharedCaffListComponent', () => {
     filterButton.triggerEventHandler('click', null);
     expect(component.filterDialog.open).toBeTruthy();
   });
-
 });
