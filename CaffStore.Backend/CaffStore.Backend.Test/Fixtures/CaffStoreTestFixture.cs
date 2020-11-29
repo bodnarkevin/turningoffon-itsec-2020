@@ -1,5 +1,4 @@
-﻿using CaffStore.Backend.Api.Controllers;
-using CaffStore.Backend.Bll.Services;
+﻿using CaffStore.Backend.Bll.Services;
 using CaffStore.Backend.Interface.Bll.Services;
 
 namespace CaffStore.Backend.Test.Fixtures
@@ -12,6 +11,7 @@ namespace CaffStore.Backend.Test.Fixtures
 		public MapperFixture MapperFixture { get; }
 		public FileServiceFixture FileServiceFixture { get; }
 		public ICaffItemService CaffItemService { get; }
+		public ICommentService CommentService { get; }
 
 		public CaffStoreTestFixture()
 		{
@@ -22,6 +22,7 @@ namespace CaffStore.Backend.Test.Fixtures
 			FileServiceFixture = new FileServiceFixture();
 			CaffItemService = new CaffItemService(Database.Context, RequestContextFixture.RequestContext,
 				FileServiceFixture.FileService, MapperFixture.Mapper);
+			CommentService = new CommentService(Database.Context, RequestContextFixture.RequestContext, MapperFixture.Mapper);
 		}
 	}
 }
