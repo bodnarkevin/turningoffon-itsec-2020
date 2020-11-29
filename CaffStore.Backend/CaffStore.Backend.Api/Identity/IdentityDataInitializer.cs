@@ -1,16 +1,18 @@
-﻿using CaffStore.Backend.Dal.Entities;
+﻿using CaffStore.Backend.Bll.Options.AdminUser;
+using CaffStore.Backend.Dal.Entities;
+using CaffStore.Backend.Interface.Bll.Roles;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
-using CaffStore.Backend.Interface.Bll.Roles;
+using Microsoft.Extensions.Configuration;
 
 namespace CaffStore.Backend.Api.Identity
 {
 	public static class IdentityDataInitializer
 	{
-		public static async Task SeedDataAsync(UserManager<User> userManager, RoleManager<Role> roleManager)
+		public static async Task SeedDataAsync(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
 		{
 			await SeedRolesAsync(roleManager);
-			await SeedUsersAsync(userManager);
+			await SeedUsersAsync(userManager, configuration);
 		}
 
 		public static async Task SeedRolesAsync(RoleManager<Role> roleManager)
@@ -20,7 +22,7 @@ namespace CaffStore.Backend.Api.Identity
 			if (exists)
 				return;
 
-			Role role = new Role
+			var role = new Role
 			{
 				Name = CaffStoreRoles.Admin
 			};
@@ -28,20 +30,23 @@ namespace CaffStore.Backend.Api.Identity
 			await roleManager.CreateAsync(role);
 		}
 
-		public static async Task SeedUsersAsync(UserManager<User> userManager)
+		public static async Task SeedUsersAsync(UserManager<User> userManager, IConfiguration configuration)
 		{
-			var adminUserName = "admin@admin";
-			var adminPassword = "Admin1234";
+			var adminUserOptions = new AdminUserOptions();
+			configuration.Bind(nameof(AdminUserOptions), adminUserOptions);
 
-			var exists = await userManager.FindByNameAsync(adminUserName) != null;
+			var adminUserEmail = adminUserOptions.DefaultAdminUserEmail;
+			var adminPassword = adminUserOptions.DefaultAdminUserPassword;
+
+			var exists = await userManager.FindByNameAsync(adminUserEmail) != null;
 
 			if (exists)
 				return;
 
-			User user = new User
+			var user = new User
 			{
-				UserName = adminUserName,
-				Email = adminUserName,
+				UserName = adminUserEmail,
+				Email = adminUserEmail,
 				FirstName = "Boss",
 				LastName = "Man"
 			};
