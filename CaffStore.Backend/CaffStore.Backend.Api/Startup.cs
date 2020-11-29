@@ -75,7 +75,7 @@ namespace CaffStore.Backend.Api
 			app.UseAuthorization();
 
 			// Seed default Roles and Users
-			IdentityDataInitializer.SeedDataAsync(userManager, roleManager).Wait();
+			IdentityDataInitializer.SeedDataAsync(userManager, roleManager, _configuration).Wait();
 
 			app.UseEndpoints(endpoints =>
 			{
