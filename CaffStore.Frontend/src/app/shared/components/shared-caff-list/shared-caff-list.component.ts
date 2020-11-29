@@ -38,7 +38,7 @@ export class SharedCaffListComponent implements OnInit {
   // list, own
   @Input() type: string;
 
-  caffs: CaffItemDto[];
+  caffs: CaffItemDto[] = [];
 
   /** Current page */
   page = 1;
@@ -75,6 +75,10 @@ export class SharedCaffListComponent implements OnInit {
       if (res) {
         this.loggedInUserEmail = res;
         this.getCaffItems();
+        if (this.caffs.length < 5) {
+          this.page++;
+          this.getCaffItems();
+        }
       }
     });
   }
@@ -91,16 +95,21 @@ export class SharedCaffListComponent implements OnInit {
     this.caffItemService.getPagedCaffItems(this.page, 10).subscribe(
       (res: CaffItemDtoPagedResponse) => {
         if (this.page === 1) {
-          if (this.type === 'list') {
-            this.caffs = res.results;
-          } else if (this.type === 'own') {
-            this.caffs = res.results.filter(
+          this.caffs = res.results;
+          if (this.type === 'own') {
+            this.caffs = this.caffs.filter(
               (r) => r.createdBy && r.createdBy.email === this.loggedInUserEmail
             );
           }
           this.pageCount = res.totalPageCount;
         } else {
           this.caffs = [...this.caffs, ...res.results];
+          if (this.type === 'own') {
+            this.caffs = this.caffs.filter(
+              (r) => r.createdBy && r.createdBy.email === this.loggedInUserEmail
+            );
+          }
+          this.pageCount = res.totalPageCount;
         }
       },
       (err) => {
