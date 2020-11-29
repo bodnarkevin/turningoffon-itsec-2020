@@ -1,5 +1,6 @@
 CC = g++ -std=c++11
 CFLAGS = -shared -fPIC
+CCAFL = "/home/cloud/AFL/afl-g++"
 WINFLAG = -DBUILD_DLL
 SOURCE = CAFFHandler.cpp Logger.cpp CIFFHandler.cpp BytesToIntConverter.cpp ParserExceptions.cpp
 
@@ -20,8 +21,11 @@ build-so:
 clean-so:
 	rm -f Library/CaffParser.so
 
-Main.exe:
-	g++ $(SOURCE) Main.cpp -o Main.exe
+Main:
+	g++ $(SOURCE) Main.cpp -o Main
+
+Main-afl:
+	$(CCAFL) $(SOURCE) Main.cpp -o Main
 
 clean:
-	rm Main.exe
+	rm -f Main
