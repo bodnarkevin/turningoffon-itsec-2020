@@ -6,6 +6,9 @@
 # IdentityServer4 Development credentials
 **/tempkey.jwk
 
+# Coverage results
+**/coverage.opencover.xml
+
 # User-specific files
 *.rsuser
 *.suo
