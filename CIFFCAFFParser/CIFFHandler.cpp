@@ -14,8 +14,6 @@ namespace CIFF {
         CIFF::CIFFFile ciff;
         Converter::BytesToIntConverter bytesToIntConverter;
 
-        std::cout << std::endl << "Handling CIFF content..." << std::endl;
-
         char magic[4];
         getCIFFMagic(buffer, magic);
 
@@ -23,7 +21,6 @@ namespace CIFF {
         for (int i = 0; i < 4; i++) { // debug log
             magicString += magic[i];
         }
-        Log::Logger::logMessage(magicString);
 
         int headerLength = bytesToIntConverter.convert8BytesToInteger(buffer);
 
@@ -41,7 +38,6 @@ namespace CIFF {
 
         int captionLength = 0;
         std::string caption = getCaption(buffer, captionLength);
-        Log::Logger::logMessage("  Caption: " + caption);
 
         // header - magic(the 4 bytes) - headerlength(the 8 bytes that represents this length) - height(the 8 bytes) - contentlength(the 8 bytes) - width(the 8 bytes)
         int tagsLength = headerLength - 4 - 8 - 8 - 8 - 8 - captionLength;
@@ -50,10 +46,8 @@ namespace CIFF {
         for (auto element : tags) {
             tagsMessage += "#" + element + " ";
         }
-        Log::Logger::logMessage(tagsMessage);
         
         std::vector<uint8_t> pixels = getPixels(buffer, contentLength);
-        Log::Logger::logMessage("  Number of pixels: " + std::to_string(pixels.size()));
 
         // Validation: If height or with is zero, there should be no pixels present in the file
         if ((width == 0 || height == 0) && pixels.size() > 0) {
@@ -79,13 +73,10 @@ namespace CIFF {
         ciff.header = ciffHeader;
         ciff.pixels = pixels;
 
-        std::cout << "Handled CIFF content" << std::endl << std::endl;
-
         return ciff;
     }
 
     std::vector<uint8_t> CIFFHandler::getPixels(std::vector<unsigned char>& buffer, int contentLength) {
-        Log::Logger::logMessage("  Getting pixels ...");
 
         if (buffer.size() < contentLength) {
             std::string message = "ERROR while parsing CIFF pixels: Buffer is too small! " + std::to_string(buffer.size()) + ". ";
@@ -98,7 +89,6 @@ namespace CIFF {
         }
 
         // Remove the parsed contentLength bytes from the buffer
-        Log::Logger::logBytesProcessed(contentLength);
         std::vector<unsigned char>(buffer.begin() + contentLength, buffer.end()).swap(buffer);
 
         return result;
@@ -127,7 +117,6 @@ namespace CIFF {
 
 
         // Remove the parsed headerLength bytes from the buffer
-        Log::Logger::logBytesProcessed(headerLength);
         std::vector<unsigned char>(buffer.begin() + headerLength, buffer.end()).swap(buffer);
 
         return result;
@@ -156,7 +145,6 @@ namespace CIFF {
         }
 
         // Remove the parsed 4 bytes from the buffer
-        Log::Logger::logBytesProcessed(4);
         std::vector<unsigned char>(buffer.begin() + 4, buffer.end()).swap(buffer);
     }
 
@@ -173,7 +161,6 @@ namespace CIFF {
         captionLength++;
 
         // Remove the parsed captionLength bytes from the buffer (+1 for the \n)
-        Log::Logger::logBytesProcessed(captionLength);
         std::vector<unsigned char>(buffer.begin() + captionLength, buffer.end()).swap(buffer);
 
         return result;

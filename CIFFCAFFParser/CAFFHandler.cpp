@@ -15,7 +15,6 @@ Credits CAFFHandler::handleCredits(std::vector<unsigned char>& buffer, CAFF::Blo
     Converter::BytesToIntConverter bytesToIntConverter;
     Credits credits;
     std::string creator_name = "";
-    std::cout << std::endl << "Handling credits... " << std::endl;
 
     credits.date.year = bytesToIntConverter.convert2BytesToInteger(buffer);
     credits.date.month = bytesToIntConverter.convert1ByteToInteger(buffer);
@@ -47,13 +46,8 @@ Credits CAFFHandler::handleCredits(std::vector<unsigned char>& buffer, CAFF::Blo
     }
     credits.creator = creator_name;
 
-    Log::Logger::logMessage("  Creator_name " + creator_name);
-    Log::Logger::logMessage("  Date year " + std::to_string(credits.date.year));
-    Log::Logger::logMessage("  Creator name " + credits.creator);
-
     std::vector<unsigned char>(buffer.begin() + credits.creator_len, buffer.end()).swap(buffer);
 
-    std::cout << "Handled credits block" << std::endl << std::endl;
     return credits;
 }
 
@@ -61,17 +55,13 @@ Animation CAFFHandler::handleAnimation(std::vector<unsigned char>& buffer) {
     Animation animation;
     Converter::BytesToIntConverter bytesToIntConverter;
 
-    std::cout << std::endl << "Handling animation..." << std::endl;
-
     int duration = bytesToIntConverter.convert8BytesToInteger(buffer);
-    Log::Logger::logMessage("  Duration of ciff: " + std::to_string(duration) + " ms");
 
     CIFF::CIFFHandler ciffHandler;
     CIFF::CIFFFile ciff = ciffHandler.parseCIFF(buffer);
     animation.duration = duration;
     animation.ciff_file = ciff;
 
-    std::cout << "Handled animation block" << std::endl << std::endl;
     return animation;
 }
 
@@ -98,7 +88,6 @@ void CAFFHandler::getCAFFMagic(std::vector<unsigned char>& buffer, char* result)
     }
 
     // Remove the parsed 4 bytes from the buffer
-    Log::Logger::logBytesProcessed(4);
     std::vector<unsigned char>(buffer.begin() + 4, buffer.end()).swap(buffer);
 }
 Header CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block& block) {
@@ -114,14 +103,7 @@ Header CAFFHandler::handleHeader(std::vector<unsigned char>& buffer, CAFF::Block
     }
 
     header.header_size = bytesToIntConverter.convert8BytesToInteger(buffer);
-
     header.num_anim = bytesToIntConverter.convert8BytesToInteger(buffer);
-
-    Log::Logger::logMessage("SIZE: " + std::to_string(header.header_size));
-    Log::Logger::logMessage("NUM ANIM: " + std::to_string(header.num_anim));
-    // todo: content...
-
-    std::cout << "Handled CAFF header" << std::endl << std::endl;
     return header;
 }
 
@@ -135,12 +117,7 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
     while (!buffer.empty()) {
         int identifier = static_cast<int>(buffer[0]);
 
-        Log::Logger::logMessage("Parsed block identifier: " + std::to_string(identifier));
-        // Remove the processed 1 byte from the buffer
-        Log::Logger::logBytesProcessed(1);
         std::vector<unsigned char>(buffer.begin() + 1, buffer.end()).swap(buffer);
-
-        std::cout << std::endl << "Handling block ..." << std::endl;
         int length = bytesToIntConverter.convert8BytesToInteger(buffer);
 
         CAFF::Block block;
@@ -167,7 +144,6 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
                     throw ParserException(message.c_str(), "CAFFHandler", __LINE__, __FUNCTION__);
                 }
             case CAFF::BlockType::ANIMATION:
-                Log::Logger::logMessage("  Length of animation block: " + std::to_string(block.length));
                 block.animation_data = handleAnimation(buffer);
                 break;
             default:
@@ -193,9 +169,6 @@ CAFFFile CAFFHandler::processCAFF(std::vector<unsigned char>& buffer) {
         throw ParserException("ERROR: All data parsed, but buffer not empty", "Main", __LINE__, __FUNCTION__);
     }
 
-    Log::Logger::logSuccess();
-    Log::Logger::logMessage("Block count: " + std::to_string(blocks.size()));
-
     return caffFile;
 }
 
@@ -210,9 +183,6 @@ bool CAFFHandler::verifyNumAnim(const CAFFFile& caffFile) {
             anim_count++;
         }
     }
-
-    Log::Logger::logMessage("total anim: " + std::to_string(total_anim));
-    Log::Logger::logMessage("counted anim: " + std::to_string(anim_count));
 
     return total_anim == anim_count;
 }

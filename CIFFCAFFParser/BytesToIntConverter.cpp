@@ -24,7 +24,6 @@ namespace Converter {
                 + lengthVector[4] * pow(multiplier, 4) + lengthVector[5] * pow(multiplier, 5) + lengthVector[6] * pow(multiplier, 6) + lengthVector[7] * pow(multiplier, 7);
 
         // Remove the parsed 8 bytes from the buffer
-        Log::Logger::logBytesProcessed(8);
         std::vector<unsigned char>(buffer.begin() + 8, buffer.end()).swap(buffer);
 
         return result;
@@ -44,7 +43,6 @@ namespace Converter {
         const int multiplier = 2;
         int result = lengthVector[0] | lengthVector[1] << 8;
         // Remove the parsed 2 bytes from the buffer
-        Log::Logger::logBytesProcessed(2);
         std::vector<unsigned char>(buffer.begin() + 2, buffer.end()).swap(buffer);
 
         return result;
@@ -59,7 +57,6 @@ namespace Converter {
         uint8_t result = static_cast<uint8_t>(buffer[0]);
         
         // Remove the parsed 1 bytes from the buffer
-        Log::Logger::logBytesProcessed(1);
         std::vector<unsigned char>(buffer.begin() + 1, buffer.end()).swap(buffer);
 
         return result;

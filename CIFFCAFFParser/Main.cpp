@@ -12,8 +12,13 @@
 
 using namespace ParserExceptions;
 
-int main() {
-    std::ifstream source("1.caff", std::ios_base::binary);
+int main(int argc, char* argv[]) {
+    std::string inputfile = "1.caff";
+    if (argc > 0) {
+        inputfile = argv[0];
+    }
+    
+    std::ifstream source(inputfile, std::ios_base::binary);
     std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(source), {});
 
     CAFF::CAFFHandler caffHandler;
