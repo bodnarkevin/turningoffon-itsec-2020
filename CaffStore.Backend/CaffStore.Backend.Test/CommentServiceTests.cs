@@ -6,6 +6,7 @@ using Xunit;
 
 namespace CaffStore.Backend.Test
 {
+	[Collection("Comment tests")]
 	public class CommentServiceTests : IClassFixture<CaffStoreTestFixture>
 	{
 		private readonly CaffStoreTestFixture _testFixture;
@@ -55,6 +56,41 @@ namespace CaffStore.Backend.Test
 				{
 					Text = newText
 				}));
+		}
+
+		[Fact]
+		public async Task TestDeleteCommentNotByCreator()
+		{
+			_testFixture.RequestContextFixture.CurrentUserId = 2;
+
+			await Assert.ThrowsAsync<CaffStoreForbiddenException>(() => _testFixture.CommentService.DeleteMyCommentAsync(1));
+		}
+
+	}
+
+	/// <summary>
+	/// This test class is separated from the above so that de successful delete operation does not affect
+	/// the getter tests by deleteing the comment from the db.
+	/// </summary>
+	[Collection("Comment tests")]
+	public class CommentServiceDeleteTests : IClassFixture<CaffStoreTestFixture>
+	{
+		private readonly CaffStoreTestFixture _testFixture;
+
+		public CommentServiceDeleteTests(CaffStoreTestFixture testFixture)
+		{
+			_testFixture = testFixture;
+		}
+
+		[Fact]
+		public async Task TestDeleteCommentByCreator()
+		{
+			_testFixture.RequestContextFixture.CurrentUserId = 1;
+
+			await _testFixture.CommentService.DeleteMyCommentAsync(1);
+
+			await Assert.ThrowsAsync<CaffStoreNotFoundException>(() => _testFixture.CommentService.GetCommentAsync(1));
+
 		}
 	}
 }
