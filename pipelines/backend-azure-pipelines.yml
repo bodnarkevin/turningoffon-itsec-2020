@@ -54,7 +54,8 @@ stages:
             displayName: Test
             inputs:
               command: 'test'
-              projects: $(workingDirectory)/**/*.csproj
+              projects: '$(workingDirectory)/**/*.csproj'
+              arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
