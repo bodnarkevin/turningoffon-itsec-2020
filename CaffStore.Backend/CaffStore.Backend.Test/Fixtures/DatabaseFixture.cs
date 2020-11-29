@@ -66,7 +66,38 @@ namespace CaffStore.Backend.Test.Fixtures
 				}
 			};
 
+			var deletedCaffItem = new CaffItem
+			{
+				Id = 2,
+				Title = "Deleted Test Title",
+				Description = "Deleted Test Description",
+				CaffData = new CaffData
+				{
+					Creation = DateTime.Now.AddDays(-1),
+					Creator = "Deleted Test Creator",
+					Animations = new List<CaffAnimationData>
+					{
+						new CaffAnimationData
+						{
+							Order = 0,
+							Duration = 100,
+							CiffData = new CiffData
+							{
+								Width = 300,
+								Height = 500,
+								Caption = "Deleted Test Caption",
+								Tags = new List<CiffDataTag>
+								{
+									new CiffDataTag {Tag = new Tag {Text = "Test Tag"}}
+								}
+							}
+						}
+					}
+				}
+			};
+
 			Context.CaffItems.Add(caffItem);
+			Context.CaffItems.Add(deletedCaffItem);
 			Context.SaveChanges();
 		}
 	};

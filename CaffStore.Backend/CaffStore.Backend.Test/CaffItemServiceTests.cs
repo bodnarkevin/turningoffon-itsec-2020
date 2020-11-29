@@ -56,5 +56,15 @@ namespace CaffStore.Backend.Test
 					Description = newDescription
 				}));
 		}
+
+		[Fact]
+		public async System.Threading.Tasks.Task TestDeleteCaffItemNotByCreator()
+		{
+			_testFixture.RequestContextFixture.CurrentUserId = 1;
+
+			await _testFixture.CaffItemService.DeleteMyCaffItemAsync(2);
+
+			await Assert.ThrowsAsync<CaffStoreNotFoundException>(() => _testFixture.CaffItemService.GetCaffItemAsync(2));
+		}
 	}
 }
