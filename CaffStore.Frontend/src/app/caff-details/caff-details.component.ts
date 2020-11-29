@@ -98,8 +98,8 @@ export class CaffDetailsComponent implements OnInit {
 
   onSaveChanges(): void {
     const caffData: UpdateCaffItemDto = {
-      title: this.caffDataForm.controls.fullName.value,
-      description: this.caffDataForm.controls.fullName.value,
+      title: this.caffDataForm.controls.title.value,
+      description: this.caffDataForm.controls.description.value,
     };
 
     this.editingInProgress = false;
@@ -109,6 +109,13 @@ export class CaffDetailsComponent implements OnInit {
         (res: CaffItemDetailsDto) => {
           this.editingInProgress = false;
           this.caffDataForm.disable();
+          this._snackBar.open(
+            'Successfully saved your changes!',
+            null,
+            {
+              duration: 3000,
+            }
+          );
         },
         (err) => {
           this._snackBar.open(
