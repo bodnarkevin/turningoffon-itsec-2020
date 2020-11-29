@@ -80,6 +80,6 @@
     </div>
   </div>
   <div class="row">
-    <a *ngIf="pageCount > page" (click)="onLoadMore()">Load more caffs</a>
+    <a *ngIf="(pageCount > page) && filters.length === 0" (click)="onLoadMore()">Load more caffs</a>
   </div>
 </div>

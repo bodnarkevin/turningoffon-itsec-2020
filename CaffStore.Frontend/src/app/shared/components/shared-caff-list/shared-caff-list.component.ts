@@ -155,7 +155,14 @@ export class SharedCaffListComponent implements OnInit {
 
   onClearFilters(): void {
     this.filters = [];
+    this.page = 1;
+    this.pageCount = 1;
+    this.caffs = [];
     this.getCaffItems();
+    if (this.caffs.length < 5) {
+      this.page++;
+      this.getCaffItems();
+    }
   }
 
   onSelectionChange(event: any): void {
