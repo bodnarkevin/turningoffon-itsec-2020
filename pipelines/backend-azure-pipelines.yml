@@ -35,6 +35,8 @@ stages:
               extraProperties: |
                 sonar.projectBaseDir=$(workingDirectory)
                 sonar.exclusions=CaffStore.Backend.Api/Migrations/**/*
+                sonar.cs.opencover.reportsPaths=CaffStore.Backend.Test/coverage.opencover.xml
+                sonar.coverage.exclusions=**Test*.cs
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
@@ -54,7 +56,8 @@ stages:
             displayName: Test
             inputs:
               command: 'test'
-              projects: $(workingDirectory)/**/*.csproj
+              projects: '$(workingDirectory)/**/*.csproj'
+              arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=opencover'
           - task: UseDotNet@2
             inputs:
               packageType: 'sdk'
