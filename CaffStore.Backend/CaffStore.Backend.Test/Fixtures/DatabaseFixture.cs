@@ -15,12 +15,12 @@ namespace CaffStore.Backend.Test.Fixtures
 		public DatabaseFixture(ITimeService timeService, IHttpRequestContext requestContext)
 		{
 			var options = new DbContextOptionsBuilder<CaffStoreDbContext>()
-				.UseInMemoryDatabase("CaffStore")
+				.UseInMemoryDatabase("CaffStore" + Guid.NewGuid())
 				.Options;
 
 			Context = new CaffStoreDbContext(options, timeService, requestContext);
 
-			var user = new User
+			Context.Users.Add(new User
 			{
 				Id = 1,
 				Email = "test@test",
@@ -32,9 +32,7 @@ namespace CaffStore.Backend.Test.Fixtures
 				FirstName = "Test",
 				LastName = "Name",
 				IsDeleted = false
-			};
-
-			Context.Users.Add(user);
+			});
 
 			var caffItem = new CaffItem
 			{
@@ -98,6 +96,17 @@ namespace CaffStore.Backend.Test.Fixtures
 
 			Context.CaffItems.Add(caffItem);
 			Context.CaffItems.Add(deletedCaffItem);
+
+			Context.CaffItemComments.Add(new CaffItemComment
+			{
+				CaffItem = caffItem,
+				Comment = new Comment
+				{
+					Id = 1,
+					Text = "Test comment",
+				}
+			});
+
 			Context.SaveChanges();
 		}
 	};
