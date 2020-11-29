@@ -1,6 +1,7 @@
 ﻿using CaffStore.Backend.Api.Pagination.Queries;
 using CaffStore.Backend.Bll.Exceptions;
 using CaffStore.Backend.Interface.Bll.Dtos.CaffItem;
+using CaffStore.Backend.Interface.Bll.Dtos.Comment;
 using CaffStore.Backend.Test.Fixtures;
 using System.Threading.Tasks;
 using Xunit;
@@ -87,6 +88,33 @@ namespace CaffStore.Backend.Test
 			await _testFixture.CaffItemService.DeleteMyCaffItemAsync(2);
 
 			await Assert.ThrowsAsync<CaffStoreNotFoundException>(() => _testFixture.CaffItemService.GetCaffItemAsync(2));
+		}
+
+		[Fact]
+		public async Task GetCaffItemComments()
+		{
+			const long caffItemId = 1;
+
+			var response = await _testFixture.CaffItemService.GetCaffItemCommentsAsync(caffItemId);
+
+			Assert.NotNull(response);
+			Assert.NotEmpty(response);
+		}
+
+		[Fact]
+		public async Task AddCaffItemComment()
+		{
+			const long caffItemId = 1;
+			const string commentText = "New comment";
+
+			var response = await _testFixture.CaffItemService.AddCaffItemCommentAsync(caffItemId,
+				new AddCommentDto
+				{
+					Text = commentText
+				});
+
+			Assert.NotNull(response);
+			Assert.Equal(commentText, response.Text);
 		}
 	}
 }
